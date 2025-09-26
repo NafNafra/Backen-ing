@@ -6,7 +6,11 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) { }
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
+  
+  async hello(): Promise<User[]> {
+    return this.userModel.find().exec();
+  }
 
   async register(name: string, email: string, password: string, code: number): Promise<UserDocument> {
     const newUser = new this.userModel({ name, email, password, code });
@@ -19,9 +23,5 @@ export class UserService {
     return "null"
   }
 
-  hello(): string {
-    return "Hold up"
-
-  }
 
 }

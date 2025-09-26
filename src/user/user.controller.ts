@@ -6,8 +6,8 @@ import { ParseIntPipe } from '@nestjs/common';
 export class UserController {
   constructor(private userService: UserService) { }
 
-  @Get()
-  alc(){
+  @Get('ac')
+  hello(){
     return this.userService.hello();
   }
 
