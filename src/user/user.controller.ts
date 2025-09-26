@@ -1,25 +1,41 @@
 import { Controller } from '@nestjs/common';
-import { Query, Get, Param } from '@nestjs/common';
+import { Body, Param, Post, Get, Put, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ParseIntPipe } from '@nestjs/common';
+import { CreateUserDto, UpdateUserDto , LogUserDto} from './dto/user.dto'; 
+import { UserDocument } from './user.schema';
+
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private readonly userService: UserService) { }
 
-  @Get('ac')
-  hello(){
-    return this.userService.hello();
+  @Post()
+  async create(@Body() createDto: CreateUserDto) {
+    return this.userService.create(createDto);
   }
 
-  @Get('arp')
-  register() {
-    return this.userService.register("name", "email", "password", Number(123));
+
+  @Get()
+  async findAll(): Promise<UserDocument[]> {
+    return this.userService.findAll();
   }
 
   @Get(':id')
-  greeting(@Param('id', ParseIntPipe) id): string {
-    return this.userService.startHome(id);
+  async findOne(@Param('id') id: string) {
+    return this.userService.findOne(id);
   }
 
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() updateDto: UpdateUserDto) {
+    return this.userService.update(id, updateDto);
+  }
 
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return this.userService.delete(id);
+  }
+
+  @Post('login')
+  async logUser(@Body() logDto: LogUserDto) {
+    return this.userService.logUser(logDto);
+  } 
 }

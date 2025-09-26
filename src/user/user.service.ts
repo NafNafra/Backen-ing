@@ -1,27 +1,48 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+
 import { InjectModel } from '@nestjs/mongoose';
-import { UserModule } from './user.module';
-import { User, UserDocument } from './schema/user.schema';
 import { Model } from 'mongoose';
+import { UserDocument } from './user.schema';
+import { CreateUserDto } from './dto/user.dto';
+import { LogUserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
-  
-  async hello(): Promise<User[]> {
+  constructor(@InjectModel(UserDocument.name) private readonly userModel: Model<UserDocument>) { }
+
+  async create(createDto: any): Promise<UserDocument> {
+    const createdDocument = new this.userModel(createDto);
+    return createdDocument.save();
+  }
+
+  async findAll(): Promise<UserDocument[]> {
     return this.userModel.find().exec();
   }
 
-  async register(name: string, email: string, password: string, code: number): Promise<UserDocument> {
-    const newUser = new this.userModel({ name, email, password, code });
-    return newUser.save();
+  async findOne(id: string): Promise<UserDocument | null> {
+    return this.userModel.findById(id).exec();
   }
 
-
-  startHome(id: number): string {
-    if (id >= 18) return 'Home page' + id;
-    return "null"
+  async findByEmail(email: string): Promise<UserDocument | null> {
+    return this.userModel.findOne({ email }).exec();
   }
 
+  async update(id: string, updateDto: any): Promise<UserDocument | null> {
+    return this.userModel.findByIdAndUpdate(id, updateDto, { new: true }).exec();
+  }
 
+  async delete(id: string): Promise<UserDocument | null> {
+    return this.userModel.findByIdAndDelete(id).exec();
+  }
+
+  async logUser(logDto: LogUserDto): Promise<UserDocument | null> {
+    const { phone } = logDto;
+    console.log(phone);
+    const user = await this.userModel.findOne({ phone }).exec();
+    console.log(user)
+    if(!user) {
+      throw new UnauthorizedException('Invalid phone number');
+    }
+    return user;
+  }
 }
