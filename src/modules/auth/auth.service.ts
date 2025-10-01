@@ -55,7 +55,7 @@ export class AuthService {
 
     const token = await this.generateTokens(payload)
     return {
-      user: { id: user._id, phoneNumber: user.phoneNumber },
+      // user: { id: user._id, phoneNumber: user.phoneNumber },
       message: "Connexion avec succes",
       statusCode: HttpStatus.OK,
       accessToken: token.access_token,
