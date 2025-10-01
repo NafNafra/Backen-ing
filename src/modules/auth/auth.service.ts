@@ -1,4 +1,4 @@
-import { BadRequestException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ClientsService } from '../clients/clients.service';
 import { set2FaExpiryTime, generate2FaCode } from 'src/commons/utils';
@@ -6,7 +6,7 @@ import { SmsService } from 'src/commons/providers/sms/sms.service';
 import { ConfigsService } from 'src/configs';
 import { payload, phonePayload } from 'src/commons/types/auth';
 import * as bcrypt from 'bcrypt';
-import { access } from 'fs';
+import { AuthResponse } from './dto/response.dto';
 
 @Injectable()
 export class AuthService {
@@ -34,7 +34,7 @@ export class AuthService {
     };
   }
 
-  async verify2Fa(phone: string, code: string) {
+  async verify2Fa(phone: string, code: string): Promise<AuthResponse> {
     const user = await this.clientsService.findByPhone(phone);
 
     if (!user) throw new NotFoundException(`Client with phone ${phone} not found`);
@@ -54,8 +54,10 @@ export class AuthService {
     }
 
     const token = await this.generateTokens(payload)
+    await this.storeRefreshToken(user._id, token.refresh_token);
+
     return {
-      // user: { id: user._id, phoneNumber: user.phoneNumber },
+      user: { id: user._id, phoneNumber: user.phoneNumber },
       message: "Connexion avec succes",
       statusCode: HttpStatus.OK,
       accessToken: token.access_token,
@@ -71,6 +73,9 @@ export class AuthService {
 
   }
 
+
+
+
   async generateTokens(payload: payload): Promise<{ access_token: string; refresh_token: string }> {
     const access_token = await this.jwtService.signAsync(payload, {
       secret: this.configsService.get("jwt.secret"),
@@ -82,6 +87,33 @@ export class AuthService {
     });
 
     return { access_token, refresh_token };
+  }
+
+  private async storeRefreshToken(userId: string, refreshToken: string): Promise<void> {
+    const hashedToken = await bcrypt.hash(refreshToken, 10);
+    await this.clientsService.update(userId, { refreshToken: hashedToken });
+  }
+
+
+  async refreshAccessToken(refreshToken: string): Promise<{ access_token: string }> {
+    const payload = this.jwtService.verify(refreshToken, { secret: this.configsService.get('jwt.refresh.secrect') }); 
+    const user = await this.clientsService.findById(payload.id);
+
+    if (!user || !user.refreshToken) throw new UnauthorizedException("Invalid refresh token");
+
+    const isTokenValid = await bcrypt.compare(refreshToken, user.refreshToken);
+    if (!isTokenValid) throw new UnauthorizedException("Invalid refresh token");
+
+    const newAccessToken = await this.jwtService.signAsync(
+      { id: user.id, phoneNumber: user.phoneNumber, activated: user.activated },
+      { secret: this.configsService.get("jwt.secret"), expiresIn: this.configsService.get('jwt.expiresIn') }
+    );
+
+    return { access_token: newAccessToken };
+  }
+
+  async logout(userId: string): Promise<void> {
+    await this.clientsService.update(userId, { refreshToken: null });
   }
 
 }

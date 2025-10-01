@@ -16,7 +16,7 @@ export class Client {
   email: string;
 
   @Prop()
-  adresse:string;
+  adresse: string;
 
   @Prop({ unique: true })
   phoneNumber: string;
@@ -32,6 +32,12 @@ export class Client {
 
   @Prop()
   activated: boolean
+
+  @Prop()
+  reactivationDate: string;
+
+  @Prop()
+  refreshToken: string;
 }
 
 export const ClientSchema = SchemaFactory.createForClass(Client)
