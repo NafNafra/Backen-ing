@@ -18,7 +18,7 @@ export class SmsService {
       await this.httpService.axiosRef.post('https://fs-pay.atydago.com/api/sms', body, {
         headers: {
           'Content-Type': 'application/json',
-          // 'Authorization': token
+          'Authorization': token
         },
       })
 
