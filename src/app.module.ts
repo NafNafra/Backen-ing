@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ClientsModule } from './modules/clients/clients.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './modules/auth/auth.module';
@@ -17,7 +15,7 @@ import { ConfigsModule } from './configs/configs.module';
     SmsModule,
     ConfigsModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  // controllers: [],
+  // providers: [],
 })
 export class AppModule { }
