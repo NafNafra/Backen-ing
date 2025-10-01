@@ -18,8 +18,8 @@ export class ClientsService {
     return this.clientModel.find().exec();
   }
 
-  async findOne(id: number): Promise<Client> {
-    const client = await this.clientModel.findById(id).exec();
+  async findOne(id: string): Promise<Client> {
+    const client = await this.clientModel.findOne({id}).exec(); //findById
     if (!client) throw new NotFoundException('Client not found');
     return client;
   }

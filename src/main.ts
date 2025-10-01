@@ -16,7 +16,9 @@ async function bootstrap() {
     .setTitle('Client API')
     .setDescription('CRUD API for Clients')
     .setVersion('1.0')
+    .addBearerAuth() // 👈 ajoute le bouton "Authorize" dans Swagger
     .build();
+
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/swagger', app, documentFactory); // Swagger accessible sur /api

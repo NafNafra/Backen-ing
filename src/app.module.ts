@@ -10,10 +10,10 @@ import { ConfigsModule } from './configs/configs.module';
 
 @Module({
   imports: [
+    AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/mydb'),
     ClientsModule,
-    AuthModule,
     SmsModule,
     ConfigsModule
   ],
