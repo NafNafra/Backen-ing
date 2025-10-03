@@ -35,13 +35,11 @@ export class ClientsService {
 
   async findByPhone(phoneNumber: string) {
     const client = await this.clientModel.findOne({ phoneNumber }).exec();
-
     return client;
   }
 
   async update(userId: string, userDto: UpdateClientDto): Promise<UpdateClientResponseDto> {
-    if (userDto === null)
-      throw new BadRequestException("Veuillez spécifier les informations à mettre à jour");
+    if (userDto === null) throw new BadRequestException("Veuillez spécifier les informations à mettre à jour");
 
     const updatedUser = await this.clientModel.findByIdAndUpdate(
       userId,

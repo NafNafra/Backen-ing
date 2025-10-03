@@ -11,7 +11,7 @@ export class AuthController {
   }
 
   @Post('code')
-  verifyCode(@Query('phone') phone: string, @Query('code') code: string) {
+  verifyCode(@Body('phone') phone: string, @Body('code') code: string) {
     return this.authService.verify2Fa(phone, code);
   }
 

@@ -19,7 +19,6 @@ export class AuthService {
 
   async connexionClient(phone: string) {
     const user = await this.clientsService.findByPhone(phone);
-
     if (!user) throw new NotFoundException(`Client with phone ${phone} not found`);
 
     user._2faCode = generate2FaCode();
@@ -28,7 +27,6 @@ export class AuthService {
 
     //send messega to client here
     // await this.smsService.sendSms(user.phoneNumber, `Votre code de vérification est: ${user._2faCode}`);
-
     return {
       message: `Le code de vérification a été envoyé au numéro: ${phone}. Le code ${user._2faCode} expirera dans 10 minutes `,
     };
@@ -57,7 +55,7 @@ export class AuthService {
     await this.storeRefreshToken(user._id, token.refresh_token);
 
     return {
-      user: { id: user._id, phoneNumber: user.phoneNumber },
+      user: { name: user.name , phoneNumber: user.phoneNumber },
       message: "Connexion avec succes",
       statusCode: HttpStatus.OK,
       accessToken: token.access_token,
@@ -72,9 +70,6 @@ export class AuthService {
     return this.connexionClient(phone);
 
   }
-
-
-
 
   async generateTokens(payload: payload): Promise<{ access_token: string; refresh_token: string }> {
     const access_token = await this.jwtService.signAsync(payload, {
