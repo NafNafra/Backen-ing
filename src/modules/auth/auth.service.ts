@@ -30,7 +30,7 @@ export class AuthService {
     // await this.smsService.sendSms(user.phoneNumber, `Votre code de vérification est: ${user._2faCode}`);
 
     return {
-      message: `Le code de vérification a été envoyé au numéro: ${phone}. Le code expirera dans 10 minutes ${user._2faCode}`,
+      message: `Le code de vérification a été envoyé au numéro: ${phone}. Le code ${user._2faCode} expirera dans 10 minutes `,
     };
   }
 
@@ -96,7 +96,7 @@ export class AuthService {
 
 
   async refreshAccessToken(refreshToken: string): Promise<{ access_token: string }> {
-    const payload = this.jwtService.verify(refreshToken, { secret: this.configsService.get('jwt.refresh.secrect') }); 
+    const payload = this.jwtService.verify(refreshToken, { secret: this.configsService.get('jwt.refresh.secrect') });
     const user = await this.clientsService.findById(payload.id);
 
     if (!user || !user.refreshToken) throw new UnauthorizedException("Invalid refresh token");

@@ -6,7 +6,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   @Post('number')
-  loginClient(@Query('phone') phone: string) {
+  loginClient(@Body('phone') phone: string) {
     return this.authService.connexionClient(phone)
   }
 
