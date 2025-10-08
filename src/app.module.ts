@@ -15,7 +15,5 @@ import { ConfigsModule } from './configs/configs.module';
     SmsModule,
     ConfigsModule
   ],
-  // controllers: [],
-  // providers: [],
 })
 export class AppModule { }

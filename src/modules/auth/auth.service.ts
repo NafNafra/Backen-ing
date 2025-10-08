@@ -19,13 +19,12 @@ export class AuthService {
 
   async connexionClient(phone: string) {
     const user = await this.clientsService.findByPhone(phone);
-    if (!user) throw new NotFoundException(`Client with phone ${phone} not found`);
-
+    if (!user) {throw new NotFoundException(`Client with phone ${phone} not found`);}
     user._2faCode = generate2FaCode();
     user._2faExpiresAt = set2FaExpiryTime();
     await user.save();
 
-    //send messega to client here
+    //send message to client here
     // await this.smsService.sendSms(user.phoneNumber, `Votre code de vérification est: ${user._2faCode}`);
     return {
       message: `Le code de vérification a été envoyé au numéro: ${phone}. Le code ${user._2faCode} expirera dans 10 minutes `,
@@ -37,6 +36,7 @@ export class AuthService {
 
     if (!user) throw new NotFoundException(`Client with phone ${phone} not found`);
 
+    console.log(user._2faCode + " " + code);
     if (user._2faCode !== code || new Date() > new Date(user._2faExpiresAt))
       throw new BadRequestException("Le code est invalide ou a expirer");
 
@@ -55,7 +55,7 @@ export class AuthService {
     await this.storeRefreshToken(user._id, token.refresh_token);
 
     return {
-      user: { name: user.name , phoneNumber: user.phoneNumber },
+      user: { name: user.name, phoneNumber: user.phoneNumber },
       message: "Connexion avec succes",
       statusCode: HttpStatus.OK,
       accessToken: token.access_token,
