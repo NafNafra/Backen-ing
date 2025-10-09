@@ -25,10 +25,10 @@ export class Client {
   compteFb: string;
 
   @Prop()
-  _2faCode: string;
+  _OtpCode: string;
 
   @Prop()
-  _2faExpiresAt: string;
+  _OtpExpiresAt: string;
 
   @Prop()
   activated: boolean

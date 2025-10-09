@@ -1,7 +1,7 @@
 import { BadRequestException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ClientsService } from '../clients/clients.service';
-import { set2FaExpiryTime, generate2FaCode } from 'src/commons/utils';
+import { setOtpExpiryTime, generateOtpCode } from 'src/commons/utils';
 import { SmsService } from 'src/commons/providers/sms/sms.service';
 import { ConfigsService } from 'src/configs';
 import { payload, phonePayload } from 'src/commons/types/auth';
@@ -19,29 +19,29 @@ export class AuthService {
 
   async connexionClient(phone: string) {
     const user = await this.clientsService.findByPhone(phone);
-    if (!user) {throw new NotFoundException(`Client with phone ${phone} not found`);}
-    user._2faCode = generate2FaCode();
-    user._2faExpiresAt = set2FaExpiryTime();
+    if (!user) { throw new NotFoundException(`Client with phone ${phone} not found`); }
+    user._OtpCode = generateOtpCode();
+    user._OtpExpiresAt = setOtpExpiryTime();
     await user.save();
 
     //send message to client here
-    // await this.smsService.sendSms(user.phoneNumber, `Votre code de vérification est: ${user._2faCode}`);
+    await this.smsService.sendSms(user.phoneNumber, `Votre code de vérification est: ${user._OtpCode}`);
     return {
-      message: `Le code de vérification a été envoyé au numéro: ${phone}. Le code ${user._2faCode} expirera dans 10 minutes `,
+      message: `Le code de vérification a été envoyé au numéro: ${phone}. Le code ${user._OtpCode} expirera dans 10 minutes `,
     };
   }
 
-  async verify2Fa(phone: string, code: string): Promise<AuthResponse> {
+  async verifyOtp(phone: string, code: string): Promise<AuthResponse> {
     const user = await this.clientsService.findByPhone(phone);
 
     if (!user) throw new NotFoundException(`Client with phone ${phone} not found`);
 
-    console.log(user._2faCode + " " + code);
-    if (user._2faCode !== code || new Date() > new Date(user._2faExpiresAt))
+    console.log(user._OtpCode + " " + code);
+    if (user._OtpCode !== code || new Date() > new Date(user._OtpExpiresAt))
       throw new BadRequestException("Le code est invalide ou a expirer");
 
-    user._2faCode = '';
-    user._2faExpiresAt = '';
+    user._OtpCode = '';
+    user._OtpExpiresAt = '';
     user.activated = true;
     await user.save();
 
@@ -66,10 +66,11 @@ export class AuthService {
   async resendCode(phone: string) {
     const user = await this.clientsService.findByPhone(phone);
     if (!user) throw new NotFoundException(`Client with phone ${phone} not found`);
-    user._2faCode = ''; user._2faExpiresAt = '';
+    user._OtpCode = ''; user._OtpExpiresAt = '';
     return this.connexionClient(phone);
 
   }
+
 
   async generateTokens(payload: payload): Promise<{ access_token: string; refresh_token: string }> {
     const access_token = await this.jwtService.signAsync(payload, {
@@ -84,13 +85,15 @@ export class AuthService {
     return { access_token, refresh_token };
   }
 
+
+
   private async storeRefreshToken(userId: string, refreshToken: string): Promise<void> {
     const hashedToken = await bcrypt.hash(refreshToken, 10);
     await this.clientsService.update(userId, { refreshToken: hashedToken });
   }
 
-
   async refreshAccessToken(refreshToken: string): Promise<{ access_token: string }> {
+
     const payload = this.jwtService.verify(refreshToken, { secret: this.configsService.get('jwt.refresh.secrect') });
     const user = await this.clientsService.findById(payload.id);
 

@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './modules/auth/auth.module';
 import { SmsModule } from './commons/providers/sms/sms.module';
 import { ConfigsModule } from './configs/configs.module';
-import { ContactModule } from './contact/contact.module';
+import { ContactModule } from './modules/contact/contact.module';
 
 @Module({
   imports: [

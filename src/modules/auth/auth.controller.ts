@@ -12,7 +12,7 @@ export class AuthController {
 
   @Post('code')
   verifyCode(@Body('phone') phone: string, @Body('code') code: string) {
-    return this.authService.verify2Fa(phone, code);
+    return this.authService.verifyOtp(phone, code);
   }
 
   @Post('resend')

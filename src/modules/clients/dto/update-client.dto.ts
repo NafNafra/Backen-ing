@@ -17,13 +17,13 @@ export class UpdateClientDto {
   activated?: boolean;
 
 
-  @IsString({ message: "Code 2FA invalide" })
+  @IsString({ message: "Code Otp invalide" })
   @IsOptional()
-  _2faCode?: string;
+  _OtpCode?: string;
 
-  @IsString({ message: "Date d'expiration 2FA invalide" })
+  @IsString({ message: "Date d'expiration Otp invalide" })
   @IsOptional()
-  _2faExpiresAt?: string;
+  _OtpExpiresAt?: string;
 
   @IsString()
   @IsOptional()
