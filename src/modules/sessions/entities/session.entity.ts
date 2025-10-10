@@ -1,10 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import mongoose, { Document, Types } from 'mongoose'
+import { v4 as uuidv4 } from 'uuid'
 
 export type SessionsDocument = mongoose.HydratedDocument<Sessions>
 
 @Schema()
 export class Sessions {
+  @Prop({ type: String, default: uuidv4 })
+  _id: string;
+
   @Prop({ required: true })
   dateDebut: Date;
 

@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { CreateSessionsDto } from './dto/create-session.dto';
-import { UpdateSessionDto } from './dto/update-session.dto';
+import { UpdateSessionsDto } from './dto/update-session.dto';
 
 @Controller('sessions')
 export class SessionsController {
-  constructor(private readonly sessionsService: SessionsService) {}
+  constructor(private readonly sessionsService: SessionsService) { }
 
   @Post()
   create(@Body() createSessionDto: CreateSessionsDto) {
@@ -19,16 +19,16 @@ export class SessionsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.sessionsService.findOne(+id);
+    return this.sessionsService.findById(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSessionDto: UpdateSessionDto) {
-    return this.sessionsService.update(+id, updateSessionDto);
+  update(@Param('id') id: string, @Body() updateSessionDto: UpdateSessionsDto) {
+    return this.sessionsService.update(id, updateSessionDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.sessionsService.remove(+id);
+  async remove(@Param('id') id: string): Promise<void> {
+    return this.sessionsService.remove(id);
   }
 }

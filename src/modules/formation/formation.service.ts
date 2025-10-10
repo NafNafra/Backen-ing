@@ -32,7 +32,7 @@ export class FormationService {
       { new: true, runValidators: true }, // new : retournes le doc mis à jour
     ).exec();
     if (!updatedFormation) {
-      throw new NotFoundException(`Client avec id="${id}" non trouvé`);
+      throw new NotFoundException(`Formation avec id="${id}" non trouvé`);
     }
     return updatedFormation;
   }

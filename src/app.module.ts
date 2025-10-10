@@ -11,7 +11,6 @@ import { SessionsModule } from './modules/sessions/sessions.module';
 
 @Module({
   imports: [
-    FormationModule,
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/mydb'),
@@ -19,7 +18,8 @@ import { SessionsModule } from './modules/sessions/sessions.module';
     SmsModule,
     ConfigsModule,
     ContactModule,
-    SessionsModule
+    FormationModule,
+    SessionsModule,
   ],
 })
 export class AppModule { }
