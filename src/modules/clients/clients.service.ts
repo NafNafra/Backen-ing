@@ -27,11 +27,13 @@ export class ClientsService {
     return new ClientResponseDto(user);
   }
 
-  async findOne(id: string): Promise<Client> {
-    const client = await this.clientModel.findOne({ id }).exec(); //findById
-    if (!client) throw new NotFoundException('Client not found');
-    return client;
-  }
+  // async findOne(id: string) {
+  //   const client = await this.clientModel.findOne({ id }).exec(); //findById
+  //   console.log(client)
+  //   if (!client) throw new NotFoundException('Client not found');
+  //   console.log(client)
+  //   return client;
+  // }
 
   async findByPhone(phoneNumber: string) {
     const client = await this.clientModel.findOne({ phoneNumber }).exec();
