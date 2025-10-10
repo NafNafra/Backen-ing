@@ -1,33 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFormationDto } from './dto/create-formation.dto';
 import { UpdateFormationDto } from './dto/update-formation.dto';
+import { FormationResponseDto } from './dto/response-formation.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { FormationModule } from './formation.module';
 import { Formation, FormationDocument } from './entities/formation.entity';
 
 @Injectable()
 export class FormationService {
   constructor(@InjectModel(Formation.name) private formationModel: Model<FormationDocument>) { }
 
-  create(createFormationDto: CreateFormationDto) {
+  async create(createFormationDto: CreateFormationDto): Promise<Formation> {
     const formation = new this.formationModel(createFormationDto);
     return formation.save();
   }
 
-  findAll() {
-    return `This action returns all formation`;
+  async findAll(): Promise<Formation[]> {
+    return this.formationModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} formation`;
+  async findById(id: string): Promise<FormationResponseDto> {
+    const formation = await this.formationModel.findOne({ _id: id }).exec()
+    if (!formation) throw new NotFoundException("Formation introuvable");
+    return new FormationResponseDto(formation);
   }
 
-  update(id: number, updateFormationDto: UpdateFormationDto) {
-    return `This action updates a #${id} formation`;
+  update(id: string, updateFormationDto: UpdateFormationDto) {
+    return this.formationModel.findByIdAndUpdate({ id, updateFormationDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} formation`;
+  remove(id: string) {
+    return this.formationModel.findByIdAndDelete({ id });
   }
 }
