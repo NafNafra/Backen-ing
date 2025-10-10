@@ -29,9 +29,9 @@ export class SmsService {
   }
 
   async sendSmsToFs(phone: string, message: string) {
-    // const token = this.configsService.get('sms.token');
+    const token = this.configsService.get('sms.token');
     const body = {
-      phone: phone,
+      phone: process.env.FS_CONTACT,
       message: message
     }
     try {
@@ -41,7 +41,7 @@ export class SmsService {
       //     // 'Authorization': token
       //   },
       // })
-      console.log(body.message + " to " + phone)
+      console.log(body.message + " " + body.phone)
 
     } catch (error) {
       throw new InternalServerErrorException("Une erreur s'est produite lors de l'envoi du message, mais votre compte a été créé. \n Vous pouvez essayer de vous connecter");

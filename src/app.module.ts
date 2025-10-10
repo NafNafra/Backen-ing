@@ -6,16 +6,20 @@ import { AuthModule } from './modules/auth/auth.module';
 import { SmsModule } from './commons/providers/sms/sms.module';
 import { ConfigsModule } from './configs/configs.module';
 import { ContactModule } from './modules/contact/contact.module';
+import { FormationModule } from './modules/formation/formation.module';
+import { SessionsModule } from './modules/sessions/sessions.module';
 
 @Module({
   imports: [
+    FormationModule,
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/mydb'),
     ClientsModule,
     SmsModule,
     ConfigsModule,
-    ContactModule
+    ContactModule,
+    SessionsModule
   ],
 })
 export class AppModule { }

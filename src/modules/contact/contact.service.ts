@@ -11,8 +11,6 @@ export class ContactService {
   async sendMessageToFs(contactFs: ContactToFs) {
     const { nom, numero, message } = contactFs;
     const contenu = `Message venant de ${nom} avec numero ${numero}\n\"${message}\"`
-    console.log(contenu)
-
     await this.smsService.sendSmsToFs(numero, contenu)
     return {
       message:"Message envoyee a FS avec success"
