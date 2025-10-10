@@ -25,11 +25,20 @@ export class FormationService {
     return new FormationResponseDto(formation);
   }
 
-  update(id: string, updateFormationDto: UpdateFormationDto) {
-    return this.formationModel.findByIdAndUpdate({ id, updateFormationDto });
+  async update(id: string, updateFormationDto: UpdateFormationDto): Promise<Formation> {
+    const updatedFormation = await this.formationModel.findByIdAndUpdate(
+      id,
+      updateFormationDto,
+      { new: true, runValidators: true }, // new : retournes le doc mis à jour
+    ).exec();
+    if (!updatedFormation) {
+      throw new NotFoundException(`Client avec id="${id}" non trouvé`);
+    }
+    return updatedFormation;
   }
 
-  remove(id: string) {
-    return this.formationModel.findByIdAndDelete({ id });
+  async remove(id: string): Promise<void> {
+    const formationToDelete = this.formationModel.findByIdAndDelete(id).exec();
+    if (!formationToDelete) throw new NotFoundException(`Client avec id=${id} non trouvé`);
   }
 }
