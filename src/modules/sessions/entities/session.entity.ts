@@ -26,3 +26,24 @@ export class Sessions {
 }
 
 export const SessionsSchema = SchemaFactory.createForClass(Sessions)
+
+/**
+ * 
+import * as mongoose from 'mongoose';
+import { Owner } from '../owners/schemas/owner.schema';
+
+// inside the class definition
+@Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' })
+owner: Owner;
+
+
+
+
+import { Owner } from './schemas/owner.schema';
+
+// e.g. inside a service or repository
+async findAllPopulated() {
+  return this.catModel.find().populate<{ owner: Owner }>("owner");
+}
+
+ */

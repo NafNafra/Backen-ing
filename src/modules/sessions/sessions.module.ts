@@ -9,6 +9,6 @@ import { Sessions, SessionsSchema } from './entities/session.entity';
   ],
   controllers: [SessionsController],
   providers: [SessionsService],
-  exports:[SessionsService]
+  exports: [SessionsService]
 })
 export class SessionsModule { }

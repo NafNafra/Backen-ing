@@ -11,9 +11,9 @@ import { SessionsModule } from './modules/sessions/sessions.module';
 
 @Module({
   imports: [
-    AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/mydb'),
+    AuthModule,
     ClientsModule,
     SmsModule,
     ConfigsModule,

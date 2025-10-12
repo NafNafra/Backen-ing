@@ -39,6 +39,20 @@ export class FormationService {
 
   async remove(id: string): Promise<void> {
     const formationToDelete = this.formationModel.findByIdAndDelete(id).exec();
-    if (!formationToDelete) throw new NotFoundException(`Client avec id=${id} non trouvé`);
+    if (!formationToDelete) throw new NotFoundException(`Formation avec id=${id} non trouvé`);
+  }
+
+  async findOneWithSessions(id: string) {
+    console.log(id)
+    const formationSession = this.formationModel.findById(id).populate('sessions').exec()
+    if (!formationSession) throw new NotFoundException('Formation with session not found')
+    return formationSession;
+  }
+
+  async findAllWithSessions(): Promise<Formation[]> {
+    return this.formationModel.find()
+      .populate('sessions') // peupler champ virtuel sessions
+      .exec();
   }
 }
+

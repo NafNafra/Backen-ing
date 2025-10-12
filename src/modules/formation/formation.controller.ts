@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { FormationService } from './formation.service';
 import { CreateFormationDto } from './dto/create-formation.dto';
 import { UpdateFormationDto } from './dto/update-formation.dto';
+import { Formation } from './entities/formation.entity';
 
 @Controller('formation')
 export class FormationController {
@@ -30,5 +31,15 @@ export class FormationController {
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
     return this.formationService.remove(id);
+  }
+
+  @Get('oneSession')
+  async findOneWithSessions(@Param('id') id: string) {
+    return this.formationService.findOneWithSessions(id)
+  }
+
+  @Get('allSessions')
+  async listAll(): Promise<Formation[]> {
+    return this.formationService.findAllWithSessions();
   }
 }
