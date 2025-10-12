@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
+import { IsNotEmpty, IsString, Length } from "class-validator";
 
 export class CreateClientDto {
   @ApiProperty({ example: "Alice" })

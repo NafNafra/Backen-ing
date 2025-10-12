@@ -16,7 +16,7 @@ export class Client {
   email: string;
 
   @Prop()
-  adresse:string;
+  adresse: string;
 
   @Prop({ unique: true })
   phoneNumber: string;
@@ -25,13 +25,19 @@ export class Client {
   compteFb: string;
 
   @Prop()
-  _2faCode: string;
+  _OtpCode: string;
 
   @Prop()
-  _2faExpiresAt: string;
+  _OtpExpiresAt: string;
 
   @Prop()
   activated: boolean
+
+  @Prop()
+  reactivationDate: string;
+
+  @Prop()
+  refreshToken: string;
 }
 
 export const ClientSchema = SchemaFactory.createForClass(Client)
