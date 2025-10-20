@@ -21,7 +21,7 @@ export class SmsService {
       //     'Authorization': token
       //   },
       // })
-      // console.log(token + " " + body)
+      console.log(token + " " + body)
 
     } catch (error) {
       throw new InternalServerErrorException("Une erreur s'est produite lors de l'envoi du message, mais votre compte a été créé. \n Vous pouvez essayer de vous connecter");
@@ -41,7 +41,7 @@ export class SmsService {
       //     // 'Authorization': token
       //   },
       // })
-      // console.log(body.message + " " + body.phone)
+      console.log(body.message + " " + body.phone)
 
     } catch (error) {
       throw new InternalServerErrorException("Une erreur s'est produite lors de l'envoi du message, mais votre compte a été créé. \n Vous pouvez essayer de vous connecter");
