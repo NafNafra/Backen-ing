@@ -5,6 +5,7 @@ import { UpdateClientDto } from './dto/update-client.dto';
 import { JwtAuthGuard } from '../../commons/guards/jwt-auth.guard' ///jwt-auth.guard
 import { UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { CreateAuthPhoneDto } from '../auth/dto/create-auth.dto';
 
 
 @ApiTags('users')
@@ -22,17 +23,17 @@ export class ClientsController {
     return this.clientsService.findAll();
   }
 
-
-  // 👈 indique à Swagger qu’il faut un token
   @Get('phone')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  findByPhone(@Query('phone') phone: string) {
+  findByPhone(@Query('phone') phone: CreateAuthPhoneDto) {
     return this.clientsService.findByPhone(phone);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  findOne(@Query('id') id: string) {
     return this.clientsService.findById(id);
   }
 

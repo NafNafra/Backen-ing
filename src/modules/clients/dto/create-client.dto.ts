@@ -27,5 +27,4 @@ export class CreateClientDto {
   @Length(10, 10, { message: "Doit etre 10 chiffre" })
   @IsNotEmpty({ message: "Ne doit pas etre vide" })
   compteFb: string;
-
 }

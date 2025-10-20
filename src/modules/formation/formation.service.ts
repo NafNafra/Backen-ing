@@ -43,7 +43,6 @@ export class FormationService {
   }
 
   async findOneWithSessions(id: string) {
-    console.log(id)
     const formationSession = this.formationModel.findById(id).populate('sessions').exec()
     if (!formationSession) throw new NotFoundException('Formation with session not found')
     return formationSession;

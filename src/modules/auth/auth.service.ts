@@ -1,12 +1,19 @@
-import { BadRequestException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ClientsService } from '../clients/clients.service';
 import { setOtpExpiryTime, generateOtpCode } from 'src/commons/utils';
 import { SmsService } from 'src/commons/providers/sms/sms.service';
 import { ConfigsService } from 'src/configs';
-import { payload, phonePayload } from 'src/commons/types/auth';
+import { payload } from 'src/commons/types/auth';
 import * as bcrypt from 'bcrypt';
 import { AuthResponse } from './dto/response.dto';
+import { CreateAuthPhoneDto } from './dto/create-auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,29 +24,36 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) { }
 
-  async connexionClient(phone: string) {
-    const user = await this.clientsService.findByPhone(phone);
-    if (!user) { throw new NotFoundException(`Client with phone ${phone} not found`); }
+  async connexionClient(phoneAuth: CreateAuthPhoneDto) {
+    const user = await this.clientsService.findByPhone(phoneAuth);
+    if (!user) {
+      throw new NotFoundException(`Client with phone ${phoneAuth}+ found`);
+    }
     user._OtpCode = generateOtpCode();
     user._OtpExpiresAt = setOtpExpiryTime();
     await user.save();
 
     //send message to client here
-    await this.smsService.sendSms(user.phoneNumber, `Votre code de vérification est: ${user._OtpCode}`);
+    await this.smsService.sendSms(
+      user.phoneNumber,
+      `Votre code de vérification est: ${user._OtpCode}`,
+    );
     return {
-      message: `Le code de vérification a été envoyé au numéro: ${phone}. Le code ${user._OtpCode} expirera dans 10 minutes `,
+      message: `Le code de vérification a été envoyé au numéro: ${phoneAuth}. Le code ${user._OtpCode} expirera dans 10 minutes `,
     };
   }
 
-  async verifyOtp(phone: string, code: string): Promise<AuthResponse> {
-    const user = await this.clientsService.findByPhone(phone);
+  async verifyOtp(phoneAuth: CreateAuthPhoneDto, code: string): Promise<AuthResponse> {
+    const user = await this.clientsService.findByPhone(phoneAuth
 
-    if (!user) throw new NotFoundException(`Client with phone ${phone} not found`);
+    );
 
-    console.log(user._OtpCode + " " + code);
-    if (user._OtpCode !== code || new Date() > new Date(user._OtpExpiresAt))
-      throw new BadRequestException("Le code est invalide ou a expirer");
-
+    if (!user) {
+      throw new NotFoundException(`Client with phone ${phoneAuth} not found`);
+    }
+    if (code !== user._OtpCode) {
+      throw new NotFoundException(`Code : ${user._OtpCode} for ${phoneAuth}`);
+    }
     user._OtpCode = '';
     user._OtpExpiresAt = '';
     user.activated = true;
@@ -48,63 +62,75 @@ export class AuthService {
     const payload: payload = {
       id: user._id,
       phone: user.phoneNumber,
-      activated: user.activated
-    }
+      activated: user.activated,
+    };
 
-    const token = await this.generateTokens(payload)
+    const token = await this.generateTokens(payload);
     await this.storeRefreshToken(user._id, token.refresh_token);
 
     return {
       user: { name: user.name, phoneNumber: user.phoneNumber },
-      message: "Connexion avec succes",
+      message: 'Connexion avec succes',
       statusCode: HttpStatus.OK,
       accessToken: token.access_token,
       refreshToken: token.refresh_token,
+    };
+  }
+
+  async resendCode(phoneAuth: CreateAuthPhoneDto) {
+    const user = await this.clientsService.findByPhone(phoneAuth
+    );
+    if (!user) {
+      throw new NotFoundException(`Client with phone ${phoneAuth} not found`);
     }
+    user._OtpCode = '';
+    user._OtpExpiresAt = '';
+    return this.connexionClient(phoneAuth);
   }
 
-  async resendCode(phone: string) {
-    const user = await this.clientsService.findByPhone(phone);
-    if (!user) throw new NotFoundException(`Client with phone ${phone} not found`);
-    user._OtpCode = ''; user._OtpExpiresAt = '';
-    return this.connexionClient(phone);
-
-  }
-
-
-  async generateTokens(payload: payload): Promise<{ access_token: string; refresh_token: string }> {
+  async generateTokens(
+    payload: payload,
+  ): Promise<{ access_token: string; refresh_token: string }> {
     const access_token = await this.jwtService.signAsync(payload, {
-      secret: this.configsService.get("jwt.secret"),
-      expiresIn: this.configsService.get('jwt.expiresIn')
+      secret: this.configsService.get('jwt.secret'),
+      expiresIn: this.configsService.get('jwt.expiresIn'),
     });
     const refresh_token = await this.jwtService.signAsync(payload, {
-      secret: this.configsService.get("jwt.refresh.secrect"),
-      expiresIn: this.configsService.get("jwt.refresh.expiresIn")
+      secret: this.configsService.get('jwt.refresh.secrect'),
+      expiresIn: this.configsService.get('jwt.refresh.expiresIn'),
     });
 
     return { access_token, refresh_token };
   }
 
-
-
-  private async storeRefreshToken(userId: string, refreshToken: string): Promise<void> {
+  private async storeRefreshToken(
+    userId: string,
+    refreshToken: string,
+  ): Promise<void> {
     const hashedToken = await bcrypt.hash(refreshToken, 10);
     await this.clientsService.update(userId, { refreshToken: hashedToken });
   }
 
-  async refreshAccessToken(refreshToken: string): Promise<{ access_token: string }> {
-
-    const payload = this.jwtService.verify(refreshToken, { secret: this.configsService.get('jwt.refresh.secrect') });
+  async refreshAccessToken(
+    refreshToken: string,
+  ): Promise<{ access_token: string }> {
+    const payload = this.jwtService.verify(refreshToken, {
+      secret: this.configsService.get('jwt.refresh.secrect'),
+    });
     const user = await this.clientsService.findById(payload.id);
 
-    if (!user || !user.refreshToken) throw new UnauthorizedException("Invalid refresh token");
+    if (!user || !user.refreshToken)
+      throw new UnauthorizedException('Invalid refresh token');
 
     const isTokenValid = await bcrypt.compare(refreshToken, user.refreshToken);
-    if (!isTokenValid) throw new UnauthorizedException("Invalid refresh token");
+    if (!isTokenValid) throw new UnauthorizedException('Invalid refresh token');
 
     const newAccessToken = await this.jwtService.signAsync(
       { id: user.id, phoneNumber: user.phoneNumber, activated: user.activated },
-      { secret: this.configsService.get("jwt.secret"), expiresIn: this.configsService.get('jwt.expiresIn') }
+      {
+        secret: this.configsService.get('jwt.secret'),
+        expiresIn: this.configsService.get('jwt.expiresIn'),
+      },
     );
 
     return { access_token: newAccessToken };
@@ -113,5 +139,4 @@ export class AuthService {
   async logout(userId: string): Promise<void> {
     await this.clientsService.update(userId, { refreshToken: null });
   }
-
 }

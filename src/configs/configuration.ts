@@ -19,11 +19,10 @@ export default () => ({
     expiresIn: process.env.JWT_EXPIRES_IN,
     refresh: {
       secrect: process.env.JWT_REFRESH_SECRET,
-      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN
+      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
     },
     phone: {
       secret: process.env.JWT_PHONE_SECRET,
     }
   },
-
 });

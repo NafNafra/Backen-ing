@@ -7,7 +7,7 @@ import { Client, ClientSchema } from './entities/client.entity';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Client.name, schema: ClientSchema }])
+    MongooseModule.forFeature([{ name: Client.name, schema: ClientSchema }]),
   ],
   controllers: [ClientsController],
   providers: [ClientsService],

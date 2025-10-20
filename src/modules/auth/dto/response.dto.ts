@@ -6,5 +6,4 @@ export type AuthResponse = {
   statusCode: HttpStatus,
   accessToken: string,
   refreshToken: string, 
-
 }

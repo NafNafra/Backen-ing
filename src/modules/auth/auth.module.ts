@@ -9,20 +9,20 @@ import { PassportModule } from '@nestjs/passport';
 import { ConfigsModule } from 'src/configs';
 import { JwtStrategy } from '../../commons/jwt-strategy/jwt.strategy';
 
-
 @Module({
   imports: [
+    AuthModule,
     ClientsModule,
     SmsModule,
     PassportModule,
     ConfigsModule,
     JwtModule.register({
       secret: process.env.JWT_TOKEN,
-      signOptions: { expiresIn: '60m' }
-    })
+      signOptions: { expiresIn: '60m' },
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
-  exports: [AuthService]
+  exports: [AuthService],
 })
 export class AuthModule { }

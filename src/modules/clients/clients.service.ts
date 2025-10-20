@@ -5,6 +5,7 @@ import { Client, ClientDocument } from './entities/client.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ClientResponseDto, UpdateClientResponseDto } from './dto/response-client.dto';
+import { CreateAuthPhoneDto } from '../auth/dto/create-auth.dto';
 
 @Injectable()
 export class ClientsService {
@@ -35,7 +36,7 @@ export class ClientsService {
   //   return client;
   // }
 
-  async findByPhone(phoneNumber: string) {
+  async findByPhone(phoneNumber: CreateAuthPhoneDto) {
     const client = await this.clientModel.findOne({ phoneNumber }).exec();
     return client;
   }
