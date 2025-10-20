@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Request, Param, Delete, Query } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
@@ -30,10 +30,11 @@ export class ClientsController {
     return this.clientsService.findByPhone(phone);
   }
 
-  @Get(':id')
+  @Get('me')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  findOne(@Query('id') id: string) {
+  findOne(@Request() req) {
+    const id = req.user.id;
     return this.clientsService.findById(id);
   }
 

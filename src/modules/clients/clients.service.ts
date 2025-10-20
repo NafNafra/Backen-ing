@@ -22,9 +22,7 @@ export class ClientsService {
 
   async findById(userId: string): Promise<ClientResponseDto> {
     const user = await this.clientModel.findOne({ _id: userId }).exec();
-
     if (!user) throw new NotFoundException("L'utilisateur spécifié est introuvable");
-
     return new ClientResponseDto(user);
   }
 
