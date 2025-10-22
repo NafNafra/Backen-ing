@@ -8,6 +8,7 @@ import { ConfigsModule } from './configs/configs.module';
 import { ContactModule } from './modules/contact/contact.module';
 import { FormationModule } from './modules/formation/formation.module';
 import { SessionsModule } from './modules/sessions/sessions.module';
+import { CertificatsModule } from './modules/certificats/certificats.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { SessionsModule } from './modules/sessions/sessions.module';
     ContactModule,
     FormationModule,
     SessionsModule,
+    CertificatsModule,
   ],
 })
 export class AppModule { }
