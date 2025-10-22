@@ -1,14 +1,14 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
-import { v4 as uuidv4 } from 'uuid'
+// import { v4 as uuidv4 } from 'uuid'
 import { Sessions } from '../../sessions/entities/session.entity'
 
 export type FormationDocument = mongoose.HydratedDocument<Formation>
 
 @Schema()
 export class Formation {
-  @Prop({ type: String, default: uuidv4 })
-  _id: string;
+  // @Prop({ type: String, default: uuidv4 })
+  // _id: string;
 
   @Prop({ required: true, unique: true })
   titre: string;

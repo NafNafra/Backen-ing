@@ -6,7 +6,7 @@ export class FormationResponseDto {
   constructor(
     formation: Formation
   ) {
-    this.id = formation._id;
+    // this.id = formation.id;
     this.titre = formation.titre;
     this.description = formation.description;
     this.resume = formation.resume;
