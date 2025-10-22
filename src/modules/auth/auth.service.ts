@@ -96,7 +96,7 @@ export class AuthService {
       expiresIn: this.configsService.get('jwt.expiresIn'),
     });
     const refresh_token = await this.jwtService.signAsync(payload, {
-      secret: this.configsService.get('jwt.refresh.secrect'),
+      secret: this.configsService.get('jwt.refresh.secret'),
       expiresIn: this.configsService.get('jwt.refresh.expiresIn'),
     });
 
@@ -111,11 +111,9 @@ export class AuthService {
     await this.clientsService.update(userId, { refreshToken: hashedToken });
   }
 
-  async refreshAccessToken(
-    refreshToken: string,
-  ): Promise<{ access_token: string }> {
+  async refreshAccessToken(refreshToken: string): Promise<{ access_token: string }> {
     const payload = this.jwtService.verify(refreshToken, {
-      secret: this.configsService.get('jwt.refresh.secrect'),
+      secret: this.configsService.get('jwt.refresh.secret'),
     });
     const user = await this.clientsService.findById(payload.id);
 

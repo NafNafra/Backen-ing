@@ -18,7 +18,7 @@ export default () => ({
     secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRES_IN,
     refresh: {
-      secrect: process.env.JWT_REFRESH_SECRET,
+      secret: process.env.JWT_REFRESH_SECRET,
       expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
     },
     phone: {
