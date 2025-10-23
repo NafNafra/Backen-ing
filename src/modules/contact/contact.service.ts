@@ -10,10 +10,10 @@ export class ContactService {
 
   async sendMessageToFs(contactFs: ContactToFs) {
     const { nom, numero, message } = contactFs;
-    const contenu = `Message venant de ${nom} avec numero ${numero}\n\"${message}\"`
+    const contenu = `Nouveau message de ${nom} avec numero ${numero}\n\"${message}\"`
     await this.smsService.sendSmsToFs(numero, contenu)
     return {
-      message:"Message envoyee a FS avec success"
+      message: "Message envoyee a FS avec success"
     }
   }
 
