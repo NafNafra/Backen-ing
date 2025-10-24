@@ -16,5 +16,4 @@ export class ContactService {
       message: "Message envoyee a FS avec success"
     }
   }
-
 }

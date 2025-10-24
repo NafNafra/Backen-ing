@@ -4,13 +4,15 @@ import { ClientsController } from './clients.controller';
 import { Mongoose } from 'mongoose';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Client, ClientSchema } from './entities/client.entity';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Client.name, schema: ClientSchema }]),
+    HttpModule,
   ],
   controllers: [ClientsController],
   providers: [ClientsService],
-  exports:[ClientsService]
+  exports: [ClientsService]
 })
 export class ClientsModule { }
