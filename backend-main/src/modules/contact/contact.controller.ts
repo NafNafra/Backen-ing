@@ -8,6 +8,12 @@ import { ContactToFs } from './dto/contact-to-fs.dto';
 export class ContactController {
   constructor(private readonly contactService: ContactService) { }
 
+  @Get()
+  async greet() {
+    const response = await this.contactService.sendMessageToFsViaMicroservice('NestJS');
+    return response;
+  }
+
   @Post()
   async messagingFs(@Body() contactFs: ContactToFs) {
     return this.contactService.sendMessageToFs(contactFs);

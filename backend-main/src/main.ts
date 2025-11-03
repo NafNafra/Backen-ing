@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-// import { ConfigsService } from './configs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,14 +15,12 @@ async function bootstrap() {
     .setTitle('Client API')
     .setDescription('CRUD API for Clients')
     .setVersion('1.0')
-    .addBearerAuth() // 👈 ajoute le bouton "Authorize" dans Swagger
+    .addBearerAuth()
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/swagger', app, documentFactory); // Swagger accessible sur /api
+  SwaggerModule.setup('api/swagger', app, documentFactory);
 
-  // const configsService = app.get(ConfigsService);
-  //add 'api' to all routes
   app.setGlobalPrefix('api');
 
   await app.listen(process.env.PORT ?? 3000);
