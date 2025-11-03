@@ -59,3 +59,9 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 backend-main/node_modules/
 backend-fs/node_modules/
 
+
+backend-main/dist/
+backend-fs/dist/
+backend-main/build/
+backend-fs/build/
+
