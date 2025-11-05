@@ -1,9 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-base-to-string */
 import {
-  BadRequestException,
   HttpStatus,
   Injectable,
   NotFoundException,
   UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../user/user.service';
@@ -14,6 +20,7 @@ import { payload } from 'src/commons/types/auth';
 import * as bcrypt from 'bcrypt';
 import { AuthResponse } from './dto/response.dto';
 import { CreateAuthPhoneDto } from './dto/create-auth.dto';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class AuthService {
@@ -24,68 +31,130 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) { }
 
-  async connexionClient(phoneAuth: CreateAuthPhoneDto) {
-    const user = await this.usersService.findByPhone(phoneAuth);
-    if (!user) {
+  // Look for user by phone number and send OTP
+  async lookByPhone(phoneAuth: CreateAuthPhoneDto) {
+    const users = await this.usersService.findByPhone(phoneAuth);
+    if (!users || users.length === 0) {
       throw new NotFoundException(`User with phone ${phoneAuth}+ found`);
     }
-    user._OtpCode = generateOtpCode();
-    user._OtpExpiresAt = setOtpExpiryTime();
-    await user.save();
+    const OtpCode = generateOtpCode();
+    const OtpExpiresAt = setOtpExpiryTime();
 
-    //send message to user here
+    for (const user of users) {
+      user._OtpCode = OtpCode;
+      user._OtpExpiresAt = OtpExpiresAt;
+      await user.save();
+    }
+
     await this.smsService.sendSms(
-      user.phoneNumber,
-      `Votre code de vérification est: ${user._OtpCode}`,
+      phoneAuth.toString(),
+      `Votre code de vérification est: ${OtpCode}`,
     );
+
     return {
-      message: `Le code de vérification a été envoyé au numéro: ${phoneAuth}. Le code ${user._OtpCode} expirera dans 10 minutes `,
+      message: `Le code de vérification a été envoyé au numéro: ${phoneAuth}. Le code ${OtpCode} expirera dans 10 minutes `,
     };
   }
 
-  async verifyOtp(phoneAuth: CreateAuthPhoneDto, code: string): Promise<AuthResponse> {
-    const user = await this.usersService.findByPhone(phoneAuth
-
-    );
-
-    if (!user) {
+  // Verify OTP code
+  async verifyOtp(
+    phoneAuth: CreateAuthPhoneDto,
+    code: string,
+  ): Promise<AuthResponse> {
+    const users = await this.usersService.findByPhone(phoneAuth);
+    if (!users) {
       throw new NotFoundException(`User with phone ${phoneAuth} not found`);
     }
-    if (code !== user._OtpCode) {
-      throw new NotFoundException(`Code : ${user._OtpCode} for ${phoneAuth}`);
-    }
-    user._OtpCode = '';
-    user._OtpExpiresAt = '';
-    user.activated = true;
-    await user.save();
 
+    const validOtpUser = users.find(
+      (u) =>
+        u._OtpCode === code &&
+        new Date(u._OtpExpiresAt).getTime() > Date.now(),
+    );
+
+    if (!validOtpUser) {
+      throw new BadRequestException('Code OTP invalide ou expiré');
+    }
+
+    for (const u of users) {
+      u._OtpCode = '';
+      u._OtpExpiresAt = '';
+      await u.save();
+    }
+
+    return {
+      message: `Code vérifié. Sélectionnez l'utilisateur à connecter. `,
+      user: users.map((u) => ({
+        id: u._id,
+        name: u.name,
+        phoneNumber: u.phoneNumber,
+        activated: u.activated,
+      })),
+      statusCode: HttpStatus.OK
+    }
+  }
+
+  // Reenvoyer le code
+  async resendCode(phoneAuth: CreateAuthPhoneDto) {
+    const users = await this.usersService.findByPhone(phoneAuth);
+    if (!users || users.length === 0) {
+      throw new NotFoundException(`User with phone ${phoneAuth} not found`);
+    }
+
+    for (const user of users) {
+      user._OtpCode = '';
+      user._OtpExpiresAt = '';
+      await user.save();
+    }
+    return this.lookByPhone(phoneAuth);
+  }
+
+  // Se connecter a un utilisateur
+  async loginChosenUser(userId: Types.ObjectId, phoneNumber: CreateAuthPhoneDto): Promise<AuthResponse> {
+    const users = await this.usersService.findByPhone(phoneNumber);
+    if (!users) {
+      throw new NotFoundException(`User with phone ${phoneNumber} not found`);
+    }
+    const validOtpUser = users.find(
+      (u) => {
+        if (u._id === userId) {
+          return u
+        }
+      });
+
+    if (!validOtpUser) {
+      throw new NotFoundException('Utilisateur non validé');
+    }
+    validOtpUser.activated = true;
+    await validOtpUser.save()
+
+    const user = await this.usersService.findById(userId);
     const payload: payload = {
-      id: user._id,
+      id: user.id,
       phone: user.phoneNumber,
       activated: user.activated,
     };
 
     const token = await this.generateTokens(payload);
-    await this.storeRefreshToken(user._id, token.refresh_token);
+    await this.storeRefreshToken(user.id.toString(), token.refresh_token);
 
     return {
-      user: { name: user.name, phoneNumber: user.phoneNumber },
-      message: 'Connexion avec succes',
+      user: [{
+        id: user.id,
+        name: user.name,
+        phoneNumber: user.phoneNumber,
+        activated: user.activated
+      }],
+      message: 'Connexion réussie',
       statusCode: HttpStatus.OK,
       accessToken: token.access_token,
       refreshToken: token.refresh_token,
     };
   }
 
-  async resendCode(phoneAuth: CreateAuthPhoneDto) {
-    const user = await this.usersService.findByPhone(phoneAuth
-    );
-    if (!user) {
-      throw new NotFoundException(`User with phone ${phoneAuth} not found`);
-    }
-    user._OtpCode = '';
-    user._OtpExpiresAt = '';
-    return this.connexionClient(phoneAuth);
+
+  async logout(userId: string): Promise<void> {
+    await this.usersService.update(userId, { refreshToken: null, activated: false });
   }
 
   async generateTokens(
@@ -108,17 +177,20 @@ export class AuthService {
     refreshToken: string,
   ): Promise<void> {
     const hashedToken = await bcrypt.hash(refreshToken, 10);
-    await this.usersService.update(userId, { refreshToken: hashedToken });
+    await this.usersService.update(userId, { refreshToken: hashedToken, activated: true });
   }
 
-  async refreshAccessToken(refreshToken: string): Promise<{ access_token: string }> {
+  async refreshAccessToken(
+    refreshToken: string,
+  ): Promise<{ access_token: string }> {
     const payload = this.jwtService.verify(refreshToken, {
       secret: this.configsService.get('jwt.refresh.secret'),
     });
+
     const user = await this.usersService.findById(payload.id);
 
     if (!user || !user.refreshToken)
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException('Invalid refresh token ko');
 
     const isTokenValid = await bcrypt.compare(refreshToken, user.refreshToken);
     if (!isTokenValid) throw new UnauthorizedException('Invalid refresh token');
@@ -130,11 +202,6 @@ export class AuthService {
         expiresIn: this.configsService.get('jwt.expiresIn'),
       },
     );
-
     return { access_token: newAccessToken };
-  }
-
-  async logout(userId: string): Promise<void> {
-    await this.usersService.update(userId, { refreshToken: null });
   }
 }
