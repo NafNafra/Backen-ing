@@ -1,13 +1,12 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose from "mongoose";
-import { v4 as uuidv4 } from 'uuid'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { Types } from 'mongoose';
 
 export type UserDocument = mongoose.HydratedDocument<User>; // au lieu de faire User & Document
 
 @Schema()
 export class User {
-  @Prop({ type: String, default: uuidv4 })
-  _id: string;
+  @Prop({ type: Types.ObjectId })
+  _id: Types.ObjectId;
 
   @Prop()
   idUser: string;
@@ -15,13 +14,13 @@ export class User {
   @Prop()
   name: string;
 
-  @Prop({ unique: true })
+  @Prop()
   email: string;
 
   @Prop()
   adresse: string;
 
-  @Prop({ unique: true })
+  @Prop()
   phoneNumber: string;
 
   @Prop()
@@ -34,7 +33,7 @@ export class User {
   _OtpExpiresAt: string;
 
   @Prop()
-  activated: boolean
+  activated: boolean;
 
   @Prop()
   reactivationDate: string;
@@ -43,4 +42,4 @@ export class User {
   refreshToken: string;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User)
+export const UserSchema = SchemaFactory.createForClass(User);

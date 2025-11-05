@@ -1,28 +1,40 @@
-import { ApiHideProperty } from "@nestjs/swagger";
-import { Exclude } from "class-transformer";
-import { IsString, IsOptional, IsBoolean, Length, IsEmail, IsNumberString } from "class-validator";
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
+import {
+  IsString,
+  IsOptional,
+  IsBoolean,
+  Length,
+  IsEmail,
+  IsNumberString,
+} from 'class-validator';
+import { Types } from 'mongoose';
 
 export class UpdateUserDto {
+  @IsNumberString()
+  @ApiProperty({ example: 'sdcfvghbnj' })
+  _id?: Types.ObjectId;
+
   @IsOptional()
   @IsNumberString()
-  idUser?: string
+  @ApiProperty({ example: '12' })
+  idUser?: string;
 
-
-  @IsString({ message: "Nom invalide" })
+  @IsString({ message: 'Nom invalide' })
   @IsOptional()
   name?: string;
 
-  @IsString({ message: "Numéro de téléphone invalide" })
+  @IsString({ message: 'Numéro de téléphone invalide' })
   @IsOptional()
-  @Length(10, 10, { message: "Numéro de téléphone invalide (10 chiffres requis)" })
+  @Length(10, 10, {
+    message: 'Numéro de téléphone invalide (10 chiffres requis)',
+  })
   phoneNumber?: string;
 
-  @IsBoolean({ message: "Statut d'activation invalide" })
-  @IsOptional()
-  activated?: boolean;
+  @IsBoolean({ message: "false" })
+  activated: boolean;
 
-
-  @IsString({ message: "Code Otp invalide" })
+  @IsString({ message: 'Code Otp invalide' })
   @IsOptional()
   _OtpCode?: string;
 
@@ -45,5 +57,4 @@ export class UpdateUserDto {
   @IsOptional()
   @IsEmail()
   email?: string;
-
 }
