@@ -1,11 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CertificatsService } from './certificats.service';
 import { CreateCertificatDto } from './dto/create-certificat.dto';
 import { UpdateCertificatDto } from './dto/update-certificat.dto';
 
 @Controller('certificats')
 export class CertificatsController {
-  constructor(private readonly certificatsService: CertificatsService) { }
+  constructor(private readonly certificatsService: CertificatsService) {}
 
   @Post()
   create(@Body() createCertificatDto: CreateCertificatDto) {
@@ -23,12 +31,15 @@ export class CertificatsController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateCertificatDto: UpdateCertificatDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateCertificatDto: UpdateCertificatDto,
+  ) {
     return this.certificatsService.update(id, updateCertificatDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<void> {
+  remove(@Param('id') id: string): void {
     return this.certificatsService.remove(id);
   }
 }

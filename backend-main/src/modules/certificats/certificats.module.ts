@@ -6,10 +6,12 @@ import { Certificat, CertificatSchema } from './entities/certificat.entity';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Certificat.name, schema: CertificatSchema }]),
+    MongooseModule.forFeature([
+      { name: Certificat.name, schema: CertificatSchema },
+    ]),
   ],
   controllers: [CertificatsController],
   providers: [CertificatsService],
-  exports: [CertificatsService]
+  exports: [CertificatsService],
 })
-export class CertificatsModule { }
+export class CertificatsModule {}

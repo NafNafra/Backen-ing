@@ -1,15 +1,10 @@
-import { HttpStatus } from "@nestjs/common";
-import { Certificat } from "../entities/certificat.entity";
-
+import { Certificat } from '../entities/certificat.entity';
 
 export class CertificatResponseDto {
-  constructor(
-    certificat: Certificat
-  ) {
+  constructor(certificat: Certificat) {
     this.idStudent = certificat.idStudent;
     this.linkImage = certificat.linkImage;
     this.isPublik = certificat.isPublik;
-
   }
   id?: string;
 
@@ -19,4 +14,3 @@ export class CertificatResponseDto {
 
   isPublik?: boolean;
 }
-

@@ -7,41 +7,51 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { NotFoundException } from '@nestjs/common';
 
-
 @Injectable()
 export class CertificatsService {
-  constructor(@InjectModel(Certificat.name) private certificatModel: Model<CertificatDocument>) { }
+  constructor(
+    @InjectModel(Certificat.name)
+    private certificatModel: Model<CertificatDocument>,
+  ) {}
 
   async create(createCertificatDto: CreateCertificatDto): Promise<Certificat> {
     const certificat = new this.certificatModel(createCertificatDto);
     return certificat.save();
   }
 
-
   async findAll(): Promise<Certificat[]> {
     return this.certificatModel.find().exec();
   }
 
   async findById(id: string): Promise<CertificatResponseDto> {
-    const certificat = await this.certificatModel.findOne({ _id: id }).exec()
-    if (!certificat) throw new NotFoundException("Certificat introuvable");
+    const certificat = await this.certificatModel.findOne({ _id: id }).exec();
+    if (!certificat) throw new NotFoundException('Certificat introuvable');
     return new CertificatResponseDto(certificat);
   }
 
-  async update(id: string, updateCertificatDto: UpdateCertificatDto): Promise<Certificat> {
-    const updatedCertificat = await this.certificatModel.findByIdAndUpdate(
-      id,
-      updateCertificatDto,
-      { new: true, runValidators: true }, // new : retournes le doc mis à jour
-    ).exec();
+  async update(
+    id: string,
+    updateCertificatDto: UpdateCertificatDto,
+  ): Promise<Certificat> {
+    const updatedCertificat = await this.certificatModel
+      .findByIdAndUpdate(
+        id,
+        updateCertificatDto,
+        { new: true, runValidators: true }, // new : retournes le doc mis à jour
+      )
+      .exec();
     if (!updatedCertificat) {
-      throw new NotFoundException(`Certificat avec id="${id}" non trouvé`);
+      throw new NotFoundException(`Certificat avec id='${id}' non trouvé`);
     }
     return updatedCertificat;
   }
 
-  async remove(id: string): Promise<void> {
-    const certificatToDelete = this.certificatModel.findByIdAndDelete(id).exec();
-    if (!certificatToDelete) throw new NotFoundException(`Certificat avec id=${id} non trouvé`);
+  remove(id: string): void {
+    const certificatToDelete = this.certificatModel
+      .findByIdAndDelete(id)
+      .exec();
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    if (!certificatToDelete)
+      throw new NotFoundException(`Certificat avec id=${id} non trouvé`);
   }
 }
