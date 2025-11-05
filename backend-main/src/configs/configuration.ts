@@ -1,13 +1,9 @@
-import exp from "constants";
-import { mongo } from "mongoose";
-
 export default () => ({
   database: {
     mongo: {
-      uri: process.env.MONGO_URI
-    }
-  }
-  ,
+      uri: process.env.MONGO_URI,
+    },
+  },
   url: {
     base: process.env.BACKEND_BASE_URL,
   },
@@ -23,6 +19,10 @@ export default () => ({
     },
     phone: {
       secret: process.env.JWT_PHONE_SECRET,
-    }
+    },
+  },
+  fs_url: {
+    base: process.env.BACKEND_FS_URL,
+    token: process.env.JWT_TOKEN_FS
   },
 });

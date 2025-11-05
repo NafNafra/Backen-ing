@@ -9,9 +9,10 @@ import configuration from './configuration';
     ConfigModule.forRoot({
       load: [configuration],
       envFilePath: '.env',
-      isGlobal: true
-    })],
+      isGlobal: true,
+    }),
+  ],
   providers: [ConfigsService],
-  exports: [ConfigsService]
+  exports: [ConfigsService],
 })
-export class ConfigsModule { }
+export class ConfigsModule {}
