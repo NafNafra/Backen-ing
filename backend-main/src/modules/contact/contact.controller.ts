@@ -1,16 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { ContactService } from './contact.service';
-import { CreateContactDto } from './dto/create-contact.dto';
-import { UpdateContactDto } from './dto/update-contact.dto';
 import { ContactToFs } from './dto/contact-to-fs.dto';
 
 @Controller('contact')
 export class ContactController {
-  constructor(private readonly contactService: ContactService) { }
+  constructor(private readonly contactService: ContactService) {}
 
   @Get()
-  async greet() {
-    const response = await this.contactService.sendMessageToFsViaMicroservice('NestJS');
+  greet() {
+    const response =
+      this.contactService.sendMessageToFsViaMicroservice('NestJS');
     return response;
   }
 
