@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { FormationService } from './formation.service';
 import { CreateFormationDto } from './dto/create-formation.dto';
 import { UpdateFormationDto } from './dto/update-formation.dto';
@@ -6,7 +14,7 @@ import { Formation } from './entities/formation.entity';
 
 @Controller('formation')
 export class FormationController {
-  constructor(private readonly formationService: FormationService) { }
+  constructor(private readonly formationService: FormationService) {}
 
   @Post()
   create(@Body() createFormationDto: CreateFormationDto) {
@@ -24,18 +32,21 @@ export class FormationController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFormationDto: UpdateFormationDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateFormationDto: UpdateFormationDto,
+  ) {
     return this.formationService.update(id, updateFormationDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<void> {
+  remove(@Param('id') id: string): void {
     return this.formationService.remove(id);
   }
 
   @Get('oneSession')
   async findOneWithSessions(@Param('id') id: string) {
-    return this.formationService.findOneWithSessions(id)
+    return this.formationService.findOneWithSessions(id);
   }
 
   @Get('allSessions')

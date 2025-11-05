@@ -1,11 +1,7 @@
-import { HttpStatus } from "@nestjs/common";
-import { Formation } from "../entities/formation.entity";
-
+import { Formation } from '../entities/formation.entity';
 
 export class FormationResponseDto {
-  constructor(
-    formation: Formation
-  ) {
+  constructor(formation: Formation) {
     // this.id = formation.id;
     this.titre = formation.titre;
     this.description = formation.description;
@@ -21,7 +17,6 @@ export class FormationResponseDto {
   resume?: string;
 
   duree?: string;
-
 }
 
 // export class UpdateClientResponseDto {

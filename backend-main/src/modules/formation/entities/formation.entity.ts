@@ -1,9 +1,9 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 // import { v4 as uuidv4 } from 'uuid'
-import { Sessions } from '../../sessions/entities/session.entity'
+import { Sessions } from '../../sessions/entities/session.entity';
 
-export type FormationDocument = mongoose.HydratedDocument<Formation>
+export type FormationDocument = mongoose.HydratedDocument<Formation>;
 
 @Schema()
 export class Formation {
@@ -26,16 +26,15 @@ export class Formation {
   creationDate: Date;
 
   sessions?: Sessions[];
-
 }
 
 export const FormationSchema = SchemaFactory.createForClass(Formation);
 
 FormationSchema.virtual('sessions', {
-  ref: "Sessions",
-  localField: "_id",
-  foreignField: "formationId"
-})
+  ref: 'Sessions',
+  localField: '_id',
+  foreignField: 'formationId',
+});
 
-FormationSchema.set('toObject', { virtuals: true })
-FormationSchema.set('toJSON', { virtuals: true })
+FormationSchema.set('toObject', { virtuals: true });
+FormationSchema.set('toJSON', { virtuals: true });
