@@ -21,5 +21,9 @@ declare const _default: () => {
             secret: string | undefined;
         };
     };
+    fs_url: {
+        base: string | undefined;
+        token: string | undefined;
+    };
 };
 export default _default;

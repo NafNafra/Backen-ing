@@ -10,7 +10,7 @@ exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
-const clients_module_1 = require("../clients/clients.module");
+const user_module_1 = require("../user/user.module");
 const sms_module_1 = require("../../commons/providers/sms/sms.module");
 const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
@@ -23,7 +23,7 @@ exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
             AuthModule,
-            clients_module_1.ClientsModule,
+            user_module_1.UsersModule,
             sms_module_1.SmsModule,
             passport_1.PassportModule,
             configs_1.ConfigsModule,

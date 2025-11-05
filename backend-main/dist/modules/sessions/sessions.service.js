@@ -34,17 +34,19 @@ let SessionsService = class SessionsService {
     async findById(id) {
         const sessions = await this.sessionsModel.findOne({ _id: id }).exec();
         if (!sessions)
-            throw new common_2.NotFoundException("Sessions introuvable");
+            throw new common_2.NotFoundException('Sessions introuvable');
         return new response_sessions_dto_1.ResponseSessionsDto(sessions);
     }
     async update(id, updateSessionsDto) {
-        const updatedSessions = await this.sessionsModel.findByIdAndUpdate(id, updateSessionsDto, { new: true, runValidators: true }).exec();
+        const updatedSessions = await this.sessionsModel
+            .findByIdAndUpdate(id, updateSessionsDto, { new: true, runValidators: true })
+            .exec();
         if (!updatedSessions) {
             throw new common_2.NotFoundException(`Session avec id="${id}" non trouvé`);
         }
         return updatedSessions;
     }
-    async remove(id) {
+    remove(id) {
         const sessionsToDelete = this.sessionsModel.findByIdAndDelete(id).exec();
         if (!sessionsToDelete)
             throw new common_2.NotFoundException(`Client avec id=${id} non trouvé`);

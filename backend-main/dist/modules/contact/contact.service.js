@@ -12,17 +12,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContactService = void 0;
 const common_1 = require("@nestjs/common");
 const sms_service_1 = require("../../commons/providers/sms/sms.service");
+const microservices_1 = require("@nestjs/microservices");
 let ContactService = class ContactService {
     smsService;
+    clientFs;
+    onModuleInit() {
+        this.clientFs = microservices_1.ClientProxyFactory.create({
+            transport: microservices_1.Transport.TCP,
+            options: {
+                host: 'localhost',
+                port: 4001,
+            },
+        });
+    }
+    sendMessageToFsViaMicroservice(name) {
+        return this.clientFs.send({ cmd: 'greet' }, name);
+    }
     constructor(smsService) {
         this.smsService = smsService;
     }
     async sendMessageToFs(contactFs) {
         const { nom, numero, message } = contactFs;
-        const contenu = `Nouveau message de ${nom} avec numero ${numero}\n\"${message}\"`;
+        const contenu = `Nouveau message de ${nom} avec numero ${numero}\n'${message}'`;
         await this.smsService.sendSmsToFs(numero, contenu);
         return {
-            message: "Message envoyee a FS avec success"
+            message: 'Message envoyee a FS avec success',
         };
     }
 };

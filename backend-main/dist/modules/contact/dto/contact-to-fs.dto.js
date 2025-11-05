@@ -19,18 +19,18 @@ class ContactToFs {
 }
 exports.ContactToFs = ContactToFs;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "Alice" }),
+    (0, swagger_1.ApiProperty)({ example: 'Alice' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], ContactToFs.prototype, "nom", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 12369 }),
-    (0, class_validator_1.Length)(10, 10, { message: "Doit etre 10 chiffre" }),
+    (0, class_validator_1.Length)(10, 10, { message: 'Doit etre 10 chiffre' }),
     __metadata("design:type", String)
 ], ContactToFs.prototype, "numero", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "Message" }),
+    (0, swagger_1.ApiProperty)({ example: 'Message' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)

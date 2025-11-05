@@ -17,19 +17,23 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const create_auth_dto_1 = require("./dto/create-auth.dto");
 const swagger_1 = require("@nestjs/swagger");
+const mongoose_1 = require("mongoose");
 let AuthController = class AuthController {
     authService;
     constructor(authService) {
         this.authService = authService;
     }
     loginClient(phoneAuth) {
-        return this.authService.connexionClient(phoneAuth);
+        return this.authService.lookByPhone(phoneAuth);
     }
     verifyCode(phoneAuth, code) {
         return this.authService.verifyOtp(phoneAuth, code);
     }
     resendCode(phoneAuth) {
         return this.authService.resendCode(phoneAuth);
+    }
+    loginChosenUser(id, phoneNumber) {
+        return this.authService.loginChosenUser(id, phoneNumber);
     }
     async refresh(refreshToken) {
         return this.authService.refreshAccessToken(refreshToken);
@@ -40,14 +44,14 @@ let AuthController = class AuthController {
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Post)('number'),
+    (0, common_1.Post)('get-code'),
     __param(0, (0, common_1.Query)('phoneNumber')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_auth_dto_1.CreateAuthPhoneDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "loginClient", null);
 __decorate([
-    (0, common_1.Post)('code'),
+    (0, common_1.Post)('verify-code'),
     __param(0, (0, common_1.Query)('phoneNumber')),
     __param(1, (0, common_1.Query)('code')),
     __metadata("design:type", Function),
@@ -55,21 +59,29 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "verifyCode", null);
 __decorate([
-    (0, common_1.Post)('resend'),
-    __param(0, (0, common_1.Query)('phone')),
+    (0, common_1.Post)('resend-code'),
+    __param(0, (0, common_1.Query)('phoneNumber')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_auth_dto_1.CreateAuthPhoneDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "resendCode", null);
 __decorate([
-    (0, common_1.Post)('refresh'),
+    (0, common_1.Post)('login'),
+    __param(0, (0, common_1.Query)('id')),
+    __param(1, (0, common_1.Query)('phoneNumber')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [mongoose_1.Types.ObjectId, create_auth_dto_1.CreateAuthPhoneDto]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "loginChosenUser", null);
+__decorate([
+    (0, common_1.Post)('new-token'),
     __param(0, (0, common_1.Query)('refreshToken')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "refresh", null);
 __decorate([
-    (0, common_1.Post)('deconnexion'),
+    (0, common_1.Post)('logout'),
     __param(0, (0, common_1.Query)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

@@ -21,11 +21,21 @@ let ContactController = class ContactController {
     constructor(contactService) {
         this.contactService = contactService;
     }
+    greet() {
+        const response = this.contactService.sendMessageToFsViaMicroservice('NestJS');
+        return response;
+    }
     async messagingFs(contactFs) {
         return this.contactService.sendMessageToFs(contactFs);
     }
 };
 exports.ContactController = ContactController;
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ContactController.prototype, "greet", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),

@@ -23,11 +23,11 @@ exports.ConfigsModule = ConfigsModule = __decorate([
             config_1.ConfigModule.forRoot({
                 load: [configuration_1.default],
                 envFilePath: '.env',
-                isGlobal: true
-            })
+                isGlobal: true,
+            }),
         ],
         providers: [configs_service_1.ConfigsService],
-        exports: [configs_service_1.ConfigsService]
+        exports: [configs_service_1.ConfigsService],
     })
 ], ConfigsModule);
 //# sourceMappingURL=configs.module.js.map

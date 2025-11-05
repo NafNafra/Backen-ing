@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 export type CertificatDocument = mongoose.HydratedDocument<Certificat>;
 export declare class Certificat {
     idStudent: string;

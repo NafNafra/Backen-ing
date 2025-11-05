@@ -21,11 +21,11 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
             secretOrKey: process.env.JWT_SECRET || 'super-secret',
         });
     }
-    async validate(payload) {
+    validate(payload) {
         return {
             id: payload.id,
             phone: payload.phone,
-            activited: payload.activated
+            activited: payload.activated,
         };
     }
 };

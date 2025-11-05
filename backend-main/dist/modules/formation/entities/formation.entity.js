@@ -45,9 +45,9 @@ exports.Formation = Formation = __decorate([
 ], Formation);
 exports.FormationSchema = mongoose_1.SchemaFactory.createForClass(Formation);
 exports.FormationSchema.virtual('sessions', {
-    ref: "Sessions",
-    localField: "_id",
-    foreignField: "formationId"
+    ref: 'Sessions',
+    localField: '_id',
+    foreignField: 'formationId',
 });
 exports.FormationSchema.set('toObject', { virtuals: true });
 exports.FormationSchema.set('toJSON', { virtuals: true });

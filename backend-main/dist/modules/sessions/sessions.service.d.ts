@@ -10,5 +10,5 @@ export declare class SessionsService {
     findAll(): Promise<Sessions[]>;
     findById(id: string): Promise<ResponseSessionsDto>;
     update(id: string, updateSessionsDto: UpdateSessionsDto): Promise<Sessions>;
-    remove(id: string): Promise<void>;
+    remove(id: string): void;
 }

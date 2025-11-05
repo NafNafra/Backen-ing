@@ -8,5 +8,5 @@ export declare class SessionsController {
     findAll(): Promise<import("./entities/session.entity").Sessions[]>;
     findOne(id: string): Promise<import("./dto/response-sessions.dto").ResponseSessionsDto>;
     update(id: string, updateSessionDto: UpdateSessionsDto): Promise<import("./entities/session.entity").Sessions>;
-    remove(id: string): Promise<void>;
+    remove(id: string): void;
 }

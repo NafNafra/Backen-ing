@@ -34,7 +34,7 @@ let SessionsController = class SessionsController {
     update(id, updateSessionDto) {
         return this.sessionsService.update(id, updateSessionDto);
     }
-    async remove(id) {
+    remove(id) {
         return this.sessionsService.remove(id);
     }
 };
@@ -72,7 +72,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], SessionsController.prototype, "remove", null);
 exports.SessionsController = SessionsController = __decorate([
     (0, common_1.Controller)('sessions'),

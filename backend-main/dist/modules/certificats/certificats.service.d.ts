@@ -10,5 +10,5 @@ export declare class CertificatsService {
     findAll(): Promise<Certificat[]>;
     findById(id: string): Promise<CertificatResponseDto>;
     update(id: string, updateCertificatDto: UpdateCertificatDto): Promise<Certificat>;
-    remove(id: string): Promise<void>;
+    remove(id: string): void;
 }

@@ -18,11 +18,13 @@ exports.CertificatsModule = CertificatsModule;
 exports.CertificatsModule = CertificatsModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forFeature([{ name: certificat_entity_1.Certificat.name, schema: certificat_entity_1.CertificatSchema }]),
+            mongoose_1.MongooseModule.forFeature([
+                { name: certificat_entity_1.Certificat.name, schema: certificat_entity_1.CertificatSchema },
+            ]),
         ],
         controllers: [certificats_controller_1.CertificatsController],
         providers: [certificats_service_1.CertificatsService],
-        exports: [certificats_service_1.CertificatsService]
+        exports: [certificats_service_1.CertificatsService],
     })
 ], CertificatsModule);
 //# sourceMappingURL=certificats.module.js.map

@@ -20,27 +20,27 @@ let SmsService = class SmsService {
         this.httpService = httpService;
         this.configsService = configsService;
     }
-    async sendSms(phone, message) {
+    sendSms(phone, message) {
         const token = this.configsService.get('sms.token');
         const body = {
             phone: phone,
-            message: message
+            message: message,
         };
         try {
-            console.log(token + " " + body.message);
+            console.log(token + ' ' + body.message);
         }
         catch (error) {
             throw new common_1.InternalServerErrorException("Une erreur s'est produite lors de l'envoi du message, mais votre compte a été créé. \n Vous pouvez essayer de vous connecter");
         }
     }
-    async sendSmsToFs(phone, message) {
+    sendSmsToFs(phone, message) {
         const token = this.configsService.get('sms.token');
         const body = {
             phone: process.env.FS_CONTACT,
-            message: message
+            message: message,
         };
         try {
-            console.log(body.message + " " + body.phone);
+            console.log(body.message + ' ' + body.phone);
         }
         catch (error) {
             throw new common_1.InternalServerErrorException("Une erreur s'est produite lors de l'envoi du message, mais votre compte a été créé. \n Vous pouvez essayer de vous connecter");

@@ -19,20 +19,20 @@ class UpdateCertificatDto {
 }
 exports.UpdateCertificatDto = UpdateCertificatDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "fdiygoudgouhbdjv73ey2873yg" }),
-    (0, class_validator_1.IsString)({ message: "Chaine de caractere" }),
-    (0, class_validator_1.IsNotEmpty)({ message: "Ne doit pas etre vide" }),
+    (0, swagger_1.ApiProperty)({ example: 'fdiygoudgouhbdjv73ey2873yg' }),
+    (0, class_validator_1.IsString)({ message: 'Chaine de caractere' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Ne doit pas etre vide' }),
     __metadata("design:type", String)
 ], UpdateCertificatDto.prototype, "idStudent", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "http://localhost:5000" }),
-    (0, class_validator_1.IsString)({ message: "Chaine de caractere" }),
-    (0, class_validator_1.IsNotEmpty)({ message: "Ne doit pas etre vide" }),
+    (0, swagger_1.ApiProperty)({ example: 'http://localhost:5000' }),
+    (0, class_validator_1.IsString)({ message: 'Chaine de caractere' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Ne doit pas etre vide' }),
     __metadata("design:type", String)
 ], UpdateCertificatDto.prototype, "linkImage", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: false }),
-    (0, class_validator_1.IsNotEmpty)({ message: "Ne doit pas etre vide" }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Ne doit pas etre vide' }),
     __metadata("design:type", Boolean)
 ], UpdateCertificatDto.prototype, "isPublik", void 0);
 //# sourceMappingURL=update-certificat.dto.js.map

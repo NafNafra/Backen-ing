@@ -17,9 +17,9 @@ class CreateAuthPhoneDto {
 }
 exports.CreateAuthPhoneDto = CreateAuthPhoneDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "+261347327950" }),
-    (0, class_validator_1.Length)(10, 12, { message: "Doit etre 10 chiffre" }),
-    (0, class_validator_1.IsNotEmpty)({ message: "Ne doit pas etre vide" }),
+    (0, swagger_1.ApiProperty)({ example: '+261349482910' }),
+    (0, class_validator_1.Length)(10, 12, { message: 'Doit etre 10 chiffre' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Ne doit pas etre vide' }),
     __metadata("design:type", String)
 ], CreateAuthPhoneDto.prototype, "phoneNumber", void 0);
 class VerifyCodeDto extends CreateAuthPhoneDto {
@@ -28,11 +28,13 @@ class VerifyCodeDto extends CreateAuthPhoneDto {
 exports.VerifyCodeDto = VerifyCodeDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
-        example: '123456',
+        example: '+261349482910',
         description: 'Code OTP envoyé par SMS.',
     }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.Matches)(/^\d{4,6}$/, { message: 'Le code doit être composé de 4 à 6 chiffres.' }),
+    (0, class_validator_1.Matches)(/^\d{4,6}$/, {
+        message: 'Le code doit être composé de 4 à 6 chiffres.',
+    }),
     (0, class_validator_1.IsNotEmpty)({ message: 'Le code ne doit pas être vide.' }),
     __metadata("design:type", String)
 ], VerifyCodeDto.prototype, "code", void 0);

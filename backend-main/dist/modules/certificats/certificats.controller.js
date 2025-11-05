@@ -34,7 +34,7 @@ let CertificatsController = class CertificatsController {
     async update(id, updateCertificatDto) {
         return this.certificatsService.update(id, updateCertificatDto);
     }
-    async remove(id) {
+    remove(id) {
         return this.certificatsService.remove(id);
     }
 };
@@ -72,7 +72,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], CertificatsController.prototype, "remove", null);
 exports.CertificatsController = CertificatsController = __decorate([
     (0, common_1.Controller)('certificats'),

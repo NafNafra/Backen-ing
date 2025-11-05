@@ -34,18 +34,22 @@ let CertificatsService = class CertificatsService {
     async findById(id) {
         const certificat = await this.certificatModel.findOne({ _id: id }).exec();
         if (!certificat)
-            throw new common_2.NotFoundException("Certificat introuvable");
+            throw new common_2.NotFoundException('Certificat introuvable');
         return new response_certificat_dto_1.CertificatResponseDto(certificat);
     }
     async update(id, updateCertificatDto) {
-        const updatedCertificat = await this.certificatModel.findByIdAndUpdate(id, updateCertificatDto, { new: true, runValidators: true }).exec();
+        const updatedCertificat = await this.certificatModel
+            .findByIdAndUpdate(id, updateCertificatDto, { new: true, runValidators: true })
+            .exec();
         if (!updatedCertificat) {
-            throw new common_2.NotFoundException(`Certificat avec id="${id}" non trouvé`);
+            throw new common_2.NotFoundException(`Certificat avec id='${id}' non trouvé`);
         }
         return updatedCertificat;
     }
-    async remove(id) {
-        const certificatToDelete = this.certificatModel.findByIdAndDelete(id).exec();
+    remove(id) {
+        const certificatToDelete = this.certificatModel
+            .findByIdAndDelete(id)
+            .exec();
         if (!certificatToDelete)
             throw new common_2.NotFoundException(`Certificat avec id=${id} non trouvé`);
     }

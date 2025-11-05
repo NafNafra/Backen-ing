@@ -19,12 +19,14 @@ exports.FormationModule = FormationModule;
 exports.FormationModule = FormationModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forFeature([{ name: formation_entity_1.Formation.name, schema: formation_entity_1.FormationSchema }]),
+            mongoose_1.MongooseModule.forFeature([
+                { name: formation_entity_1.Formation.name, schema: formation_entity_1.FormationSchema },
+            ]),
             sessions_module_1.SessionsModule,
         ],
         controllers: [formation_controller_1.FormationController],
         providers: [formation_service_1.FormationService],
-        exports: [formation_service_1.FormationService]
+        exports: [formation_service_1.FormationService],
     })
 ], FormationModule);
 //# sourceMappingURL=formation.module.js.map

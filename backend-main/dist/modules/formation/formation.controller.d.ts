@@ -9,7 +9,7 @@ export declare class FormationController {
     findAll(): Promise<Formation[]>;
     findOne(id: string): Promise<import("./dto/response-formation.dto").FormationResponseDto>;
     update(id: string, updateFormationDto: UpdateFormationDto): Promise<Formation>;
-    remove(id: string): Promise<void>;
+    remove(id: string): void;
     findOneWithSessions(id: string): Promise<(import("mongoose").Document<unknown, {}, import("mongoose").Document<unknown, {}, Formation, {}, {}> & Formation & {
         _id: import("mongoose").Types.ObjectId;
     } & {

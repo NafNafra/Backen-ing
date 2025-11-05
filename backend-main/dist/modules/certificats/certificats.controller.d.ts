@@ -8,5 +8,5 @@ export declare class CertificatsController {
     findAll(): Promise<import("./entities/certificat.entity").Certificat[]>;
     findOne(id: string): Promise<import("./dto/response-certificat.dto").CertificatResponseDto>;
     update(id: string, updateCertificatDto: UpdateCertificatDto): Promise<import("./entities/certificat.entity").Certificat>;
-    remove(id: string): Promise<void>;
+    remove(id: string): void;
 }

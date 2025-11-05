@@ -34,7 +34,7 @@ let FormationController = class FormationController {
     update(id, updateFormationDto) {
         return this.formationService.update(id, updateFormationDto);
     }
-    async remove(id) {
+    remove(id) {
         return this.formationService.remove(id);
     }
     async findOneWithSessions(id) {
@@ -78,7 +78,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], FormationController.prototype, "remove", null);
 __decorate([
     (0, common_1.Get)('oneSession'),

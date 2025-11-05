@@ -18,11 +18,13 @@ exports.SessionsModule = SessionsModule;
 exports.SessionsModule = SessionsModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forFeature([{ name: session_entity_1.Sessions.name, schema: session_entity_1.SessionsSchema }])
+            mongoose_1.MongooseModule.forFeature([
+                { name: session_entity_1.Sessions.name, schema: session_entity_1.SessionsSchema },
+            ]),
         ],
         controllers: [sessions_controller_1.SessionsController],
         providers: [sessions_service_1.SessionsService],
-        exports: [sessions_service_1.SessionsService]
+        exports: [sessions_service_1.SessionsService],
     })
 ], SessionsModule);
 //# sourceMappingURL=sessions.module.js.map

@@ -19,7 +19,7 @@ exports.ContactModule = ContactModule = __decorate([
         imports: [sms_module_1.SmsModule],
         controllers: [contact_controller_1.ContactController],
         providers: [contact_service_1.ContactService, sms_module_1.SmsModule],
-        exports: [contact_service_1.ContactService]
+        exports: [contact_service_1.ContactService],
     })
 ], ContactModule);
 //# sourceMappingURL=contact.module.js.map

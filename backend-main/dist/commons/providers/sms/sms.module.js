@@ -16,12 +16,9 @@ let SmsModule = class SmsModule {
 exports.SmsModule = SmsModule;
 exports.SmsModule = SmsModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            axios_1.HttpModule,
-            configs_1.ConfigsModule
-        ],
+        imports: [axios_1.HttpModule, configs_1.ConfigsModule],
         providers: [sms_service_1.SmsService],
-        exports: [sms_service_1.SmsService]
+        exports: [sms_service_1.SmsService],
     })
 ], SmsModule);
 //# sourceMappingURL=sms.module.js.map

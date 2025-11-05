@@ -1,5 +1,6 @@
 import { AuthService } from './auth.service';
 import { CreateAuthPhoneDto } from './dto/create-auth.dto';
+import { Types } from 'mongoose';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
@@ -10,6 +11,7 @@ export declare class AuthController {
     resendCode(phoneAuth: CreateAuthPhoneDto): Promise<{
         message: string;
     }>;
+    loginChosenUser(id: Types.ObjectId, phoneNumber: CreateAuthPhoneDto): Promise<import("./dto/response.dto").AuthResponse>;
     refresh(refreshToken: string): Promise<{
         access_token: string;
     }>;

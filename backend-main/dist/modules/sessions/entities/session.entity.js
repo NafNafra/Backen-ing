@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SessionsSchema = exports.Sessions = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
-const uuid_1 = require("uuid");
 let Sessions = class Sessions {
     _id;
     dateDebut;
@@ -23,7 +22,7 @@ let Sessions = class Sessions {
 };
 exports.Sessions = Sessions;
 __decorate([
-    (0, mongoose_1.Prop)({ type: String, default: uuid_1.v4 }),
+    (0, mongoose_1.Prop)({ type: String, default: mongoose_2.Types.ObjectId }),
     __metadata("design:type", String)
 ], Sessions.prototype, "_id", void 0);
 __decorate([

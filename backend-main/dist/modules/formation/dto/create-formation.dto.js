@@ -20,25 +20,25 @@ class CreateFormationDto {
 }
 exports.CreateFormationDto = CreateFormationDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "Formation Word" }),
-    (0, class_validator_1.IsString)({ message: "Chaine de caractere" }),
-    (0, class_validator_1.IsNotEmpty)({ message: "Ne doit pas etre vide" }),
+    (0, swagger_1.ApiProperty)({ example: 'Formation Word' }),
+    (0, class_validator_1.IsString)({ message: 'Chaine de caractere' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Ne doit pas etre vide' }),
     __metadata("design:type", String)
 ], CreateFormationDto.prototype, "titre", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "Description" }),
-    (0, class_validator_1.IsString)({ message: "Chaine de caractere" }),
-    (0, class_validator_1.IsNotEmpty)({ message: "Ne doit pas etre vide" }),
+    (0, swagger_1.ApiProperty)({ example: 'Description' }),
+    (0, class_validator_1.IsString)({ message: 'Chaine de caractere' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Ne doit pas etre vide' }),
     __metadata("design:type", String)
 ], CreateFormationDto.prototype, "description", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "Resume" }),
-    (0, class_validator_1.IsNotEmpty)({ message: "Ne doit pas etre vide" }),
+    (0, swagger_1.ApiProperty)({ example: 'Resume' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Ne doit pas etre vide' }),
     __metadata("design:type", String)
 ], CreateFormationDto.prototype, "resume", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "2 semaines" }),
-    (0, class_validator_1.IsNotEmpty)({ message: "Ne doit pas etre vide" }),
+    (0, swagger_1.ApiProperty)({ example: '2 semaines' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Ne doit pas etre vide' }),
     __metadata("design:type", String)
 ], CreateFormationDto.prototype, "duree", void 0);
 //# sourceMappingURL=create-formation.dto.js.map

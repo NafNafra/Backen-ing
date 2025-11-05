@@ -1,10 +1,11 @@
+import { Types } from 'mongoose';
 export type payload = {
-    id: string;
+    id: Types.ObjectId;
     phone: string;
     activated: boolean;
 };
 export type phonePayload = {
-    id: string;
+    id: Types.ObjectId;
     phone: string;
     activated: boolean;
 };

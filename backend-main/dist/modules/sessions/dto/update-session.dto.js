@@ -19,23 +19,23 @@ class UpdateSessionsDto {
 }
 exports.UpdateSessionsDto = UpdateSessionsDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "2025-10-10T08:00:00.000Z" }),
-    (0, class_validator_1.IsString)({ message: "Chaine de caractere" }),
-    (0, class_validator_1.IsNotEmpty)({ message: "Ne doit pas etre vide" }),
+    (0, swagger_1.ApiProperty)({ example: '2025-10-10T08:00:00.000Z' }),
+    (0, class_validator_1.IsString)({ message: 'Chaine de caractere' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Ne doit pas etre vide' }),
     __metadata("design:type", Date)
 ], UpdateSessionsDto.prototype, "dateDebut", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: "2025-10-20T17:00:00.000Z" }),
-    (0, class_validator_1.IsString)({ message: "Chaine de caractere" }),
-    (0, class_validator_1.IsNotEmpty)({ message: "Ne doit pas etre vide" }),
+    (0, swagger_1.ApiProperty)({ example: '2025-10-20T17:00:00.000Z' }),
+    (0, class_validator_1.IsString)({ message: 'Chaine de caractere' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Ne doit pas etre vide' }),
     (0, class_validator_1.IsDate)(),
     __metadata("design:type", Date)
 ], UpdateSessionsDto.prototype, "dateFin", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 30 }),
-    (0, class_validator_1.IsInt)({ message: "Doit être un nombre entier" }),
-    (0, class_validator_1.Min)(15, { message: "Doit être au moins 15" }),
-    (0, class_validator_1.IsNotEmpty)({ message: "Ne doit pas etre vide" }),
+    (0, class_validator_1.IsInt)({ message: 'Doit être un nombre entier' }),
+    (0, class_validator_1.Min)(15, { message: 'Doit être au moins 15' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Ne doit pas etre vide' }),
     __metadata("design:type", Number)
 ], UpdateSessionsDto.prototype, "nombrePlace", void 0);
 //# sourceMappingURL=update-session.dto.js.map

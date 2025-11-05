@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 import { Sessions } from '../../sessions/entities/session.entity';
 export type FormationDocument = mongoose.HydratedDocument<Formation>;
 export declare class Formation {

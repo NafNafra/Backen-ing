@@ -10,7 +10,7 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const axios_1 = require("@nestjs/axios");
 const config_1 = require("@nestjs/config");
-const clients_module_1 = require("./modules/clients/clients.module");
+const user_module_1 = require("./modules/user/user.module");
 const mongoose_1 = require("@nestjs/mongoose");
 const auth_module_1 = require("./modules/auth/auth.module");
 const sms_module_1 = require("./commons/providers/sms/sms.module");
@@ -19,6 +19,7 @@ const contact_module_1 = require("./modules/contact/contact.module");
 const formation_module_1 = require("./modules/formation/formation.module");
 const sessions_module_1 = require("./modules/sessions/sessions.module");
 const certificats_module_1 = require("./modules/certificats/certificats.module");
+const bridge_module_1 = require("./modules/bridge/bridge.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -27,8 +28,9 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({ isGlobal: true }),
             mongoose_1.MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/mydb'),
+            bridge_module_1.BridgeModule,
             auth_module_1.AuthModule,
-            clients_module_1.ClientsModule,
+            user_module_1.UsersModule,
             sms_module_1.SmsModule,
             configs_module_1.ConfigsModule,
             contact_module_1.ContactModule,
@@ -36,6 +38,7 @@ exports.AppModule = AppModule = __decorate([
             sessions_module_1.SessionsModule,
             certificats_module_1.CertificatsModule,
             axios_1.HttpModule,
+            bridge_module_1.BridgeModule,
         ],
     })
 ], AppModule);
