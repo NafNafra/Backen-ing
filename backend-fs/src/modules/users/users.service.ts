@@ -21,6 +21,12 @@ export class UsersService {
     return user.save();
   }
 
+  //async createUser(createUserDto: CreateUserDto): Promise<User> {
+  // const user = new this.userModel(createUserDto);
+  // return user.save();
+  // }
+
+
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
   }
@@ -38,7 +44,7 @@ export class UsersService {
       const response = await this.httpService.axiosRef.get(
         `${process.env.BACKEND_FS_URL}/customer/getByAttributes?phone=0342603642`
       )
-      console.log(response.data)
+      // console.log(response.data)
     } catch (error) {
       console.error('Erreur API externe:', error.response?.data || error.message);
     }
@@ -47,7 +53,7 @@ export class UsersService {
   }
 
   async update(userId: string, userDto: UpdateUserDto): Promise<UpdateUserResponseDto> {
-    if (userDto === null) throw new BadRequestException("Veuillez spécifier les informations à mettre à jour");
+    if (userDto === null || userId === null) throw new BadRequestException("Veuillez spécifier les informations à mettre à jour");
 
     const updatedUser = await this.userModel.findByIdAndUpdate(
       userId,
@@ -55,8 +61,10 @@ export class UsersService {
       { new: true }
     ).exec();
 
-    if (!updatedUser)
+    if (!updatedUser) {
       throw new NotFoundException("L'utilisateur à mettre à jour est introuvable.");
+    }
+    console.log("Updated user with ID:", updatedUser);
 
     return new UpdateUserResponseDto(
       new UserResponseDto(updatedUser),

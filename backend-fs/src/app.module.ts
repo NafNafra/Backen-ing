@@ -9,9 +9,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
+    HttpModule,
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/db-1'),
-    UsersModule
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

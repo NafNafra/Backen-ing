@@ -10,6 +10,7 @@ export class UsersController {
 
   @MessagePattern('createUser')
   create(@Payload() createUserDto: CreateUserDto) {
+    console.log('microservice:', createUserDto);
     return this.usersService.create(createUserDto);
   }
 
