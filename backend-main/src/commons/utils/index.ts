@@ -1,4 +1,6 @@
 import * as crypto from 'crypto';
+import { payload } from '../types/auth';
+import type { ConfigsService } from 'src/configs';
 
 export function expirationDate(minutes = 5): Date {
   return new Date(Date.now() + minutes * 60 * 1000);
@@ -13,14 +15,3 @@ export function setOtpExpiryTime(): string {
   return new Date(Date.now() + 10 * 60 * 1000).toISOString();
 }
 
-/**
- * Formation
- * formateur
- * promotion
- * mention
- * note
- * date de soutenance
- * 
- * -> Voir
- * -> Pdf
- *  */ 

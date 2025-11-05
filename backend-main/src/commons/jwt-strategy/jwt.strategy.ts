@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -13,10 +16,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: payload) {
-    return { 
-      id: payload.id, 
-      phone: payload.phone, 
-      activited: payload.activated };
+  validate(payload: payload) {
+    return {
+      id: payload.id,
+      phone: payload.phone,
+      activited: payload.activated,
+    };
   }
 }

@@ -4,13 +4,8 @@ import { SmsService } from './sms.service';
 import { ConfigsModule } from 'src/configs';
 
 @Module({
-  imports: [
-    HttpModule,
-    ConfigsModule
-  ],
+  imports: [HttpModule, ConfigsModule],
   providers: [SmsService],
-  exports: [SmsService]
+  exports: [SmsService],
 })
-export class SmsModule { }
-
-
+export class SmsModule {}
