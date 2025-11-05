@@ -1,9 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Sessions } from '../entities/session.entity';
 import { Types } from 'mongoose';
 
 export class ResponseSessionsDto {
-
   constructor(sessions: Sessions) {
     this.id = sessions._id;
     this.dateDebut = sessions.dateDebut;

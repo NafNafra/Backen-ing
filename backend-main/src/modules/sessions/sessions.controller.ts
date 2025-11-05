@@ -1,11 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { CreateSessionsDto } from './dto/create-session.dto';
 import { UpdateSessionsDto } from './dto/update-session.dto';
 
 @Controller('sessions')
 export class SessionsController {
-  constructor(private readonly sessionsService: SessionsService) { }
+  constructor(private readonly sessionsService: SessionsService) {}
 
   @Post()
   create(@Body() createSessionDto: CreateSessionsDto) {
@@ -28,7 +36,7 @@ export class SessionsController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<void> {
+  remove(@Param('id') id: string): void {
     return this.sessionsService.remove(id);
   }
 }

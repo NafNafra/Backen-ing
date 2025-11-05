@@ -1,12 +1,11 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import mongoose, { Document, Types } from 'mongoose'
-import { v4 as uuidv4 } from 'uuid'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { Document, Types } from 'mongoose';
 
-export type SessionsDocument = mongoose.HydratedDocument<Sessions>
+export type SessionsDocument = mongoose.HydratedDocument<Sessions>;
 
 @Schema()
 export class Sessions {
-  @Prop({ type: String, default: uuidv4 })
+  @Prop({ type: String, default: Types.ObjectId })
   _id: string;
 
   @Prop({ required: true })
@@ -25,7 +24,7 @@ export class Sessions {
   formationId: Types.ObjectId;
 }
 
-export const SessionsSchema = SchemaFactory.createForClass(Sessions)
+export const SessionsSchema = SchemaFactory.createForClass(Sessions);
 
 /**
  * 
@@ -45,5 +44,4 @@ import { Owner } from './schemas/owner.schema';
 async findAllPopulated() {
   return this.catModel.find().populate<{ owner: Owner }>("owner");
 }
-
- */
+  **/
