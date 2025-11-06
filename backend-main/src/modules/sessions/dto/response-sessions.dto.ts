@@ -1,4 +1,4 @@
-import { Sessions } from '../entities/session.entity';
+import { Sessions } from '@/modules/sessions/entities/session.entity';
 import { Types } from 'mongoose';
 
 export class ResponseSessionsDto {

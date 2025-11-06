@@ -1,8 +1,8 @@
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigsService } from 'src/configs';
-import { UsersService } from 'src/modules/user/user.service';
-import { payload } from 'src/commons/types/auth';
+import { ConfigsService } from '@/configs';
+import { UsersService } from '@/modules/user/user.service';
+import { payload } from '@/commons/types/auth';
 
 export async function generateTokens(
   jwtService: JwtService,

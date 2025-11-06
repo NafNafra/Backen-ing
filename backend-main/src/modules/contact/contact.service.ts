@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { ContactToFs } from './dto/contact-to-fs.dto';
-import { SmsService } from 'src/commons/providers/sms/sms.service';
+import { ContactToFs } from '@/modules/contact/dto/contact-to-fs.dto';
+import { SmsService } from '@/commons/providers/sms/sms.service';
 import {
   ClientProxy,
   ClientProxyFactory,

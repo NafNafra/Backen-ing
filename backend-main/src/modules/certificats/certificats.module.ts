@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { CertificatsService } from './certificats.service';
-import { CertificatsController } from './certificats.controller';
+import { CertificatsService } from '@/modules/certificats/certificats.service';
+import { CertificatsController } from '@/modules/certificats/certificats.controller';
+import { Certificat, CertificatSchema } from '@/modules/certificats/entities/certificat.entity';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Certificat, CertificatSchema } from './entities/certificat.entity';
-
 @Module({
   imports: [
     MongooseModule.forFeature([

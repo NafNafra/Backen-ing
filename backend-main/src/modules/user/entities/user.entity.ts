@@ -11,20 +11,20 @@ export class User {
   @Prop()
   idUser: string;
 
-  @Prop()
-  name: string;
+  @Prop()//
+  name: string;//
 
-  @Prop()
-  email: string;
+  @Prop()//
+  email: string;//
 
-  @Prop()
-  adresse: string;
+  @Prop()//
+  adresse: string;//
 
   @Prop()
   phoneNumber: string;
 
-  @Prop()
-  compteFb: string;
+  @Prop()//
+  compteFb: string;//
 
   @Prop()
   _OtpCode: string;

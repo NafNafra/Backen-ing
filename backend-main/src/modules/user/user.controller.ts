@@ -12,18 +12,17 @@ import {
   Query,
   Patch,
 } from '@nestjs/common';
-import { UsersService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from '../../commons/guards/jwt-auth.guard'; //jwt-auth.guard
 import { UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CreateAuthPhoneDto } from '../auth/dto/create-auth.dto';
-
+import { JwtAuthGuard } from '@/commons/guards/jwt-auth.guard';
+import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
+import { UsersService } from '@/modules/user/user.service';
+import { CreateUserDto } from '@/modules/user/dto/create-user.dto';
+import { UpdateUserDto } from '@/modules/user/dto/update-user.dto';
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {

@@ -1,4 +1,4 @@
-import { Certificat } from '../entities/certificat.entity';
+import { Certificat } from '@/modules/certificats/entities/certificat.entity';
 
 export class CertificatResponseDto {
   constructor(certificat: Certificat) {

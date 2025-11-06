@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
-import { ContactService } from './contact.service';
-import { ContactToFs } from './dto/contact-to-fs.dto';
+import { ContactService } from '@/modules/contact/contact.service';
+import { ContactToFs } from '@/modules/contact/dto/contact-to-fs.dto';
 
 @Controller('contact')
 export class ContactController {

@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './user.service';
-import { UsersController } from './user.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from './entities/user.entity';
 import { HttpModule } from '@nestjs/axios';
-import { BridgeModule } from '../bridge/bridge.module';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigsModule } from 'src/configs';
+import { UsersService } from '@/modules/user/user.service';
+import { UsersController } from '@/modules/user/user.controller';
+import { User, UserSchema } from '@/modules/user/entities/user.entity';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     HttpModule,
-    BridgeModule,
     ConfigsModule
   ],
   controllers: [UsersController],

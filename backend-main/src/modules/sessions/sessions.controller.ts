@@ -7,9 +7,9 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { SessionsService } from './sessions.service';
-import { CreateSessionsDto } from './dto/create-session.dto';
-import { UpdateSessionsDto } from './dto/update-session.dto';
+import { SessionsService } from '@/modules/sessions/sessions.service';
+import { CreateSessionsDto } from '@/modules/sessions/dto/create-session.dto';
+import { UpdateSessionsDto } from '@/modules/sessions/dto/update-session.dto';
 
 @Controller('sessions')
 export class SessionsController {

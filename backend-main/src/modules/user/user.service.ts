@@ -6,18 +6,18 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User, UserDocument } from './entities/user.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { HttpService } from '@nestjs/axios';
+import { ConfigsService } from 'src/configs';
+import { CreateUserDto } from '@/modules/user/dto/create-user.dto';
+import { UpdateUserDto } from '@/modules/user/dto/update-user.dto';
 import {
   UserResponseDto,
   UpdateUserResponseDto,
-} from './dto/response-user.dto';
-import { ConfigsService } from 'src/configs';
-import { CreateAuthPhoneDto } from '../auth/dto/create-auth.dto';
-import { HttpService } from '@nestjs/axios';
+} from '@/modules/user/dto/response-user.dto';
+import { User, UserDocument } from '@/modules/user/entities/user.entity';
+import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 
 @Injectable()
 export class UsersService {
@@ -46,15 +46,7 @@ export class UsersService {
   async findByPhone(phoneNumber: CreateAuthPhoneDto) {
     const user = await this.userModel.find({ phoneNumber }).exec();
     try {
-      const response = await this.httpService.axiosRef.get(
-        `${this.configsService.get('fs_url.base')}/customer/getByAttributes?phone=12`,
-        {
-          headers: {
-            Authorization: `Bearer ${this.configsService.get('fs_url.token')}`,
-          },
-        },
-      );
-      console.log("Found it ?   ", response);
+      //Appel look for phone here
       console.log(user ? "Users : " + user : 'No user found with that phone number');
     } catch (error) {
       console.error(
@@ -62,7 +54,6 @@ export class UsersService {
         error.response?.data || error.message,
       );
     }
-
     return user;
   }
 

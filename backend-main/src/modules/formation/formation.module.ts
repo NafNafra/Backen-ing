@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { FormationService } from './formation.service';
-import { FormationController } from './formation.controller';
-import { Formation, FormationSchema } from './entities/formation.entity';
-import { SessionsModule } from '../sessions/sessions.module';
+import { FormationService } from '@/modules/formation/formation.service';
+import { FormationController } from '@/modules/formation/formation.controller';
+import { Formation, FormationSchema } from '@/modules/formation/entities/formation.entity';
+import { SessionsModule } from '@/modules/sessions/sessions.module';
 
 @Module({
   imports: [
