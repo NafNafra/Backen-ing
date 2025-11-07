@@ -74,8 +74,9 @@ export class AuthService {
 
     const validOtpUser = users.find(
       (u) =>
-        u._OtpCode === code &&
-        new Date(u._OtpExpiresAt).getTime() > Date.now(),
+        u._OtpCode === code && u._OtpExpiresAt !== undefined && 
+        // new Date(u._OtpExpiresAt).getTime() > Date.now(),
+        new Date(u._OtpExpiresAt).getDate() > Date.now()
     );
 
     if (!validOtpUser) {
@@ -84,7 +85,7 @@ export class AuthService {
 
     for (const u of users) {
       u._OtpCode = '';
-      u._OtpExpiresAt = '';
+      u._OtpExpiresAt = undefined;
       await u.save();
     }
 
@@ -109,7 +110,7 @@ export class AuthService {
 
     for (const user of users) {
       user._OtpCode = '';
-      user._OtpExpiresAt = '';
+      user._OtpExpiresAt = undefined;
       await user.save();
     }
     // return this.lookByPhone(phoneAuth);

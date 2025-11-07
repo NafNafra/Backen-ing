@@ -5,38 +5,29 @@ export type UserDocument = mongoose.HydratedDocument<User>; // au lieu de faire 
 
 @Schema()
 export class User {
-  @Prop({ type: Types.ObjectId })
-  _id: Types.ObjectId;
+  @Prop({ type: String, required: true, unique: true })
+  idUser: string; // l’ID du customer venant du backend A
 
   @Prop()
-  idUser: string;
-
-  @Prop()//
-  name: string;//
-
-  @Prop()//
-  email: string;//
-
-  @Prop()//
-  adresse: string;//
+  name: string;
 
   @Prop()
   phoneNumber: string;
 
-  @Prop()//
-  compteFb: string;//
+  @Prop()
+  compteFb: string;
 
   @Prop()
   _OtpCode: string;
 
-  @Prop()
-  _OtpExpiresAt: string;
+  @Prop({type: Date})
+  _OtpExpiresAt?: Date;
 
-  @Prop()
+  @Prop({ default: false })
   activated: boolean;
 
-  @Prop()
-  reactivationDate: string;
+  @Prop({type: Date})
+  reactivationDate?: Date;
 
   @Prop()
   refreshToken: string;
