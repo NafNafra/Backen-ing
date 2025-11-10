@@ -11,6 +11,7 @@ import { FormationModule } from './modules/formation/formation.module';
 import { SessionsModule } from './modules/sessions/sessions.module';
 import { CertificatsModule } from './modules/certificats/certificats.module';
 import { BridgeModule } from './modules/bridge/bridge.module';
+import { FsbackModule } from './commons/providers/fsback/fsback.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { BridgeModule } from './modules/bridge/bridge.module';
     CertificatsModule,
     HttpModule,
     BridgeModule,
+    FsbackModule,
   ],
 })
 export class AppModule {}
