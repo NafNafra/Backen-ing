@@ -1,4 +1,4 @@
-import { Formation } from '../entities/formation.entity';
+import { Formation } from '@/modules/formation/entities/formation.entity';
 
 export class FormationResponseDto {
   constructor(formation: Formation) {

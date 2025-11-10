@@ -1,4 +1,4 @@
-import { configuration } from '../../configs';
+import { configuration } from '@/configs';
 
 export type EnvVar = ReturnType<typeof configuration>;
 

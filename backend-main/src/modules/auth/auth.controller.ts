@@ -1,6 +1,6 @@
 import { Controller, Post, Query } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { CreateAuthPhoneDto } from './dto/create-auth.dto';
+import { AuthService } from '@/modules/auth/auth.service';
+import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Types } from 'mongoose';
 
@@ -10,7 +10,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   @Post('get-code')
-  loginClient(@Query('phoneNumber') phoneAuth: CreateAuthPhoneDto) {
+  loginClient(@Query('phoneNumber') phoneAuth: string) {
     return this.authService.lookByPhone(phoneAuth);
   }
 

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { ConfigsService } from 'src/configs';
+import { ConfigsService } from '@/configs';
 
 @Injectable()
 export class SmsService {

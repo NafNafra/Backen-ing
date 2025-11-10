@@ -11,16 +11,17 @@ import {
   UnauthorizedException,
   BadRequestException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../user/user.service';
-import { setOtpExpiryTime, generateOtpCode } from 'src/commons/utils';
-import { SmsService } from 'src/commons/providers/sms/sms.service';
-import { ConfigsService } from 'src/configs';
-import { payload } from 'src/commons/types/auth';
-import * as bcrypt from 'bcrypt';
-import { AuthResponse } from './dto/response.dto';
-import { CreateAuthPhoneDto } from './dto/create-auth.dto';
 import { Types } from 'mongoose';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigsService } from '@/configs';
+import { setOtpExpiryTime, generateOtpCode } from '@/commons/utils';
+import { FsUrlService } from '@/commons/providers/fs-url/fs-url.service';
+import { UsersService } from '@/modules/user/user.service';
+import { SmsService } from '@/commons/providers/sms/sms.service';
+import { payload } from '@/commons/types/auth';
+import { AuthResponse } from '@/modules/auth/dto/response.dto';
+import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -29,22 +30,27 @@ export class AuthService {
     private readonly smsService: SmsService,
     private readonly configsService: ConfigsService,
     private readonly jwtService: JwtService,
+    private readonly fsService: FsUrlService,
   ) { }
 
   // Look for user by phone number and send OTP
-  async lookByPhone(phoneAuth: CreateAuthPhoneDto) {
-    const users = await this.usersService.findByPhone(phoneAuth);
-    if (!users || users.length === 0) {
-      throw new NotFoundException(`User with phone ${phoneAuth}+ found`);
-    }
+  async lookByPhone(phoneAuth: string) {
+    console.log("Auth : ", phoneAuth)
+
+    console.log( "\n\n\n\n",this.fsService.findUsersByPhone(phoneAuth));
+    // const users = await this.usersService.findByPhone(phoneAuth : CreateAuthPhoneDto);
+    // if (!users || users.length === 0) {
+    //   throw new NotFoundException(`User with phone ${phoneAuth}+ found`);
+    // }
+
     const OtpCode = generateOtpCode();
     const OtpExpiresAt = setOtpExpiryTime();
 
-    for (const user of users) {
-      user._OtpCode = OtpCode;
-      user._OtpExpiresAt = OtpExpiresAt;
-      await user.save();
-    }
+    // for (const user of users) {
+    //   user._OtpCode = OtpCode;
+    //   user._OtpExpiresAt = OtpExpiresAt;
+    //   await user.save();
+    // }
 
     await this.smsService.sendSms(
       phoneAuth.toString(),
@@ -68,8 +74,9 @@ export class AuthService {
 
     const validOtpUser = users.find(
       (u) =>
-        u._OtpCode === code &&
-        new Date(u._OtpExpiresAt).getTime() > Date.now(),
+        u._OtpCode === code && u._OtpExpiresAt !== undefined && 
+        // new Date(u._OtpExpiresAt).getTime() > Date.now(),
+        new Date(u._OtpExpiresAt).getDate() > Date.now()
     );
 
     if (!validOtpUser) {
@@ -78,7 +85,7 @@ export class AuthService {
 
     for (const u of users) {
       u._OtpCode = '';
-      u._OtpExpiresAt = '';
+      u._OtpExpiresAt = undefined;
       await u.save();
     }
 
@@ -103,10 +110,10 @@ export class AuthService {
 
     for (const user of users) {
       user._OtpCode = '';
-      user._OtpExpiresAt = '';
+      user._OtpExpiresAt = undefined;
       await user.save();
     }
-    return this.lookByPhone(phoneAuth);
+    // return this.lookByPhone(phoneAuth);
   }
 
   // Se connecter a un utilisateur

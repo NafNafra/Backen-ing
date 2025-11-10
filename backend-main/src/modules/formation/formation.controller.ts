@@ -7,10 +7,10 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { FormationService } from './formation.service';
-import { CreateFormationDto } from './dto/create-formation.dto';
-import { UpdateFormationDto } from './dto/update-formation.dto';
-import { Formation } from './entities/formation.entity';
+import { FormationService } from '@/modules/formation/formation.service';
+import { CreateFormationDto } from '@/modules/formation/dto/create-formation.dto';
+import { UpdateFormationDto } from '@/modules/formation/dto/update-formation.dto';
+import { Formation } from '@/modules/formation/entities/formation.entity';
 
 @Controller('formation')
 export class FormationController {

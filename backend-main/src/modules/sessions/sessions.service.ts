@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Injectable } from '@nestjs/common';
-import { CreateSessionsDto } from './dto/create-session.dto';
-import { UpdateSessionsDto } from './dto/update-session.dto';
-import { ResponseSessionsDto } from './dto/response-sessions.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { Sessions, SessionsDocument } from './entities/session.entity';
 import { Model } from 'mongoose';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { CreateSessionsDto } from '@/modules/sessions/dto/create-session.dto';
+import { UpdateSessionsDto } from '@/modules/sessions/dto/update-session.dto';
+import { ResponseSessionsDto } from '@/modules/sessions/dto/response-sessions.dto';
+import { Sessions, SessionsDocument } from '@/modules/sessions/entities/session.entity';
 
 @Injectable()
 export class SessionsService {
   constructor(
     @InjectModel(Sessions.name) private sessionsModel: Model<SessionsDocument>,
-  ) {}
+  ) { }
 
   async create(createSessionsDto: CreateSessionsDto): Promise<Sessions> {
     const sessions = new this.sessionsModel(createSessionsDto);

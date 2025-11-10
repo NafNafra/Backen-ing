@@ -1,13 +1,13 @@
-import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { UsersModule } from '../user/user.module';
-import { SmsModule } from 'src/commons/providers/sms/sms.module';
-
 import { JwtModule } from '@nestjs/jwt';
+import { Module } from '@nestjs/common';
+import { ConfigsModule } from '@/configs';
 import { PassportModule } from '@nestjs/passport';
-import { ConfigsModule } from 'src/configs';
-import { JwtStrategy } from '../../commons/jwt-strategy/jwt.strategy';
+import { AuthService } from '@/modules/auth/auth.service';
+import { AuthController } from '@/modules/auth/auth.controller';
+import { SmsModule } from '@/commons/providers/sms/sms.module';
+import { JwtStrategy } from '@/commons/jwt-strategy/jwt.strategy';
+import { UsersModule } from '@/modules/user/user.module';
+import { FsUrlModule } from '@/commons/providers/fs-url/fs-url.module';
 
 @Module({
   imports: [
@@ -16,6 +16,7 @@ import { JwtStrategy } from '../../commons/jwt-strategy/jwt.strategy';
     SmsModule,
     PassportModule,
     ConfigsModule,
+    FsUrlModule,
     JwtModule.register({
       secret: process.env.JWT_TOKEN,
       signOptions: { expiresIn: '60m' },

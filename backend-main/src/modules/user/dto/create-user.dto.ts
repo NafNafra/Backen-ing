@@ -3,37 +3,40 @@ import { IsNotEmpty, IsString, Length, IsNumberString } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CreateUserDto {
-  @IsNumberString()
-  @ApiProperty({ example: 'sdcfvghbnj' })
-  _id?: Types.ObjectId;
 
-  @ApiProperty({ example: '12' })
+  @ApiProperty({
+    description: "Identifiant du customer venant du backend A",
+    example: "42"
+  })
   @IsNotEmpty({ message: 'Ne doit pas etre vide' })
   @IsNumberString()
   idUser: string;
 
-  @ApiProperty({ example: 'Alice' })
-  @IsString({ message: 'Chaine de caractere' })
-  @IsNotEmpty({ message: 'Ne doit pas etre vide' })
+  @ApiProperty({
+    description: "Nom complet de l'utilisateur",
+    example: "Alice Doe",
+    required: false
+  })
+  @IsString()
+  @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ example: 'Alice' })
-  @IsString({ message: 'Chaine de caractere' })
-  @IsNotEmpty({ message: 'Ne doit pas etre vide' })
-  email: string;
-
-  @ApiProperty({ example: 12369 })
-  @Length(10, 10, { message: 'Doit etre 10 chiffre' })
+  @ApiProperty({
+    description: "Numéro de téléphone de l'utilisateur",
+    example: "+261341234567",
+    required: false
+  })
+  @IsString()
+  @Length(10, 13, { message: 'Doit etre 10-12 chiffre' })
   @IsNotEmpty({ message: 'Ne doit pas etre vide' })
   phoneNumber: string;
 
-  @ApiProperty({ example: 'Andrainjato Fianarantsoa' })
-  @Length(10, 10, { message: 'Doit etre 10 chiffre' })
-  @IsNotEmpty({ message: 'Ne doit pas etre vide' })
-  adresse: string;
-
-  @ApiProperty({ example: 'Jean Dupont' })
-  @Length(10, 10, { message: 'Doit etre 10 chiffre' })
-  @IsNotEmpty({ message: 'Ne doit pas etre vide' })
+  @ApiProperty({
+    description: "Compte Facebook de l'utilisateur",
+    example: "Miracle Quin",
+    required: false
+  })
+  @IsString()
   compteFb: string;
+
 }

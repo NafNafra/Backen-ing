@@ -1,4 +1,4 @@
-import { User } from '../entities/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import { Types } from 'mongoose';
 
 export class UserResponseDto {

@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ConfigsService } from './configs.service';
 import { ConfigModule } from '@nestjs/config';
-// import { UserService } from '../service/user/user.service';
-import configuration from './configuration';
-
+import configuration from '@/configs/configuration';
+import { ConfigsService } from '@/configs/configs.service';
 @Module({
   imports: [
     ConfigModule.forRoot({

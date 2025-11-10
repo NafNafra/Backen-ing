@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCertificatDto } from './dto/create-certificat.dto';
-import { UpdateCertificatDto } from './dto/update-certificat.dto';
-import { CertificatResponseDto } from './dto/response-certificat.dto';
-import { Certificat, CertificatDocument } from './entities/certificat.entity';
+import { CreateCertificatDto } from '@/modules/certificats/dto/create-certificat.dto';
+import { UpdateCertificatDto } from '@/modules/certificats/dto/update-certificat.dto';
+import { CertificatResponseDto } from '@/modules/certificats/dto/response-certificat.dto';
+import { Certificat, CertificatDocument } from '@/modules/certificats/entities/certificat.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { NotFoundException } from '@nestjs/common';

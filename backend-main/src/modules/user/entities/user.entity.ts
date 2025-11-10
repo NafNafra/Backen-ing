@@ -5,20 +5,11 @@ export type UserDocument = mongoose.HydratedDocument<User>; // au lieu de faire 
 
 @Schema()
 export class User {
-  @Prop({ type: Types.ObjectId })
-  _id: Types.ObjectId;
-
-  @Prop()
-  idUser: string;
+  @Prop({ type: String, required: true, unique: true })
+  idUser: string; // l’ID du customer venant du backend A
 
   @Prop()
   name: string;
-
-  @Prop()
-  email: string;
-
-  @Prop()
-  adresse: string;
 
   @Prop()
   phoneNumber: string;
@@ -29,14 +20,14 @@ export class User {
   @Prop()
   _OtpCode: string;
 
-  @Prop()
-  _OtpExpiresAt: string;
+  @Prop({type: Date})
+  _OtpExpiresAt?: Date;
 
-  @Prop()
+  @Prop({ default: false })
   activated: boolean;
 
-  @Prop()
-  reactivationDate: string;
+  @Prop({type: Date})
+  reactivationDate?: Date;
 
   @Prop()
   refreshToken: string;

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
-import { SmsService } from './sms.service';
-import { ConfigsModule } from 'src/configs';
+import { SmsService } from '@/commons/providers/sms/sms.service';
+import { ConfigsModule } from '@/configs';
 
 @Module({
   imports: [HttpModule, ConfigsModule],

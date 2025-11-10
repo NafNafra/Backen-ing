@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ContactService } from './contact.service';
-import { ContactController } from './contact.controller';
+import { ContactService } from '@/modules/contact/contact.service';
+import { ContactController } from '@/modules/contact/contact.controller';
 import { SmsModule } from 'src/commons/providers/sms/sms.module';
 
 @Module({

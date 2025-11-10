@@ -1,4 +1,4 @@
-import { RootKeys, EnvVar, RootKeyType } from '../commons/types/config';
+import { RootKeys, EnvVar, RootKeyType } from '@/commons/types/config';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
