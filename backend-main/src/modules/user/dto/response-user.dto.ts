@@ -14,7 +14,7 @@ export class UserResponseDto {
   }
   id: Types.ObjectId;
 
-  idUser?: string;
+  idUser: string;
 
   name: string;
 
@@ -22,7 +22,7 @@ export class UserResponseDto {
 
   activated: boolean;
 
-  reactivationDate?: Date;
+  reactivationDate?: string;
 
   refreshToken?: string;
 

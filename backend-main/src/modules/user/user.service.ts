@@ -19,6 +19,7 @@ import {
 import { User, UserDocument } from '@/modules/user/entities/user.entity';
 import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 import { FsbackService } from '@/commons/providers/fsback/fsback.service';
+import { externPayload } from '@/commons/types/auth';
 
 @Injectable()
 export class UsersService {
@@ -45,11 +46,16 @@ export class UsersService {
     return new UserResponseDto(user);
   }
 
-  async findByPhone(phoneNumber: CreateAuthPhoneDto) {
+  async findByPhone(phoneNumber: CreateAuthPhoneDto | string) {
     try {
-      const users = await this.fsBack.getUsersByPhone(phoneNumber);
-      console.log('From fs-back : ', users);
-      if (users.length == 0) throw new BadRequestException('Aucun etudiant avec ce numero')
+      const phone =
+        typeof phoneNumber === 'string'
+          ? phoneNumber
+          : phoneNumber.phoneNumber;
+
+      console.log(phone);
+      const users = await this.userModel.find({ phoneNumber: phone });
+      if (users === null || users.length === 0) throw new BadRequestException('Aucun etudiant avec ce numero')
       return users;
     } catch (error) {
       console.error(
@@ -90,5 +96,46 @@ export class UsersService {
     const deleted = await this.userModel.findByIdAndDelete(id).exec();
     if (!deleted) throw new NotFoundException('User not found');
     return deleted;
+  }
+
+  async findAndSyncExternalUsers(phoneAuth: CreateAuthPhoneDto): Promise<UserResponseDto[]> {
+    const externalUsers = await this.fsBack.getUsersByPhone(phoneAuth);
+    if (!externalUsers || externalUsers.length === 0) {
+      throw new BadRequestException(`Aucun étudiant trouvé avec le numéro ${phoneAuth}`);
+    }
+
+    const savedUsers: UserResponseDto[] = [];
+
+    for (const ext of externalUsers) {
+      console.log(ext, '\n')
+      const payload: externPayload = {
+        idUser: ext._id,
+        name: `${ext.firstname} ${ext.lastname}`,
+        phone: ext.phone,
+        compteFb: ext.facebook !== 'null' ? ext.facebook : undefined,
+        activated: false,
+      };
+
+      let localUser = await this.userModel.findOne({ idUser: ext._id });
+
+      if (!localUser) {
+        localUser = new this.userModel(payload);
+        await localUser.save();
+      } else {
+        Object.assign(localUser, payload);
+        await localUser.save();
+      }
+
+      const dto = new UserResponseDto(localUser);
+      savedUsers.push(dto);
+    }
+    return savedUsers;
+  }
+
+  async updateOtp(idUser: string, code: string, expiresAt: string) {
+    await this.userModel.updateOne(
+      { idUser },
+      { _OtpCode: code, _OtpExpiresAt: expiresAt },
+    );
   }
 }

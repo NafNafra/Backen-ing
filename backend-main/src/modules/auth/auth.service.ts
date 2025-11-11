@@ -16,12 +16,13 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigsService } from '@/configs';
 import { setOtpExpiryTime, generateOtpCode } from '@/commons/utils';
-import { FsUrlService } from '@/commons/providers/fs-url/fs-url.service';
+import { FsbackService } from '@/commons/providers/fsback/fsback.service';
 import { UsersService } from '@/modules/user/user.service';
 import { SmsService } from '@/commons/providers/sms/sms.service';
 import { payload } from '@/commons/types/auth';
 import { AuthResponse } from '@/modules/auth/dto/response.dto';
 import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
+import { UserResponseDto } from '@/modules/user/dto/response-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -30,35 +31,26 @@ export class AuthService {
     private readonly smsService: SmsService,
     private readonly configsService: ConfigsService,
     private readonly jwtService: JwtService,
-    private readonly fsService: FsUrlService,
+    private readonly fsService: FsbackService,
   ) { }
 
   // Look for user by phone number and send OTP
-  async lookByPhone(phoneAuth: string) {
-    console.log("Auth : ", phoneAuth)
-
-    console.log( "\n\n\n\n",this.fsService.findUsersByPhone(phoneAuth));
-    // const users = await this.usersService.findByPhone(phoneAuth : CreateAuthPhoneDto);
-    // if (!users || users.length === 0) {
-    //   throw new NotFoundException(`User with phone ${phoneAuth}+ found`);
-    // }
+  async lookByPhone(phoneAuth: CreateAuthPhoneDto) {
+    const savedUsers = await this.usersService.findAndSyncExternalUsers(phoneAuth);
 
     const OtpCode = generateOtpCode();
     const OtpExpiresAt = setOtpExpiryTime();
 
-    // for (const user of users) {
-    //   user._OtpCode = OtpCode;
-    //   user._OtpExpiresAt = OtpExpiresAt;
-    //   await user.save();
-    // }
-
+    for (const user of savedUsers) {
+      await this.usersService.updateOtp(user.idUser, OtpCode, OtpExpiresAt);
+    }
     await this.smsService.sendSms(
       phoneAuth.toString(),
       `Votre code de vérification est: ${OtpCode}`,
     );
 
     return {
-      message: `Le code de vérification a été envoyé au numéro: ${phoneAuth}. Le code ${OtpCode} expirera dans 10 minutes `,
+      message: `Le code de vérification a été envoyé au numéro: ${phoneAuth}. Le code ${OtpCode} expirera dans 10 minutes.`,
     };
   }
 
@@ -68,15 +60,14 @@ export class AuthService {
     code: string,
   ): Promise<AuthResponse> {
     const users = await this.usersService.findByPhone(phoneAuth);
-    if (!users) {
+    if (!users || users.length === 0) {
       throw new NotFoundException(`User with phone ${phoneAuth} not found`);
     }
-
+    console.log(users);
     const validOtpUser = users.find(
-      (u) =>
-        u._OtpCode === code && u._OtpExpiresAt !== undefined && 
+      (u) => u._OtpCode === code && u._OtpExpiresAt !== undefined &&
         // new Date(u._OtpExpiresAt).getTime() > Date.now(),
-        new Date(u._OtpExpiresAt).getDate() > Date.now()
+        new Date(u._OtpExpiresAt).getTime() > Date.now()
     );
 
     if (!validOtpUser) {
@@ -113,18 +104,37 @@ export class AuthService {
       user._OtpExpiresAt = undefined;
       await user.save();
     }
-    // return this.lookByPhone(phoneAuth);
+
+    const OtpCode = generateOtpCode();
+    const OtpExpiresAt = setOtpExpiryTime();
+
+    for (const user of users) {
+      await this.usersService.updateOtp(user.idUser, OtpCode, OtpExpiresAt);
+    }
+
+    await this.smsService.sendSms(
+      phoneAuth.toString(),
+      `Votre code de vérification est: ${OtpCode}`,
+    );
+
+    return {
+      message: `Le code de vérification a été envoyé au numéro: ${phoneAuth}. Le code ${OtpCode} expirera dans 10 minutes.`,
+    };
+
   }
 
   // Se connecter a un utilisateur
-  async loginChosenUser(userId: Types.ObjectId, phoneNumber: CreateAuthPhoneDto): Promise<AuthResponse> {
-    const users = await this.usersService.findByPhone(phoneNumber);
+  // async loginChosenUser(userId: Types.ObjectId, phoneNumber: CreateAuthPhoneDto): Promise<AuthResponse> {
+  async loginChosenUser(student: payload) {
+    console.log(student)
+    const users = await this.usersService.findByPhone({ phoneNumber: student.phone }); //
     if (!users) {
-      throw new NotFoundException(`User with phone ${phoneNumber} not found`);
+      throw new NotFoundException(`User with phone ${student.phone} not found`);
     }
     const validOtpUser = users.find(
       (u) => {
-        if (u._id === userId) {
+        console.log("Gahem : ", u._id, student.id);
+        if (u._id.equals(new Types.ObjectId(student.id))) {
           return u
         }
       });
@@ -135,7 +145,7 @@ export class AuthService {
     validOtpUser.activated = true;
     await validOtpUser.save()
 
-    const user = await this.usersService.findById(userId);
+    const user = await this.usersService.findById(student.id);
     const payload: payload = {
       id: user.id,
       phone: user.phoneNumber,

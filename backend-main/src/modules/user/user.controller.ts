@@ -35,8 +35,8 @@ export class UsersController {
   }
 
   @Get('phone')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth()
   findByPhone(@Query('phone') phone: CreateAuthPhoneDto) {
     return this.usersService.findByPhone(phone);
   }

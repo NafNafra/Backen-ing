@@ -39,7 +39,6 @@ export class FsbackService {
           Authorization: `Bearer ${this.token}`
         },
       })
-      if (customers.data.length === 0) throw new BadRequestException(`Etudiant avec numero de telephone ${phone} introuvable`)
       return customers.data;
     } catch (error) {
       throw new InternalServerErrorException('Erreur de connexion au serveur',);

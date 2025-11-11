@@ -20,14 +20,14 @@ export class User {
   @Prop()
   _OtpCode: string;
 
-  @Prop({type: Date})
-  _OtpExpiresAt?: Date;
+  @Prop()
+  _OtpExpiresAt?: string;
 
   @Prop({ default: false })
   activated: boolean;
 
-  @Prop({type: Date})
-  reactivationDate?: Date;
+  @Prop()
+  reactivationDate?: string;
 
   @Prop()
   refreshToken: string;

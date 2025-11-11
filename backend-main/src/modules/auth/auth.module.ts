@@ -7,7 +7,7 @@ import { AuthController } from '@/modules/auth/auth.controller';
 import { SmsModule } from '@/commons/providers/sms/sms.module';
 import { JwtStrategy } from '@/commons/jwt-strategy/jwt.strategy';
 import { UsersModule } from '@/modules/user/user.module';
-import { FsUrlModule } from '@/commons/providers/fs-url/fs-url.module';
+import { FsbackModule } from '@/commons/providers/fsback/fsback.module';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { FsUrlModule } from '@/commons/providers/fs-url/fs-url.module';
     SmsModule,
     PassportModule,
     ConfigsModule,
-    FsUrlModule,
+    FsbackModule,
     JwtModule.register({
       secret: process.env.JWT_TOKEN,
       signOptions: { expiresIn: '60m' },
@@ -26,4 +26,4 @@ import { FsUrlModule } from '@/commons/providers/fs-url/fs-url.module';
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],
 })
-export class AuthModule {}
+export class AuthModule { }
