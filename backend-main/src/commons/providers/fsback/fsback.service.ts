@@ -1,26 +1,64 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigsService } from 'src/configs';
-
+import { BadRequestException } from '@nestjs/common';
+import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 @Injectable()
 export class FsbackService {
+  private url: string | undefined;
+  private token: string | undefined;
   constructor(
     private readonly httpService: HttpService,
     private readonly configsService: ConfigsService,
-  ) { }
 
-  getUsersByPhone(phone: string) {
+  ) {
+    this.url = this.configsService.get('fs_url.base');
+    this.token = this.configsService.get('fs_url.token');
+  }
+
+  async getUserById(phone: string) {
     console.log(phone)
-    const url = this.configsService.get('fs_url.base');
-    const token = this.configsService.get('fs_url.token');
     try {
-      const customers = this.httpService.axiosRef.get(`${url}/customer/getByAttributes?id=11`, {
+      const customer = await this.httpService.axiosRef.get(`${this.url}/customer/getByAttributes?id=11`, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token
+          Authorization: `Bearer ${this.token}`
         },
       })
-      console.log(customers);
+      console.log(customer);
+      if (customer.data.length > 1) throw new BadRequestException('Erreur dans la base de donnees')
+      return customer.data;
+    } catch (error) {
+      throw new InternalServerErrorException('Erreur de connexion au serveur',);
+    }
+  }
+
+  async getUsersByPhone(phone: CreateAuthPhoneDto) {
+    try {
+      const customers = await this.httpService.axiosRef.get(`${this.url}/customer/getByAttributes?phone=${phone}`, {
+        headers: {
+          Authorization: `Bearer ${this.token}`
+        },
+      })
+      if (customers.data.length === 0) throw new BadRequestException(`Etudiant avec numero de telephone ${phone} introuvable`)
+      return customers.data;
+    } catch (error) {
+      throw new InternalServerErrorException('Erreur de connexion au serveur',);
+    }
+  }
+
+  async saveCustomer(body: object) {
+    console.log(body);
+    try {
+      const customer = await this.httpService.axiosRef.post(`${this.url}/customer/save`,
+        body,
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          },
+        })
+      console.log(customer);
+      if (!customer.data || customer.data.error) throw new BadRequestException(`Erreur lors de l'enregistrement de l'etudiant`);
+      return customer.data;
     } catch (error) {
       throw new InternalServerErrorException('Erreur de connexion au serveur',);
     }
