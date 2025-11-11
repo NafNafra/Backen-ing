@@ -3,11 +3,11 @@ import { Types } from 'mongoose';
 
 export class UserResponseDto {
   constructor(user: User) {
-    this.id = user._id;
+    // this.id = user._id;
     this.idUser = user.idUser;
     this.name = user.name;
     this.phoneNumber = user.phoneNumber;
-    this.email = user.email;
+    // this.email = user.email;
     this.activated = user.activated;
     this.reactivationDate = user.reactivationDate;
     this.refreshToken = user.refreshToken;
@@ -22,7 +22,7 @@ export class UserResponseDto {
 
   activated: boolean;
 
-  reactivationDate?: string;
+  reactivationDate?: Date;
 
   refreshToken?: string;
 

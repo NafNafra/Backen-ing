@@ -18,6 +18,7 @@ import {
 } from '@/modules/user/dto/response-user.dto';
 import { User, UserDocument } from '@/modules/user/entities/user.entity';
 import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
+import { FsbackService } from '@/commons/providers/fsback/fsback.service';
 
 @Injectable()
 export class UsersService {
@@ -25,6 +26,7 @@ export class UsersService {
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private readonly httpService: HttpService,
     private readonly configsService: ConfigsService,
+    private readonly fsBack: FsbackService,
   ) { }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -44,17 +46,17 @@ export class UsersService {
   }
 
   async findByPhone(phoneNumber: CreateAuthPhoneDto) {
-    const user = await this.userModel.find({ phoneNumber }).exec();
     try {
-      //Appel look for phone here
-      console.log(user ? "Users : " + user : 'No user found with that phone number');
+      const users = await this.fsBack.getUsersByPhone(phoneNumber);
+      console.log('From fs-back : ', users);
+      if (users.length == 0) throw new BadRequestException('Aucun etudiant avec ce numero')
+      return users;
     } catch (error) {
       console.error(
         'Erreur API externe:',
         error.response?.data || error.message,
       );
     }
-    return user;
   }
 
   async update(
