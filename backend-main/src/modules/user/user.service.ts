@@ -39,8 +39,8 @@ export class UsersService {
     return this.userModel.find().exec();
   }
 
-  async findById(userId: Types.ObjectId): Promise<UserResponseDto> {
-    const user = await this.userModel.findOne({ _id: userId }).exec();
+  async findById(_id: Types.ObjectId) {
+    const user = await this.userModel.findOne({ _id: _id }).exec();
     if (!user)
       throw new NotFoundException("L'utilisateur spécifié est introuvable");
     return new UserResponseDto(user);
