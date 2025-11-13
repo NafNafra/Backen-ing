@@ -41,18 +41,19 @@ export class FsFormationService {
     // Appel simultané aux 2 endpoints externes
     const [formationsRes, programsRes] = await Promise.all([
       this.httpService.axiosRef.get(`${this.url}/formation/get`, headers),
-      this.httpService.axiosRef.get(`${this.url}/formation/get`, headers),
+      this.httpService.axiosRef.get(`${this.url}/program/get`, headers),
     ]);
 
-    const formations = formationsRes.data.data;
-    const programs = programsRes.data.data;
+    const formations = formationsRes.data.Formation;
+    const programs = programsRes.data.Program;
 
     // Liaison : formation.id → program.formation_id
     const combined = formations.map(f => ({
       ...f,
-      programs: programs.filter(p => p.formation_id === f.id),
+      programs: programs.filter(p => p.formationId === f.id),
     }));
-
+    console.log(combined)
+    
     return combined;
   }
 }
