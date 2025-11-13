@@ -4,7 +4,6 @@ import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Types } from 'mongoose';
-import type { payload } from '@/commons/types/auth';
 
 @ApiTags('auth')
 @Controller('auth')
