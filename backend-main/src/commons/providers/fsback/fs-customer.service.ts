@@ -4,9 +4,10 @@ import { ConfigsService } from 'src/configs';
 import { BadRequestException } from '@nestjs/common';
 import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 @Injectable()
-export class FsbackService {
+export class FsCustomerService {
   private url: string | undefined;
   private token: string | undefined;
+  private headers
   constructor(
     private readonly httpService: HttpService,
     private readonly configsService: ConfigsService,
@@ -14,16 +15,15 @@ export class FsbackService {
   ) {
     this.url = this.configsService.get('fs_url.base');
     this.token = this.configsService.get('fs_url.token');
+    this.headers = {
+      Authorization: `Bearer ${this.token}`,
+    };
   }
 
   async getUserById(phone: string) {
     console.log(phone)
     try {
-      const customer = await this.httpService.axiosRef.get(`${this.url}/customer/getByAttributes?id=11`, {
-        headers: {
-          Authorization: `Bearer ${this.token}`
-        },
-      })
+      const customer = await this.httpService.axiosRef.get(`${this.url}/customer/getByAttributes?id=11`, this.headers)
       console.log(customer);
       if (customer.data.length > 1) throw new BadRequestException('Erreur dans la base de donnees')
       return customer.data;
@@ -34,11 +34,7 @@ export class FsbackService {
 
   async getUsersByPhone(phone: CreateAuthPhoneDto) {
     try {
-      const customers = await this.httpService.axiosRef.get(`${this.url}/customer/getByAttributes?phone=${phone}`, {
-        headers: {
-          Authorization: `Bearer ${this.token}`
-        },
-      })
+      const customers = await this.httpService.axiosRef.get(`${this.url}/customer/getByAttributes?phone=${phone}`, this.headers)
       return customers.data;
     } catch (error) {
       throw new InternalServerErrorException('Erreur de connexion au serveur',);
@@ -50,11 +46,7 @@ export class FsbackService {
     try {
       const customer = await this.httpService.axiosRef.post(`${this.url}/customer/save`,
         body,
-        {
-          headers: {
-            Authorization: `Bearer ${this.token}`
-          },
-        })
+        this.headers)
       console.log(customer);
       if (!customer.data || customer.data.error) throw new BadRequestException(`Erreur lors de l'enregistrement de l'etudiant`);
       return customer.data;
