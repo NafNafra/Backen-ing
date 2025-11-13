@@ -18,7 +18,7 @@ import {
 } from '@/modules/user/dto/response-user.dto';
 import { User, UserDocument } from '@/modules/user/entities/user.entity';
 import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
-import { FsbackService } from '@/commons/providers/fsback/fsback.service';
+import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.service';
 import { externPayload } from '@/commons/types/auth';
 
 @Injectable()
@@ -27,7 +27,7 @@ export class UsersService {
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private readonly httpService: HttpService,
     private readonly configsService: ConfigsService,
-    private readonly fsBack: FsbackService,
+    private readonly fsCustomer: FsCustomerService,
   ) { }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -99,7 +99,7 @@ export class UsersService {
   }
 
   async findAndSyncExternalUsers(phoneAuth: CreateAuthPhoneDto): Promise<UserResponseDto[]> {
-    const externalUsers = await this.fsBack.getUsersByPhone(phoneAuth);
+    const externalUsers = await this.fsCustomer.getUsersByPhone(phoneAuth);
     if (!externalUsers || externalUsers.length === 0) {
       throw new BadRequestException(`Aucun étudiant trouvé avec le numéro ${phoneAuth}`);
     }

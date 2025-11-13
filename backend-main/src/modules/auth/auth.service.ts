@@ -16,7 +16,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigsService } from '@/configs';
 import { setOtpExpiryTime, generateOtpCode } from '@/commons/utils';
-import { FsbackService } from '@/commons/providers/fsback/fsback.service';
+import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.service';
 import { UsersService } from '@/modules/user/user.service';
 import { SmsService } from '@/commons/providers/sms/sms.service';
 import { payload } from '@/commons/types/auth';
@@ -31,7 +31,7 @@ export class AuthService {
     private readonly smsService: SmsService,
     private readonly configsService: ConfigsService,
     private readonly jwtService: JwtService,
-    private readonly fsService: FsbackService,
+    private readonly fsService: FsCustomerService,
   ) { }
 
   // Look for user by phone number and send OTP

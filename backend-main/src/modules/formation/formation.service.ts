@@ -5,12 +5,13 @@ import { CreateFormationDto } from '@/modules/formation/dto/create-formation.dto
 import { UpdateFormationDto } from '@/modules/formation/dto/update-formation.dto';
 import { FormationResponseDto } from '@/modules/formation/dto/response-formation.dto';
 import { Formation, FormationDocument } from '@/modules/formation/entities/formation.entity';
+import { FsFormationService } from '@/commons/providers/fsback/fs-formation.service';
 
 @Injectable()
 export class FormationService {
   constructor(
-    @InjectModel(Formation.name)
-    private formationModel: Model<FormationDocument>,
+    @InjectModel(Formation.name) private formationModel: Model<FormationDocument>,
+    private readonly fsFormation: FsFormationService,
   ) { }
 
   async create(createFormationDto: CreateFormationDto): Promise<Formation> {
@@ -19,6 +20,7 @@ export class FormationService {
   }
 
   async findAll(): Promise<Formation[]> {
+    const formationProgramm = await this.fsFormation.getFormationsWithPrograms();
     return this.formationModel.find().exec();
   }
 
