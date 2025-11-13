@@ -19,6 +19,7 @@ import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 import { UsersService } from '@/modules/user/user.service';
 import { CreateUserDto } from '@/modules/user/dto/create-user.dto';
 import { UpdateUserDto } from '@/modules/user/dto/update-user.dto';
+import { Types } from 'mongoose';
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
@@ -50,7 +51,7 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') _id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param('id') _id: Types.ObjectId, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(_id, updateUserDto);
   }
 

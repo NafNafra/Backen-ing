@@ -66,7 +66,7 @@ export class UsersService {
   }
 
   async update(
-    userId: string,
+    userId: Types.ObjectId,
     userDto: UpdateUserDto,
   ): Promise<UpdateUserResponseDto> {
     if (userDto === null || userId === null)

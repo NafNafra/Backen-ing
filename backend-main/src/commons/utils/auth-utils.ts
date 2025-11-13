@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { Types } from 'mongoose';
 import { ConfigsService } from '@/configs';
 import { UsersService } from '@/modules/user/user.service';
 import { payload } from '@/commons/types/auth';
@@ -24,7 +25,7 @@ export async function generateTokens(
 
 export async function storeRefreshToken(
   usersService: UsersService,
-  userId: string,
+  userId: Types.ObjectId,
   refreshToken: string,
 ): Promise<void> {
   const hashedToken = await bcrypt.hash(refreshToken, 10);
