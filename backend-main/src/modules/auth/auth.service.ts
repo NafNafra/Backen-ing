@@ -165,7 +165,7 @@ export class AuthService {
     console.log(payload);
 
     const token = await this.generateTokens(payload);
-    await this.storeRefreshToken(validOtpUser._id.toString(), token.refresh_token);
+    await this.storeRefreshToken(validOtpUser._id, token.refresh_token);
 
     return {
       user: [{
@@ -182,7 +182,7 @@ export class AuthService {
   }
 
 
-  async logout(userId: string): Promise<void> {
+  async logout(userId: Types.ObjectId): Promise<void> {
     await this.usersService.update(userId, { refreshToken: null, activated: false });
   }
 
@@ -202,7 +202,7 @@ export class AuthService {
   }
 
   private async storeRefreshToken(
-    userId: string,
+    userId: Types.ObjectId,
     refreshToken: string,
   ): Promise<void> {
     const hashedToken = await bcrypt.hash(refreshToken, 10);
