@@ -12,7 +12,7 @@ export class UserResponseDto {
     this.reactivationDate = user.reactivationDate;
     this.refreshToken = user.refreshToken;
   }
-  id: Types.ObjectId;
+  _id: Types.ObjectId;
 
   idUser: string;
 

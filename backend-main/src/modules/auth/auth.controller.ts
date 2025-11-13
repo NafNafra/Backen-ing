@@ -32,7 +32,7 @@ export class AuthController {
   // loginChosenUser(@Query('id') id: Types.ObjectId, @Query('phoneNumber') phoneNumber: CreateAuthPhoneDto) {
   loginChosenUser(@Query('student') student: payload) {
     return this.authService.loginChosenUser({
-      id: Object("69130451810c61130917a1c6"),
+      id: new Types.ObjectId('69130451810c61130917a1c6'),
       phone: "0349482910",
       activated: false
     });

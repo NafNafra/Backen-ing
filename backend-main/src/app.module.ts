@@ -10,7 +10,6 @@ import { ContactModule } from '@/modules/contact/contact.module';
 import { FormationModule } from '@/modules/formation/formation.module';
 import { SessionsModule } from '@/modules/sessions/sessions.module';
 import { CertificatsModule } from '@/modules/certificats/certificats.module';
-import { FsUrlModule } from './commons/providers/fs-url/fs-url.module';
 
 @Module({
   imports: [
@@ -27,7 +26,6 @@ import { FsUrlModule } from './commons/providers/fs-url/fs-url.module';
     SessionsModule,
     CertificatsModule,
     HttpModule,
-    FsUrlModule,
   ],
 })
 export class AppModule { }

@@ -56,7 +56,7 @@ export async function refreshAccessToken(
   }
 
   const newAccessToken = await jwtService.signAsync(
-    { id: user.id, phoneNumber: user.phoneNumber, activated: user.activated },
+    { id: user._id, phoneNumber: user.phoneNumber, activated: user.activated },
     {
       secret: configsService.get('jwt.secret'),
       expiresIn: configsService.get('jwt.expiresIn'),

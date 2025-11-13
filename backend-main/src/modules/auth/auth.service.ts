@@ -75,10 +75,13 @@ export class AuthService {
     }
 
     for (const u of users) {
+      console.log(u._id, u)
       u._OtpCode = '';
       u._OtpExpiresAt = undefined;
       await u.save();
     }
+
+
 
     return {
       message: `Code vérifié. Sélectionnez l'utilisateur à connecter. `,
@@ -134,8 +137,12 @@ export class AuthService {
     const validOtpUser = users.find(
       (u) => {
         console.log("Gahem : ", u._id, student.id);
-        if (u._id.equals(new Types.ObjectId(student.id))) {
+        if (u._id && student.id && u._id.toString() === student.id.toString()) {
+          console.log(`Equals  // \n ${u}`)
           return u
+        }
+        else {
+          console.log("Nope  //")
         }
       });
 
@@ -144,23 +151,28 @@ export class AuthService {
     }
     validOtpUser.activated = true;
     await validOtpUser.save()
+    console.log('validOtpUser : ', validOtpUser);
 
-    const user = await this.usersService.findById(student.id);
+    // const user = await this.usersService.findById(validOtpUser._id);
+    // console.log(`User by id \n ${user}`)
+
     const payload: payload = {
-      id: user.id,
-      phone: user.phoneNumber,
-      activated: user.activated,
+      id: validOtpUser._id,
+      phone: validOtpUser.phoneNumber,
+      activated: validOtpUser.activated,
     };
 
+    console.log(payload);
+
     const token = await this.generateTokens(payload);
-    await this.storeRefreshToken(user.id.toString(), token.refresh_token);
+    await this.storeRefreshToken(validOtpUser._id.toString(), token.refresh_token);
 
     return {
       user: [{
-        id: user.id,
-        name: user.name,
-        phoneNumber: user.phoneNumber,
-        activated: user.activated
+        id: validOtpUser._id,
+        name: validOtpUser.name,
+        phoneNumber: validOtpUser.phoneNumber,
+        activated: validOtpUser.activated
       }],
       message: 'Connexion réussie',
       statusCode: HttpStatus.OK,
@@ -213,7 +225,7 @@ export class AuthService {
     if (!isTokenValid) throw new UnauthorizedException('Invalid refresh token');
 
     const newAccessToken = await this.jwtService.signAsync(
-      { id: user.id, phoneNumber: user.phoneNumber, activated: user.activated },
+      { id: user._id, phoneNumber: user.phoneNumber, activated: user.activated },
       {
         secret: this.configsService.get('jwt.secret'),
         expiresIn: this.configsService.get('jwt.expiresIn'),
