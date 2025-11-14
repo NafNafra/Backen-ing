@@ -11,6 +11,7 @@ import { FormationModule } from '@/modules/formation/formation.module';
 import { SessionsModule } from '@/modules/sessions/sessions.module';
 import { CertificatsModule } from '@/modules/certificats/certificats.module';
 import { RegisterModule } from './modules/register/register.module';
+import { ProgramModule } from './program/program.module';
 
 @Module({
   imports: [
@@ -18,16 +19,17 @@ import { RegisterModule } from './modules/register/register.module';
     MongooseModule.forRoot(
       process.env.MONGO_URI || 'mongodb://localhost:27017/mydb',
     ),
+    FormationModule,
+    SessionsModule,
     RegisterModule,
     AuthModule,
     UsersModule,
     SmsModule,
     ConfigsModule,
     ContactModule,
-    FormationModule,
-    SessionsModule,
     CertificatsModule,
     HttpModule,
+    ProgramModule,
   ],
 })
 export class AppModule { }
