@@ -23,8 +23,12 @@ export class FsCustomerService {
   async getUserById(phone: string) {
     console.log(phone)
     try {
-      const customer = await this.httpService.axiosRef.get(`${this.url}/customer/getByAttributes?id=11`, this.headers)
+      const customer = await this.httpService.axiosRef.get(
+        `${this.url}/customer/getByAttributes?id=11`,
+        this.headers
+      )
       console.log(customer);
+
       if (customer.data.length > 1) throw new BadRequestException('Erreur dans la base de donnees')
       return customer.data;
     } catch (error) {
@@ -42,16 +46,19 @@ export class FsCustomerService {
   }
 
   async saveCustomer(body: object) {
-    console.log(body);
     try {
-      const customer = await this.httpService.axiosRef.post(`${this.url}/customer/save`,
+      const customer = await this.httpService.axiosRef.post(
+        `${this.url}/customer/save`,
         body,
-        this.headers)
-      console.log(customer);
-      if (!customer.data || customer.data.error) throw new BadRequestException(`Erreur lors de l'enregistrement de l'etudiant`);
+        { headers: this.headers }
+      )
+
+      if (!customer.data || customer.data.error)
+        throw new BadRequestException(`Erreur lors de l'enregistrement de l'etudiant`);
+
       return customer.data;
-    } catch (error) {
-      throw new InternalServerErrorException('Erreur de connexion au serveur',);
+    } catch (erreur) {
+      throw new InternalServerErrorException(erreur);
     }
   }
 }

@@ -18,6 +18,7 @@ import { RegisterModule } from './modules/register/register.module';
     MongooseModule.forRoot(
       process.env.MONGO_URI || 'mongodb://localhost:27017/mydb',
     ),
+    RegisterModule,
     AuthModule,
     UsersModule,
     SmsModule,
@@ -27,7 +28,6 @@ import { RegisterModule } from './modules/register/register.module';
     SessionsModule,
     CertificatsModule,
     HttpModule,
-    RegisterModule,
   ],
 })
 export class AppModule { }
