@@ -19,16 +19,17 @@ export class FormationService {
     return formation.save();
   }
 
+  // Formation with their programm
   async findAll(): Promise<Formation[]> {
     const formationProgramm = await this.fsFormation.getFormationsWithPrograms();
-    return this.formationModel.find().exec();
+    return formationProgramm;
   }
 
-  async findById(id: string): Promise<FormationResponseDto> {
-    const formation = await this.formationModel.findOne({ _id: id }).exec();
-    if (!formation) throw new NotFoundException('Formation introuvable');
-    return new FormationResponseDto(formation);
-  }
+  // async findById(id: string): Promise<FormationResponseDto> {
+  //   const formation = await this.formationModel.findOne({ _id: id }).exec();
+  //   if (!formation) throw new NotFoundException('Formation introuvable');
+  //   return new FormationResponseDto(formation);
+  // }
 
   async update(
     id: string,
@@ -38,7 +39,7 @@ export class FormationService {
       .findByIdAndUpdate(
         id,
         updateFormationDto,
-        { new: true, runValidators: true }, // new : retournes le doc mis à jour
+        { new: true, runValidators: true },
       )
       .exec();
     if (!updatedFormation) {
@@ -49,26 +50,18 @@ export class FormationService {
 
   remove(id: string): void {
     const formationToDelete = this.formationModel.findByIdAndDelete(id).exec();
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     if (!formationToDelete)
       throw new NotFoundException(`Formation avec id=${id} non trouvé`);
   }
 
-  async findOneWithSessions(id: string) {
-    const formationSession = this.formationModel
-      .findById(id)
-      .populate('sessions')
-      .exec();
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    if (!formationSession)
-      throw new NotFoundException('Formation with session not found');
-    return formationSession;
-  }
+  // async findOneWithSessions(id: string) {
+  //   const formationSession = this.formationModel
+  //     .findById(id)
+  //     .populate('sessions')
+  //     .exec();
+  //   if (!formationSession)
+  //     throw new NotFoundException('Formation with session not found');
+  //   return formationSession;
+  // }
 
-  async findAllWithSessions(): Promise<Formation[]> {
-    return this.formationModel
-      .find()
-      .populate('sessions') // peupler champ virtuel sessions
-      .exec();
-  }
 }

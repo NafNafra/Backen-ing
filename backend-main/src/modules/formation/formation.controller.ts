@@ -14,22 +14,22 @@ import { Formation } from '@/modules/formation/entities/formation.entity';
 
 @Controller('formation')
 export class FormationController {
-  constructor(private readonly formationService: FormationService) {}
+  constructor(private readonly formationService: FormationService) { }
 
-  @Post()
-  create(@Body() createFormationDto: CreateFormationDto) {
-    return this.formationService.create(createFormationDto);
-  }
+  // @Post()
+  // create(@Body() createFormationDto: CreateFormationDto) {
+  //   return this.formationService.create(createFormationDto);
+  // }
 
   @Get()
   findAll() {
     return this.formationService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.formationService.findById(id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.formationService.findById(id);
+  // }
 
   @Patch(':id')
   update(
@@ -44,13 +44,8 @@ export class FormationController {
     return this.formationService.remove(id);
   }
 
-  @Get('oneSession')
-  async findOneWithSessions(@Param('id') id: string) {
-    return this.formationService.findOneWithSessions(id);
-  }
-
-  @Get('allSessions')
-  async listAll(): Promise<Formation[]> {
-    return this.formationService.findAllWithSessions();
-  }
+  // @Get('oneSession')
+  // async findOneWithSessions(@Param('id') id: string) {
+  //   return this.formationService.findOneWithSessions(id);
+  // }
 }
