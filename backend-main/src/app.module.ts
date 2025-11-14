@@ -10,6 +10,7 @@ import { ContactModule } from '@/modules/contact/contact.module';
 import { FormationModule } from '@/modules/formation/formation.module';
 import { SessionsModule } from '@/modules/sessions/sessions.module';
 import { CertificatsModule } from '@/modules/certificats/certificats.module';
+import { RegisterModule } from './modules/register/register.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CertificatsModule } from '@/modules/certificats/certificats.module';
     SessionsModule,
     CertificatsModule,
     HttpModule,
+    RegisterModule,
   ],
 })
 export class AppModule { }
