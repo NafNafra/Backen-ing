@@ -9,7 +9,7 @@ export class LoginChosenUserDto {
   @IsNotEmpty()
   id: Types.ObjectId;
 
-  @ApiProperty({ example: '0349482910' })
+  @ApiProperty({ example: '0347327950' })
   @IsString()
   @IsNotEmpty()
   phone: string;

@@ -48,13 +48,8 @@ export class UsersService {
 
   async findByPhone(phoneNumber: CreateAuthPhoneDto | string) {
     try {
-      const phone =
-        typeof phoneNumber === 'string'
-          ? phoneNumber
-          : phoneNumber.phoneNumber;
-
-      console.log(phone);
-      const users = await this.userModel.find({ phoneNumber: phone });
+      console.log(phoneNumber);
+      const users = await this.userModel.find({ phoneNumber: phoneNumber });
       if (users === null || users.length === 0) throw new BadRequestException('Aucun etudiant avec ce numero')
       return users;
     } catch (error) {
@@ -107,17 +102,17 @@ export class UsersService {
     const savedUsers: UserResponseDto[] = [];
 
     for (const ext of externalUsers) {
-      console.log(ext, '\n')
       const payload: externPayload = {
         idUser: ext._id,
         name: `${ext.firstname} ${ext.lastname}`,
-        phone: ext.phone,
+        phoneNumber: ext.phone,
         compteFb: ext.facebook !== 'null' ? ext.facebook : undefined,
         activated: false,
       };
 
       let localUser = await this.userModel.findOne({ idUser: ext._id });
 
+      console.log('localUser : ', localUser)
       if (!localUser) {
         localUser = new this.userModel(payload);
         await localUser.save();
@@ -134,7 +129,7 @@ export class UsersService {
 
   async updateOtp(idUser: string, code: string, expiresAt: string) {
     await this.userModel.updateOne(
-      { idUser },
+      { idUser: idUser },
       { _OtpCode: code, _OtpExpiresAt: expiresAt },
     );
   }

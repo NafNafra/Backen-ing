@@ -15,7 +15,7 @@ export type phonePayload = {
 export type externPayload = {
   idUser: string;
   name: string;
-  phone: string;
+  phoneNumber: string;
   compteFb: string;
   activated: boolean;
 }

@@ -66,7 +66,6 @@ export class AuthService {
     console.log(users);
     const validOtpUser = users.find(
       (u) => u._OtpCode === code && u._OtpExpiresAt !== undefined &&
-        // new Date(u._OtpExpiresAt).getTime() > Date.now(),
         new Date(u._OtpExpiresAt).getTime() > Date.now()
     );
 
@@ -75,7 +74,7 @@ export class AuthService {
     }
 
     for (const u of users) {
-      console.log(u._id, u)
+      // console.log(u._id, u)
       u._OtpCode = '';
       u._OtpExpiresAt = undefined;
       await u.save();
@@ -88,6 +87,7 @@ export class AuthService {
       user: users.map((u) => ({
         id: u._id,
         name: u.name,
+        compteFb: u.compteFb,
         phoneNumber: u.phoneNumber,
         activated: u.activated,
       })),
