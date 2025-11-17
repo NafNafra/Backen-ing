@@ -46,6 +46,15 @@ export class UsersService {
     return new UserResponseDto(user);
   }
 
+  async findByUserId(_id: Types.ObjectId) {
+    const userLocal = await this.findById(_id);
+    const idUser = userLocal.idUser;
+    const userFs = await this.fsCustomer.getUserById(idUser);
+    if (!userFs)
+      throw new NotFoundException("L'utilisateur spécifié est introuvable");
+    return userFs;
+  }
+
   async findByPhone(phoneNumber: CreateAuthPhoneDto | string) {
     try {
       console.log(phoneNumber);

@@ -47,7 +47,7 @@ export class UsersController {
   @ApiBearerAuth()
   findOne(@Request() req) {
     const id = req.user.id;
-    return this.usersService.findById(id);
+    return this.usersService.findByUserId(id);
   }
 
   @Patch(':id')

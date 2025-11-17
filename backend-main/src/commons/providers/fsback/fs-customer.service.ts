@@ -20,11 +20,11 @@ export class FsCustomerService {
     };
   }
 
-  async getUserById(phone: string) {
-    console.log(phone)
+  async getUserById(idUser: string) {
+    console.log(idUser)
     try {
       const customer = await this.httpService.axiosRef.get(
-        `${this.url}/customer/getByAttributes?id=11`,
+        `${this.url}/customer/getByAttributes?id=${idUser}`,
         this.headers
       )
       console.log(customer);
