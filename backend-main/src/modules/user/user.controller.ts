@@ -47,6 +47,7 @@ export class UsersController {
   @ApiBearerAuth()
   findOne(@Request() req) {
     const id = req.user.id;
+    console.log("Me : ", id)
     return this.usersService.findByUserId(id);
   }
 

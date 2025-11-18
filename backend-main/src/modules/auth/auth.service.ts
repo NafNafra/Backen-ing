@@ -23,6 +23,7 @@ import { payload } from '@/commons/types/auth';
 import { AuthResponse } from '@/modules/auth/dto/response.dto';
 import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 import { UserResponseDto } from '@/modules/user/dto/response-user.dto';
+import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -127,16 +128,16 @@ export class AuthService {
   }
 
   // Se connecter a un utilisateur
-  // async loginChosenUser(userId: Types.ObjectId, phoneNumber: CreateAuthPhoneDto): Promise<AuthResponse> {
-  async loginChosenUser(student: payload) {
+  async loginChosenUser(student: LoginChosenUserDto) {
     console.log(student)
-    const users = await this.usersService.findByPhone({ phoneNumber: student.phone }); //
+    console.log(student.phone)
+    const users = await this.usersService.findByPhone(student.phone); //
     if (!users) {
       throw new NotFoundException(`User with phone ${student.phone} not found`);
     }
     const validOtpUser = users.find(
       (u) => {
-        console.log("Gahem : ", u._id, student.id);
+        console.log("Gahem : ", u._id.toString(), student.id.toString(), student.phone, u.phoneNumber);
         if (u._id && student.id && u._id.toString() === student.id.toString()) {
           console.log(`Equals  // \n ${u}`)
           return u
