@@ -6,13 +6,22 @@ export type CertificatDocument = mongoose.HydratedDocument<Certificat>;
 @Schema()
 export class Certificat {
   @Prop({ require: true })
-  idStudent: string;
+  id: string;
 
   @Prop({ required: true })
-  linkImage: string;
+  mention: string;
 
   @Prop({ required: true })
-  isPublik: boolean;
+  inactive: boolean;
+
+  @Prop()
+  formationId: string
+
+  @Prop()
+  createsAt: Date
+
+  @Prop()
+  updatedAt: Date
 }
 
 export const CertificatSchema = SchemaFactory.createForClass(Certificat);

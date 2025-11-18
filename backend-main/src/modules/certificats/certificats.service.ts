@@ -6,21 +6,23 @@ import { Certificat, CertificatDocument } from '@/modules/certificats/entities/c
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { NotFoundException } from '@nestjs/common';
+import { FsCertService } from '@/commons/providers/fsback/fs-cert.service';
 
 @Injectable()
 export class CertificatsService {
   constructor(
     @InjectModel(Certificat.name)
     private certificatModel: Model<CertificatDocument>,
-  ) {}
+    private readonly fsCert: FsCertService
+  ) { }
 
   async create(createCertificatDto: CreateCertificatDto): Promise<Certificat> {
     const certificat = new this.certificatModel(createCertificatDto);
     return certificat.save();
   }
 
-  async findAll(): Promise<Certificat[]> {
-    return this.certificatModel.find().exec();
+  async findAll(): Promise<CertificatResponseDto[]> {
+    return this.fsCert.getCertificat();
   }
 
   async findById(id: string): Promise<CertificatResponseDto> {
@@ -37,7 +39,7 @@ export class CertificatsService {
       .findByIdAndUpdate(
         id,
         updateCertificatDto,
-        { new: true, runValidators: true }, // new : retournes le doc mis à jour
+        { new: true, runValidators: true },
       )
       .exec();
     if (!updatedCertificat) {
