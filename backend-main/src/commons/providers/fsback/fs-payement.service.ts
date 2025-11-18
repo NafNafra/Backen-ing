@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigsService } from '@/configs';
 import { FsCertService } from './fs-cert.service';
 import { Types } from 'mongoose';
+import { mentionNote } from '@/commons/utils';
 
 @Injectable()
 export class FsPayementService {
@@ -33,9 +34,9 @@ export class FsPayementService {
 
     const payments = payment.data.Payment;
 
-    const certPayment = payments.filter(p => p.type === "CERTIFICAT");
-
-    console.log(certPayment)
+    const certPayment = payments.filter(p =>
+      ((p.type === "CERTIFICAT") && (p.customerId !== null))
+    );
 
     return certPayment;
   }
@@ -47,9 +48,11 @@ export class FsPayementService {
       this.certService.getCertificat(),
     ]);
 
-    const combined = certificat.map(c => ({
+    const combined = certPayment.map(c => ({
       ...c,
-      payments: certPayment.filter(cp => cp.targetId === c.id),
+      certificat: certificat.filter(cp => c.targetId === cp.id),
+      mention: mentionNote(certificat[0].mention),
+      formationId: certificat[0].formationId
     }));
 
     console.log(combined)
@@ -58,18 +61,16 @@ export class FsPayementService {
 
   // certificat d'un etudiant depuis un payement
   async customerCertPayment(id: string) {
-
     const allCertPayment = await this.getCertPerPayement();
     const customerCert = allCertPayment.filter(
       certPay => {
-        if (certPay.payments.length === 0)
+        if (certPay.length === 0)
           throw new BadRequestException({ message: "Bad filtering" })
 
-        return certPay.payments[0].customerId === id;
+        return certPay.customerId === id;
       }
     )
-    console.log(customerCert)
-    return allCertPayment
+    return customerCert
   }
 
 

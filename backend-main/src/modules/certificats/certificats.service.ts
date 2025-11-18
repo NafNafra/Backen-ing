@@ -24,14 +24,15 @@ export class CertificatsService {
   }
 
   async findAll(): Promise<CertificatResponseDto[]> {
-    const test = await this.fsPayment.customerCertPayment( "6fe73b9c-ea74-4c9e-8884-847cd4d48fdc");
+    // const test = 
     return this.fsCert.getCertificat();
   }
 
-  async findById(id: string): Promise<CertificatResponseDto> {
-    const certificat = await this.certificatModel.findOne({ _id: id }).exec();
-    if (!certificat) throw new NotFoundException('Certificat introuvable');
-    return new CertificatResponseDto(certificat);
+  async findById(id: string): Promise<CertificatResponseDto[]> {
+    id = "6fe73b9c-ea74-4c9e-8884-847cd4d48fdc";
+    const certificat = await this.fsPayment.customerCertPayment(id);
+    if (!certificat) throw new NotFoundException(`Certificat introuvable ou que vous n'avez pas encore fait aucune formation `);
+    return certificat;
   }
 
   async update(
