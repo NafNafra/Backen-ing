@@ -11,19 +11,20 @@ import { FsCertService } from '@/commons/providers/fsback/fs-cert.service';
   imports: [
     HttpModule,
     ConfigsModule,
-    CreateAuthPhoneDto
   ],
   providers: [
     FsCustomerService,
     FsFormationService,
     FsPayementService,
     FsCertService,
+    CreateAuthPhoneDto
   ],
   exports: [
     FsCustomerService,
     FsFormationService,
     FsPayementService,
     FsCertService,
+    
   ]
 })
 export class FsbackModule { }
