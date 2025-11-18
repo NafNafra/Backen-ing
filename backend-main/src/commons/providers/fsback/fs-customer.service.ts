@@ -24,10 +24,10 @@ export class FsCustomerService {
     console.log(idUser)
     try {
       const customer = await this.httpService.axiosRef.get(
-        `${this.url}/customer/getByAttributes?id=${idUser}`,
+        `${this.url}/customer/getByAttributes?_id=${idUser}`,
         this.headers
       )
-      console.log(customer);
+      console.log(customer.data);
 
       if (customer.data.length > 1) throw new BadRequestException('Erreur dans la base de donnees')
       return customer.data;

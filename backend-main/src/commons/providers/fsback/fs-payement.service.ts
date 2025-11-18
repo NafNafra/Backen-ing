@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigsService } from '@/configs';
 
+
 @Injectable()
-export class FsFormationService {
+export class FsPayementService {
   private url: string | undefined;
   private token: string | undefined;
   constructor(
@@ -15,26 +16,23 @@ export class FsFormationService {
     this.token = this.configsService.get('fs_url.token');
   }
 
-  async getFormationsWithPrograms() {
+  async getCertPayement() {
     const headers = {
       headers: {
         Authorization: `Bearer ${this.token}`
       },
     }
-    const [formationsRes, programsRes] = await Promise.all([
-      this.httpService.axiosRef.get(`${this.url}/formation/get`, headers),
-      this.httpService.axiosRef.get(`${this.url}/program/get`, headers),
-    ]);
+    const payment = await this.httpService.axiosRef.get(
+      `${this.url}/payment/get`,
+      headers
+    );
 
-    const formations = formationsRes.data.Formation;
-    const programs = programsRes.data.Program;
+    const payments = payment.data.Payment;
 
-    const combined = formations.map(f => ({
-      ...f,
-      programs: programs.filter(p => p.formationId === f.id),
-    }));
-    console.log(combined)
+    const certPayment = payments.filter(p => p.type === "CERTIFICAT");
 
-    return combined;
+    console.log(certPayment)
+
+    return certPayment;
   }
 }
