@@ -4,6 +4,7 @@ import { ConfigsService } from '@/configs';
 import { FsCertService } from './fs-cert.service';
 import { Types } from 'mongoose';
 import { mentionNote } from '@/commons/utils';
+import { FsFormationService } from '@/commons/providers/fsback/fs-formation.service';
 
 @Injectable()
 export class FsPayementService {
@@ -14,6 +15,7 @@ export class FsPayementService {
     private readonly httpService: HttpService,
     private readonly configsService: ConfigsService,
     private readonly certService: FsCertService,
+    private readonly fsFormation: FsFormationService,
 
   ) {
     this.url = this.configsService.get('fs_url.base');
@@ -48,12 +50,15 @@ export class FsPayementService {
       this.certService.getCertificat(),
     ]);
 
-    const combined = certPayment.map(c => ({
-      ...c,
-      certificat: certificat.filter(cp => c.targetId === cp.id),
-      mention: mentionNote(certificat[0].mention),
-      formationId: certificat[0].formationId
-    }));
+    const combined = certPayment.map(c => {
+      const certForPayment = certificat.filter(cp => c.targetId === cp.id);
+      return {
+        ...c,
+        certificat: certForPayment,
+        mention: mentionNote(certificat[0].mention),
+        formationId: certificat[0].formationId.toString()
+      }
+    });
 
     console.log(combined)
     return combined;
@@ -70,6 +75,21 @@ export class FsPayementService {
         return certPay.customerId === id;
       }
     )
+
+    const formation = await this.fsFormation.getFormationsWithPrograms()
+    console.log(formation)
+
+    const cleanCertUser = customerCert.filter(
+      cc => {
+        const formations = formation.filter(f => {
+          console.log(f.id, cc.formationId)
+          return f.id == cc.formationId
+        });
+        console.log(formations)
+      }
+    )
+    console.log("CertUser : ", cleanCertUser)
+
     return customerCert
   }
 
