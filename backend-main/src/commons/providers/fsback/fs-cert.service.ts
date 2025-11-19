@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigsService } from '@/configs';
+import { FsPayementService } from './fs-payement.service';
+import { mentionNote } from '@/commons/utils';
 
 @Injectable()
 export class FsCertService {
@@ -9,6 +11,7 @@ export class FsCertService {
   constructor(
     private readonly httpService: HttpService,
     private readonly configsService: ConfigsService,
+    private readonly fsPayement: FsPayementService,
 
   ) {
     this.url = this.configsService.get('fs_url.base');
@@ -28,5 +31,25 @@ export class FsCertService {
     const certificats = certificat.data.Cert;
 
     return certificats;
+  }
+
+
+  async getCertPerPayement() {
+    const [certPayment, certificat] = await Promise.all([
+      this.fsPayement.getCertPayement(),
+      this.getCertificat(),
+    ]);
+
+    const combined = certPayment.filter(cp => {
+      const certForPayment = certificat.filter(c => cp.id === c.formationId);
+      return {
+        ...cp,
+        // certificat: certForPayment, // array de certificat
+        mention: mentionNote(certificat[0].mention),
+        formationId: certForPayment[0].formationId.toString(),
+      }
+    });
+
+    return combined;
   }
 }
