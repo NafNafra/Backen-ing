@@ -15,7 +15,6 @@ export function setOtpExpiryTime(): string {
 
 export function mentionNote(noteString: string) {
   const note = parseFloat(noteString);
-  console.log(`Note convertie : ${note} ${noteString}`); // Pour le débogage
 
   if (isNaN(note)) {
     return "Erreur : L'entrée n'est pas un nombre valide.";
