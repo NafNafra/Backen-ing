@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigsService } from '@/configs';
+import { BadRequestException } from '@nestjs/common';
 
 @Injectable()
 export class FsCertService {
@@ -29,4 +30,13 @@ export class FsCertService {
 
     return certificats;
   }
+
+  // async cleanCertificat() {
+    //   this.fsPayment.getPaymentCustomer(),
+    //   this.fsPayment.getSessionPayment(),
+    //   this.fsPayment.getUserPayement(),
+    //   this.fsPayment.getCertPerPayement()
+
+  // }
+
 }

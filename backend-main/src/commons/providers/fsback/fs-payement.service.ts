@@ -6,13 +6,12 @@ import { mentionNote } from '@/commons/utils';
 import { FsCustomerService } from './fs-customer.service';
 import { FsFormationService } from './fs-formation.service';
 import { FsUserService } from './fs-user.service';
-import { Sessions } from '@/modules/sessions/entities/session.entity';
 
 @Injectable()
 export class FsPayementService {
   private url: string | undefined;
   private token: string | undefined;
-  private headers
+  private headers: object
   constructor(
     private readonly httpService: HttpService,
     private readonly configsService: ConfigsService,
@@ -81,7 +80,7 @@ export class FsPayementService {
       })
     });
 
-    console.log("Customer & Payment ", combined)
+    // console.log("Customer & Payment ", combined)
     return combined;
   }
 
@@ -119,7 +118,31 @@ export class FsPayementService {
       })
     });
 
-    console.log("USER & PAYMENT :", combined)
+    // console.log("USER & PAYMENT :", combined)
     return combined;
+  }
+
+
+  async cleanPaymentForCertificat(id: string) {
+    const [pProgram, pCustomer, pUser] = await Promise.all([
+      this.getSessionPayment(),
+      this.getPaymentCustomer(),
+      this.getUserPayment()
+    ])
+
+    const paymentForCert = pCustomer.map(pc => {
+      const pp = pProgram.filter(p => p.id == pc.id)
+      const pu = pUser.filter(u => u.id == pc.id)
+
+      return ({
+        ...pc,
+        program: pp[0].sessions,
+        user: pu[0].users
+      })
+    })
+
+    const elu = paymentForCert.filter(pfc => pfc.customers.id == id)
+    console.log(elu)
+    return elu;
   }
 }
