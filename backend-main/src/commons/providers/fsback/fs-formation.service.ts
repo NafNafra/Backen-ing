@@ -2,6 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigsService } from '@/configs';
 
+
+interface Formation {
+  id: string;
+  name: string;
+  fullname: string;
+}
+
 @Injectable()
 export class FsFormationService {
   private url: string | undefined;
@@ -28,18 +35,19 @@ export class FsFormationService {
 
     const formations = formationsRes.data.Formation;
     const programs = programsRes.data.Program;
-    const sessions = programs.map(p => {
-      const uniqueFormation = formations.filter(f => p.formationId == f.id && p.formationId !== null);
-      return ({
-        ...p,
-        // formations: uniqueFormation[0],
-        name: uniqueFormation[0].name,
-        fullname: uniqueFormation[0].fullname,
 
-      })
+    const formationById = new Map<string, Formation>(
+      formations.map((f: Formation) => [f.id, f])
+    );
+    // 🔥 Reconstruit les sessions en O(n)
+    return programs.map(program => {
+      const f = formationById.get(program.formationId);
+
+      return {
+        ...program,
+        name: f?.name || null,
+        fullname: f?.fullname || null,
+      };
     });
-    // console.log("PROGRAM & FORMATION :", sessions)
-
-    return sessions;
   }
 }

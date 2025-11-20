@@ -3,9 +3,9 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigsService } from '@/configs';
 import { FsCertService } from './fs-cert.service';
 import { mentionNote } from '@/commons/utils';
-import { FsCustomerService } from './fs-customer.service';
-import { FsFormationService } from './fs-formation.service';
-import { FsUserService } from './fs-user.service';
+import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.service';
+import { FsFormationService } from '@/commons/providers/fsback/fs-formation.service';
+import { FsUserService } from '@/commons/providers/fsback/fs-user.service';
 
 @Injectable()
 export class FsPayementService {
@@ -46,22 +46,20 @@ export class FsPayementService {
   }
 
   async getCertPerPayement() {
-    const [payment, certificat] = await Promise.all([
+    const [payments, certificats] = await Promise.all([
       this.getCertPayement(),
       this.certService.getCertificat(),
     ]);
 
-    const combined = certificat.map(c => {
-      const uniquePayment = payment.filter(cp => c.formationId === cp.id)
-      return ({
-        ...c,
-        payment: uniquePayment[0],
-        mention: mentionNote(c.mention),
-      })
-    });
+    const paymentByFormationId = new Map(
+      payments.map(p => [p.formationId, p])
+    );
 
-    // console.log("CERTIFICAT & PAYMENT :", combined)
-    return combined;
+    return certificats.map(c => ({
+      ...c,
+      payment: paymentByFormationId.get(c.formationId) || null,
+      mention: mentionNote(c.mention),
+    }));
   }
 
 
@@ -72,54 +70,42 @@ export class FsPayementService {
       this.getCertPayement()
     ])
 
-    const combined = payments.map(p => {
-      const uniqueCustomer = customers.filter(c => c.id === p.customerId);
-      return ({
-        ...p,
-        customers: uniqueCustomer[0],
-      })
-    });
+    const customerById = new Map(customers.map(c => [c.id, c]));
 
-    // console.log("Customer & Payment ", combined)
-    return combined;
+    return payments.map(p => ({
+      ...p,
+      customers: customerById.get(p.customerId) || null,
+    }));
   }
 
   //Formation+Program+payment
   async getSessionPayment() {
-    const [payment, sessions] = await Promise.all([
+    const [payments, sessions] = await Promise.all([
       this.getCertPayement(),
       this.fsFormation.getFormationsWithPrograms(),
     ]);
 
-    const combined = payment.map(p => {
-      const uniqueSession = sessions.filter(s => s.id === p.targetId && p.targetId !== null);
-      return ({
-        ...p,
-        sessions: uniqueSession[0],
-      })
-    });
+    const sessionById = new Map(sessions.map(s => [s.id, s]));
 
-    // console.log("FORMATIONS_PROGRAMS & PAYMENT :", combined)
-    return combined;
+    return payments.map(p => ({
+      ...p,
+      sessions: p.targetId ? sessionById.get(p.targetId) : null,
+    }));
   }
 
   //User+Payment
   async getUserPayment() {
-    const [payment, users] = await Promise.all([
+    const [payments, users] = await Promise.all([
       this.getCertPayement(),
       this.fsUser.getUser(),
     ]);
 
-    const combined = payment.map(p => {
-      const uniqueUser = users.filter(u => u.id === p.userId);
-      return ({
-        ...p,
-        users: uniqueUser[0],
-      })
-    });
+    const userById = new Map(users.map(u => [u.id, u]));
 
-    // console.log("USER & PAYMENT :", combined)
-    return combined;
+    return payments.map(p => ({
+      ...p,
+      users: userById.get(p.userId) || null,
+    }));
   }
 
 
@@ -130,19 +116,18 @@ export class FsPayementService {
       this.getUserPayment()
     ])
 
-    const paymentForCert = pCustomer.map(pc => {
-      const pp = pProgram.filter(p => p.id == pc.id)
-      const pu = pUser.filter(u => u.id == pc.id)
+    const programById = new Map(pProgram.map(p => [p.id, p.sessions]));
+    const userById = new Map(pUser.map(p => [p.id, p.users]));
 
-      return ({
-        ...pc,
-        program: pp[0].sessions,
-        user: pu[0].users
-      })
-    })
+    const result = pCustomer
+      .filter(p => p.customers?.id === id)
+      .map(p => ({
+        ...p,
+        program: programById.get(p.id),
+        user: userById.get(p.id),
+      }));
 
-    const elu = paymentForCert.filter(pfc => pfc.customers.id == id)
-    console.log(elu)
-    return elu;
+    console.log(result)
+    return result;
   }
 }
