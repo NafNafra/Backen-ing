@@ -20,7 +20,22 @@ export class FsCustomerService {
     };
   }
 
-  async getUserById(idUser: string) {
+  async getAllCustomer() {
+    try {
+      const customer = await this.httpService.axiosRef.get(
+        `${this.url}/customer/get`,
+        { headers: this.headers }
+      )
+
+      if (customer.data.Customer.length == null) throw new BadRequestException('Erreur dans la base de donnees')
+      return customer.data.Customer;
+    } catch (error) {
+      console.log(error)
+      throw new InternalServerErrorException('Erreur de connexion au serveur', error);
+    }
+  }
+
+  async getCustById(idUser: string) {
     console.log(idUser)
     try {
       const customer = await this.httpService.axiosRef.get(
@@ -36,7 +51,7 @@ export class FsCustomerService {
     }
   }
 
-  async getUsersByPhone(phone: CreateAuthPhoneDto) {
+  async getCustsByPhone(phone: CreateAuthPhoneDto) {
     try {
       const customers = await this.httpService.axiosRef.get(`${this.url}/customer/getByAttributes?phone=${phone}`, this.headers)
       return customers.data;

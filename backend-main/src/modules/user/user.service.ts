@@ -44,7 +44,7 @@ export class UsersService {
     if (!user)
       throw new NotFoundException("L'utilisateur spécifié est introuvable");
 
-    const inFs = await this.fsCustomer.getUserById(user.idUser);
+    const inFs = await this.fsCustomer.getCustById(user.idUser);
     if (!inFs || inFs.length > 1)
       throw new NotFoundException("L'utilisateur spécifié est introuvable");
 
@@ -113,7 +113,7 @@ export class UsersService {
   }
 
   async findAndSyncExternalUsers(phoneAuth: CreateAuthPhoneDto): Promise<UserResponseDto[]> {
-    const externalUsers = await this.fsCustomer.getUsersByPhone(phoneAuth);
+    const externalUsers = await this.fsCustomer.getCustsByPhone(phoneAuth);
     if (!externalUsers || externalUsers.length === 0) {
       throw new BadRequestException(`Aucun étudiant trouvé avec le numéro ${phoneAuth}`);
     }

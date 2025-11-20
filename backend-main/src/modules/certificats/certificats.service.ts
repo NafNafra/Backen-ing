@@ -28,11 +28,18 @@ export class CertificatsService {
     return this.fsCert.getCertificat();
   }
 
-  async findById(id: string): Promise<CertificatResponseDto[]> {
+  async findById(id: string) { // : Promise<CertificatResponseDto[]> {
     id = "6fe73b9c-ea74-4c9e-8884-847cd4d48fdc";
-    const certificat = await this.fsPayment.customerCertPayment(id);
-    if (!certificat) throw new NotFoundException(`Certificat introuvable ou que vous n'avez pas encore fait aucune formation `);
-    return certificat;
+    const customerPay = await this.fsPayment.cleanPaymentForCertificat(id);
+    // const certificat = await this.fsPayment.customerCertPayment(id);
+    // const [customerPay, programPayment, certPayment] = await Promise.all([
+    //   this.fsPayment.getPaymentCustomer(),
+    //   this.fsPayment.getSessionPayment(),
+    //   this.fsPayment.getUserPayement(),
+    //   this.fsPayment.getCertPerPayement()
+    // ])
+    // if (!customerPay) throw new NotFoundException(`Certificat introuvable ou que vous n'avez pas encore fait aucune formation `);
+    return customerPay;
   }
 
   async update(

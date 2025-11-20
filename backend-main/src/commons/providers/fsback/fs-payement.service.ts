@@ -2,21 +2,23 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigsService } from '@/configs';
 import { FsCertService } from './fs-cert.service';
-import { Types } from 'mongoose';
 import { mentionNote } from '@/commons/utils';
-import { FsFormationService } from '@/commons/providers/fsback/fs-formation.service';
+import { FsCustomerService } from './fs-customer.service';
+import { FsFormationService } from './fs-formation.service';
+import { FsUserService } from './fs-user.service';
 
 @Injectable()
 export class FsPayementService {
   private url: string | undefined;
   private token: string | undefined;
-  private headers
+  private headers: object
   constructor(
     private readonly httpService: HttpService,
     private readonly configsService: ConfigsService,
     private readonly certService: FsCertService,
+    private readonly customer: FsCustomerService,
     private readonly fsFormation: FsFormationService,
-
+    private readonly fsUser: FsUserService
   ) {
     this.url = this.configsService.get('fs_url.base');
     this.token = this.configsService.get('fs_url.token');
@@ -37,61 +39,110 @@ export class FsPayementService {
     const payments = payment.data.Payment;
 
     const certPayment = payments.filter(p =>
-      ((p.type === "CERTIFICAT") && (p.customerId !== null))
+      ((p.type === "CERTIFICAT" || p.type === "FORMATION") && (p.customerId !== null))
     );
 
     return certPayment;
   }
 
-  // certificat depuis payements
   async getCertPerPayement() {
-    const [certPayment, certificat] = await Promise.all([
+    const [payment, certificat] = await Promise.all([
       this.getCertPayement(),
       this.certService.getCertificat(),
     ]);
 
-    const combined = certPayment.map(c => {
-      const certForPayment = certificat.filter(cp => c.targetId === cp.id);
-      return {
+    const combined = certificat.map(c => {
+      const uniquePayment = payment.filter(cp => c.formationId === cp.id)
+      return ({
         ...c,
-        certificat: certForPayment,
-        mention: mentionNote(certificat[0].mention),
-        formationId: certificat[0].formationId.toString()
-      }
+        payment: uniquePayment[0],
+        mention: mentionNote(c.mention),
+      })
     });
 
-    console.log(combined)
+    // console.log("CERTIFICAT & PAYMENT :", combined)
     return combined;
   }
 
-  // certificat d'un etudiant depuis un payement
-  async customerCertPayment(id: string) {
-    const allCertPayment = await this.getCertPerPayement();
-    const customerCert = allCertPayment.filter(
-      certPay => {
-        if (certPay.length === 0)
-          throw new BadRequestException({ message: "Bad filtering" })
 
-        return certPay.customerId === id;
-      }
-    )
+  // customer+payment
+  async getPaymentCustomer() { // type CERTIFICAT
+    const [customers, payments] = await Promise.all([
+      this.customer.getAllCustomer(),
+      this.getCertPayement()
+    ])
 
-    const formation = await this.fsFormation.getFormationsWithPrograms()
-    console.log(formation)
+    const combined = payments.map(p => {
+      const uniqueCustomer = customers.filter(c => c.id === p.customerId);
+      return ({
+        ...p,
+        customers: uniqueCustomer[0],
+      })
+    });
 
-    const cleanCertUser = customerCert.filter(
-      cc => {
-        const formations = formation.filter(f => {
-          console.log(f.id, cc.formationId)
-          return f.id == cc.formationId
-        });
-        console.log(formations)
-      }
-    )
-    console.log("CertUser : ", cleanCertUser)
+    // console.log("Customer & Payment ", combined)
+    return combined;
+  }
 
-    return customerCert
+  //Formation+Program+payment
+  async getSessionPayment() {
+    const [payment, sessions] = await Promise.all([
+      this.getCertPayement(),
+      this.fsFormation.getFormationsWithPrograms(),
+    ]);
+
+    const combined = payment.map(p => {
+      const uniqueSession = sessions.filter(s => s.id === p.targetId && p.targetId !== null);
+      return ({
+        ...p,
+        sessions: uniqueSession[0],
+      })
+    });
+
+    // console.log("FORMATIONS_PROGRAMS & PAYMENT :", combined)
+    return combined;
+  }
+
+  //User+Payment
+  async getUserPayment() {
+    const [payment, users] = await Promise.all([
+      this.getCertPayement(),
+      this.fsUser.getUser(),
+    ]);
+
+    const combined = payment.map(p => {
+      const uniqueUser = users.filter(u => u.id === p.userId);
+      return ({
+        ...p,
+        users: uniqueUser[0],
+      })
+    });
+
+    // console.log("USER & PAYMENT :", combined)
+    return combined;
   }
 
 
+  async cleanPaymentForCertificat(id: string) {
+    const [pProgram, pCustomer, pUser] = await Promise.all([
+      this.getSessionPayment(),
+      this.getPaymentCustomer(),
+      this.getUserPayment()
+    ])
+
+    const paymentForCert = pCustomer.map(pc => {
+      const pp = pProgram.filter(p => p.id == pc.id)
+      const pu = pUser.filter(u => u.id == pc.id)
+
+      return ({
+        ...pc,
+        program: pp[0].sessions,
+        user: pu[0].users
+      })
+    })
+
+    const elu = paymentForCert.filter(pfc => pfc.customers.id == id)
+    console.log(elu)
+    return elu;
+  }
 }

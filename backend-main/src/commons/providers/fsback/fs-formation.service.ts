@@ -28,13 +28,18 @@ export class FsFormationService {
 
     const formations = formationsRes.data.Formation;
     const programs = programsRes.data.Program;
+    const sessions = programs.map(p => {
+      const uniqueFormation = formations.filter(f => p.formationId == f.id && p.formationId !== null);
+      return ({
+        ...p,
+        // formations: uniqueFormation[0],
+        name: uniqueFormation[0].name,
+        fullname: uniqueFormation[0].fullname,
 
-    const combined = formations.map(f => ({
-      ...f,
-      programs: programs.filter(p => p.formationId === f.id),
-    }));
-    console.log(combined)
+      })
+    });
+    // console.log("PROGRAM & FORMATION :", sessions)
 
-    return combined;
+    return sessions;
   }
 }

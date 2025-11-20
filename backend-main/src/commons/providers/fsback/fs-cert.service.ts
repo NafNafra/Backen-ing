@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigsService } from '@/configs';
 import { FsPayementService } from './fs-payement.service';
 import { mentionNote } from '@/commons/utils';
+import { BadRequestException } from '@nestjs/common';
 
 @Injectable()
 export class FsCertService {
@@ -52,4 +53,12 @@ export class FsCertService {
 
     return combined;
   }
+  // async cleanCertificat() {
+    //   this.fsPayment.getPaymentCustomer(),
+    //   this.fsPayment.getSessionPayment(),
+    //   this.fsPayment.getUserPayement(),
+    //   this.fsPayment.getCertPerPayement()
+
+  // }
+
 }
