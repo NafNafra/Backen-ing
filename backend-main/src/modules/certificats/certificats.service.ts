@@ -30,7 +30,11 @@ export class CertificatsService {
 
   async findById(id: string): Promise<CertificatResponseDto[]> {
     id = "6fe73b9c-ea74-4c9e-8884-847cd4d48fdc";
-    const certificat = await this.fsPayment.customerCertPayment(id);
+    // const certificat = await this.fsPayment.customerCertPayment(id);
+    console.log(this.fsPayment.getCustomerPay())  //to change
+    console.log(this.fsPayment.getProgramPayment)
+    console.log(this.fsPayment.getCertPayement)
+    
     if (!certificat) throw new NotFoundException(`Certificat introuvable ou que vous n'avez pas encore fait aucune formation `);
     return certificat;
   }
