@@ -19,3 +19,8 @@ export type externPayload = {
   compteFb: string;
   activated: boolean;
 }
+
+export enum UserSex {
+  F = 'F',
+  M = 'M'
+}

@@ -3,7 +3,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Length, IsNumberString, IsDate, IsBoolean, IsEnum } from 'class-validator';
 import { Types } from 'mongoose';
 
-export class CreateUserDto {
+export class CreateFsUserDto {
+
+  @ApiProperty({
+    description: "Identifiant du customer venant du backend A",
+    example: "42"
+  })
+  @IsNotEmpty({ message: 'Ne doit pas etre vide' })
+  @IsNumberString()
+  _id: string;
 
   @ApiProperty({
     description: "First name",
@@ -90,4 +98,20 @@ export class CreateUserDto {
   })
   @IsBoolean()
   inactive: boolean;
+
+  @ApiProperty({
+    description: "Creation compte",
+    example: new Date(),
+    required: false
+  })
+  @IsDate()
+  createdAt: Date;
+
+  @ApiProperty({
+    description: "Mise a jour du compte",
+    example: new Date(),
+    required: false
+  })
+  @IsDate()
+  updatedAt: Date;
 }
