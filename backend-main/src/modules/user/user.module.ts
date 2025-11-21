@@ -7,13 +7,14 @@ import { UsersController } from '@/modules/user/user.controller';
 import { User, UserSchema } from '@/modules/user/entities/user.entity';
 import { FsbackModule } from '@/commons/providers/fsback/fsback.module';
 import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.service';
+import { RegisterModule } from '../register/register.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     HttpModule,
     ConfigsModule,
-    FsbackModule
+    FsbackModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, FsCustomerService],

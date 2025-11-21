@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/no-base-to-string */
 import {
   Injectable,
   NotFoundException,
@@ -34,6 +31,7 @@ export class UsersService {
     const user = new this.userModel(createUserDto);
     return user.save();
   }
+
 
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
@@ -152,4 +150,5 @@ export class UsersService {
       { _OtpCode: code, _OtpExpiresAt: expiresAt },
     );
   }
+
 }
