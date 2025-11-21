@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFormationDto } from '@/modules/formation/dto/create-formation.dto';
 import { UpdateFormationDto } from '@/modules/formation/dto/update-formation.dto';
-import { FormationResponseDto } from '@/modules/formation/dto/response-formation.dto';
 import { Formation, FormationDocument } from '@/modules/formation/entities/formation.entity';
 import { FsFormationService } from '@/commons/providers/fsback/fs-formation.service';
 
