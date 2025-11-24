@@ -24,13 +24,15 @@ export class CertificatsService {
   }
 
   async findAll(): Promise<CertificatResponseDto[]> {
-    // const test = 
+    const customerId = '12'
+    const test = await this.fsPayment.getPaymentCustomer(customerId)
+    console.log(test)
     return this.fsCert.getCertificat();
   }
 
   async findById(id: string) { // : Promise<CertificatResponseDto[]> {
     id = "6fe73b9c-ea74-4c9e-8884-847cd4d48fdc";
-    const customerPay = await this.fsPayment.getCertPayement(id);
+    const customerPay = await this.fsPayment.getPayementByAttribute(id);
     return customerPay;
   }
 

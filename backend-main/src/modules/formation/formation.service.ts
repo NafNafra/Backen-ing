@@ -19,8 +19,8 @@ export class FormationService {
   }
 
   // Formation with their programm
-  async findById(programId: string): Promise<Formation[]> {
-    const formationProgramm = await this.fsFormation.getSession(programId);
+  async findById(customerId: string): Promise<Formation[]> {
+    const formationProgramm = await this.fsFormation.getCustomerCertDetails(customerId);
     return formationProgramm;
   }
 

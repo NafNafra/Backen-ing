@@ -28,57 +28,29 @@ export class FsPayementService {
   }
 
   // tous les payements
-  async getCertPayement(statement: string) {
+  async getPayementByAttribute(statement: string) {
     const payment = await this.httpService.axiosRef.get(
       `${this.url}/payment/getByAttributes?type=FORMATION&type=CERTIFICAT${statement}`,
       this.headers
     );
+    console.log(payment.data)
 
-    return payment.data.Payment;
+    return payment.data;
   }
 
-
-  //Formation+Program+payment
-  async getSessionPayment(programId: string) {
-    const [payments, sessions] = await Promise.all([
-      this.getCertPayement(`&targetId=${programId}`),
-      this.fsFormation.getSession(programId),
-    ]);
-
-    const sessionById = new Map(sessions.map(s => [s.id, s]));
-
-    return payments.map(p => ({
-      ...p,
-      sessions: p.targetId ? sessionById.get(p.targetId) : null,
-    }));
-  }
-
-  async getCertPerPayement() {
-    const [payments, certificats] = await Promise.all([
-      this.getCertPayement('2645'),
-      this.certService.getCertificat(),
-    ]);
-
-    const paymentByFormationId = new Map(
-      payments.map(p => [p.formationId, p])
-    );
-
-    return certificats.map(c => ({
-      ...c,
-      payment: paymentByFormationId.get(c.formationId) || null,
-      mention: mentionNote(c.mention),
-    }));
-  }
-
-
+// certificat,
+// formationId = payment._id
+// customer
+// 
+//
+//
+//
+// 
   // customer in payment
   async getPaymentCustomer(customerId: string) { // type CERTIFICAT
-    console.log(customerId)
+    const state = `customerId=${customerId}`
     try {
-      const customer = await this.httpService.axiosRef.get(
-        `${this.url}/payment/getByAttributes?customerId=${customerId}`,
-        this.headers
-      )
+      const customer = await this.getPayementByAttribute(`&${state}`)
       console.log(customer.data);
 
       return customer.data;
