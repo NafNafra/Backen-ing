@@ -30,7 +30,7 @@ export class CertificatsService {
 
   async findById(id: string) { // : Promise<CertificatResponseDto[]> {
     id = "6fe73b9c-ea74-4c9e-8884-847cd4d48fdc";
-    const customerPay = await this.fsPayment.cleanPaymentForCertificat(id);
+    const customerPay = await this.fsPayment.getCertPayement(id);
     return customerPay;
   }
 

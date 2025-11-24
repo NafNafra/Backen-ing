@@ -19,8 +19,8 @@ export class FormationService {
   }
 
   // Formation with their programm
-  async findAll(): Promise<Formation[]> {
-    const formationProgramm = await this.fsFormation.getFormationsWithPrograms();
+  async findById(programId: string): Promise<Formation[]> {
+    const formationProgramm = await this.fsFormation.getSession(programId);
     return formationProgramm;
   }
 

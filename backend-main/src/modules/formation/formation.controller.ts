@@ -21,9 +21,9 @@ export class FormationController {
   //   return this.formationService.create(createFormationDto);
   // }
 
-  @Get()
-  findAll() {
-    return this.formationService.findAll();
+  @Get(':id')
+  findById(@Param('id') id: string) {
+    return this.formationService.findById(id);
   }
 
   // @Get(':id')
