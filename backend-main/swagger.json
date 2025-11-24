@@ -1,0 +1,990 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/get-code": {
+      "post": {
+        "operationId": "AuthController_loginClient",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAuthPhoneDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/verify-code": {
+      "post": {
+        "operationId": "AuthController_verifyCode",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifingCodeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/resend-code": {
+      "post": {
+        "operationId": "AuthController_resendCode",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAuthPhoneDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_loginChosenUser",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginChosenUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/new-token": {
+      "post": {
+        "operationId": "AuthController_refresh",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "AuthController_deconnexion",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogOutDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/users": {
+      "post": {
+        "operationId": "UsersController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      },
+      "get": {
+        "operationId": "UsersController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/phone": {
+      "get": {
+        "operationId": "UsersController_findByPhone",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/me": {
+      "get": {
+        "operationId": "UsersController_findOne",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/{id}": {
+      "patch": {
+        "operationId": "UsersController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/ObjectId"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      },
+      "delete": {
+        "operationId": "UsersController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/register": {
+      "post": {
+        "operationId": "RegisterController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "register"
+        ]
+      }
+    },
+    "/formation": {
+      "get": {
+        "operationId": "FormationController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Formation"
+        ]
+      }
+    },
+    "/formation/{id}": {
+      "patch": {
+        "operationId": "FormationController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFormationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Formation"
+        ]
+      },
+      "delete": {
+        "operationId": "FormationController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Formation"
+        ]
+      }
+    },
+    "/sessions": {
+      "post": {
+        "operationId": "SessionsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sessions"
+        ]
+      },
+      "get": {
+        "operationId": "SessionsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sessions"
+        ]
+      }
+    },
+    "/sessions/{id}": {
+      "get": {
+        "operationId": "SessionsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sessions"
+        ]
+      },
+      "patch": {
+        "operationId": "SessionsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSessionsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sessions"
+        ]
+      },
+      "delete": {
+        "operationId": "SessionsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sessions"
+        ]
+      }
+    },
+    "/contact": {
+      "get": {
+        "operationId": "ContactController_greet",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contact"
+        ]
+      },
+      "post": {
+        "operationId": "ContactController_messagingFs",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactToFs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Contact"
+        ]
+      }
+    },
+    "/certificats": {
+      "post": {
+        "operationId": "CertificatsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCertificatDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Certificats"
+        ]
+      },
+      "get": {
+        "operationId": "CertificatsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Certificats"
+        ]
+      }
+    },
+    "/certificats/{id}": {
+      "get": {
+        "operationId": "CertificatsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Certificats"
+        ]
+      },
+      "patch": {
+        "operationId": "CertificatsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCertificatDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Certificats"
+        ]
+      },
+      "delete": {
+        "operationId": "CertificatsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Certificats"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Client API",
+    "description": "CRUD API for Clients",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [
+    {
+      "url": "/api"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "CreateAuthPhoneDto": {
+        "type": "object",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "example": "0347327950"
+          }
+        },
+        "required": [
+          "phoneNumber"
+        ]
+      },
+      "VerifingCodeDto": {
+        "type": "object",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "example": "0347327950"
+          },
+          "code": {
+            "type": "string",
+            "example": "1234"
+          }
+        },
+        "required": [
+          "phoneNumber",
+          "code"
+        ]
+      },
+      "ObjectId": {
+        "type": "object",
+        "properties": {}
+      },
+      "LoginChosenUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "example": "69130451810c61130917a1c6",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
+          },
+          "phone": {
+            "type": "string",
+            "example": "0347327950"
+          },
+          "activated": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "id",
+          "phone",
+          "activated"
+        ]
+      },
+      "RefreshTokenDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "example": "0bnm-347cvbn-327vbhnj-9bn50"
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "LogOutDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "example": "0bnm-347cvbn-327vbhnj-9bn50",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "idUser": {
+            "type": "string",
+            "description": "Identifiant du customer venant du backend A",
+            "example": "42"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nom complet de l'utilisateur",
+            "example": "Alice Doe"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Numéro de téléphone de l'utilisateur",
+            "example": "+261341234567"
+          },
+          "compteFb": {
+            "type": "string",
+            "description": "Compte Facebook de l'utilisateur",
+            "example": "Miracle Quin"
+          }
+        },
+        "required": [
+          "idUser"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "example": "sdcfvghbnj",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
+          },
+          "idUser": {
+            "type": "string",
+            "example": "12"
+          }
+        },
+        "required": [
+          "_id",
+          "idUser"
+        ]
+      },
+      "CreateRegisterDto": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "description": "First name",
+            "example": "Alice"
+          },
+          "lastname": {
+            "type": "string",
+            "description": "Last name",
+            "example": "Doe"
+          },
+          "sex": {
+            "type": "string",
+            "description": "Genre l'utilisateur",
+            "example": "M"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Numéro de téléphone de l'utilisateur",
+            "example": "+261341234567"
+          },
+          "adress": {
+            "type": "string",
+            "description": "Adresse de l'utilisateur",
+            "example": "Fianarantsoa"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email de l'utilisateur",
+            "example": "jr@rj.j"
+          },
+          "birthdate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Date d'anniversaire de l'utilisateur",
+            "example": "1997-06-12T21:00:00.000+00:00"
+          },
+          "birthplace": {
+            "type": "string",
+            "description": "Lieu de naissance de l'utilisateur",
+            "example": "Antananarivo"
+          },
+          "compteFb": {
+            "type": "string",
+            "description": "Compte Facebook de l'utilisateur",
+            "example": "https://facebook.com/jennie.kim"
+          },
+          "inactive": {
+            "type": "boolean",
+            "description": "Compte actif",
+            "example": "false"
+          }
+        },
+        "required": [
+          "firstname",
+          "phone",
+          "birthdate",
+          "birthplace",
+          "inactive"
+        ]
+      },
+      "UpdateFormationDto": {
+        "type": "object",
+        "properties": {
+          "titre": {
+            "type": "string",
+            "example": "Formation Word"
+          },
+          "description": {
+            "type": "string",
+            "example": "Description"
+          },
+          "resume": {
+            "type": "string",
+            "example": "Resume"
+          },
+          "duree": {
+            "type": "string",
+            "example": "2 semaines"
+          }
+        },
+        "required": [
+          "titre",
+          "description",
+          "resume",
+          "duree"
+        ]
+      },
+      "CreateSessionsDto": {
+        "type": "object",
+        "properties": {
+          "formationId": {
+            "type": "string",
+            "example": "qwer4567tyu7890uio123"
+          },
+          "dateDebut": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-10-10T08:00:00.000Z"
+          },
+          "dateFin": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-10-20T17:00:00.000Z"
+          },
+          "nombrePlace": {
+            "type": "number",
+            "example": 30
+          }
+        },
+        "required": [
+          "formationId",
+          "dateDebut",
+          "dateFin",
+          "nombrePlace"
+        ]
+      },
+      "UpdateSessionsDto": {
+        "type": "object",
+        "properties": {
+          "dateDebut": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-10-10T08:00:00.000Z"
+          },
+          "dateFin": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-10-20T17:00:00.000Z"
+          },
+          "nombrePlace": {
+            "type": "number",
+            "example": 30
+          }
+        },
+        "required": [
+          "dateDebut",
+          "dateFin",
+          "nombrePlace"
+        ]
+      },
+      "ContactToFs": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": "string",
+            "example": "Alice"
+          },
+          "numero": {
+            "type": "string",
+            "example": 12369
+          },
+          "message": {
+            "type": "string",
+            "example": "Message"
+          }
+        },
+        "required": [
+          "nom",
+          "numero",
+          "message"
+        ]
+      },
+      "CreateCertificatDto": {
+        "type": "object",
+        "properties": {
+          "idStudent": {
+            "type": "string",
+            "example": "fdiygoudgouhbdjv73ey2873yg"
+          },
+          "linkImage": {
+            "type": "string",
+            "example": "http://localhost:5000"
+          },
+          "isPublik": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": [
+          "idStudent",
+          "linkImage",
+          "isPublik"
+        ]
+      },
+      "UpdateCertificatDto": {
+        "type": "object",
+        "properties": {
+          "idStudent": {
+            "type": "string",
+            "example": "fdiygoudgouhbdjv73ey2873yg"
+          },
+          "linkImage": {
+            "type": "string",
+            "example": "http://localhost:5000"
+          },
+          "isPublik": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": [
+          "idStudent",
+          "linkImage",
+          "isPublik"
+        ]
+      }
+    }
+  }
+}
