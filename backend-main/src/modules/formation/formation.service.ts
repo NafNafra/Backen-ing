@@ -4,13 +4,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFormationDto } from '@/modules/formation/dto/create-formation.dto';
 import { UpdateFormationDto } from '@/modules/formation/dto/update-formation.dto';
 import { Formation, FormationDocument } from '@/modules/formation/entities/formation.entity';
-import { FsFormationService } from '@/commons/providers/fsback/fs-formation.service';
+import { FsCertService } from '@/commons/providers/fsback/fs-cert.service';
 
 @Injectable()
 export class FormationService {
   constructor(
     @InjectModel(Formation.name) private formationModel: Model<FormationDocument>,
-    private readonly fsFormation: FsFormationService,
+    private readonly fsFormation: FsCertService,
   ) { }
 
   async create(createFormationDto: CreateFormationDto): Promise<Formation> {

@@ -14,9 +14,6 @@ export class FsPayementService {
   constructor(
     private readonly httpService: HttpService,
     private readonly configsService: ConfigsService,
-    private readonly certService: FsCertService,
-    private readonly customer: FsCustomerService,
-    private readonly fsFormation: FsFormationService,
   ) {
     this.url = this.configsService.get('fs_url.base');
     this.token = this.configsService.get('fs_url.token');
@@ -26,6 +23,14 @@ export class FsPayementService {
       },
     }
   }
+  async getPaymentsByCustomer(customerId: string) {
+    const res = await this.httpService.axiosRef.get(
+      `${this.url}/payment/getByAttributes?customerId=${customerId}`,
+      this.headers
+    );
+
+    return res.data ?? [];
+  }
 
   // tous les payements
   async getPayementByAttribute(statement: string) {
@@ -33,25 +38,17 @@ export class FsPayementService {
       `${this.url}/payment/getByAttributes?type=FORMATION&type=CERTIFICAT${statement}`,
       this.headers
     );
-    console.log(payment.data)
+    // console.log(payment.data)
 
     return payment.data;
   }
 
-// certificat,
-// formationId = payment._id
-// customer
-// 
-//
-//
-//
-// 
-  // customer in payment
+
   async getPaymentCustomer(customerId: string) { // type CERTIFICAT
     const state = `customerId=${customerId}`
     try {
       const customer = await this.getPayementByAttribute(`&${state}`)
-      console.log(customer.data);
+      // console.log(customer.data);
 
       return customer.data;
     } catch (error) {

@@ -1,8 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigsService } from '@/configs';
 import { mentionNote } from '@/commons/utils';
 import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { FsFormationService } from '@/commons/providers/fsback/fs-formation.service';
+import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.service';
+import { FsPayementService } from '@/commons/providers/fsback/fs-payement.service';
 
 @Injectable()
 export class FsCertService {
@@ -12,7 +15,9 @@ export class FsCertService {
   constructor(
     private readonly httpService: HttpService,
     private readonly configsService: ConfigsService,
-
+    private readonly fsFormation: FsFormationService,
+    private readonly fsCustomer: FsCustomerService,
+    private readonly fsPayment: FsPayementService,
   ) {
     this.url = this.configsService.get('fs_url.base');
     this.token = this.configsService.get('fs_url.token');
@@ -34,41 +39,68 @@ export class FsCertService {
   }
 
   async getCertById(formationId: string) {
-    console.log(formationId)
     try {
-      const customer = await this.httpService.axiosRef.get(
+      const res = await this.httpService.axiosRef.get(
         `${this.url}/cert/getByAttributes?formationId=${formationId}`,
         this.headers
       )
-      console.log(customer.data);
 
-      if (customer.data.length > 1) throw new BadRequestException('Erreur dans la base de donnees')
-      return customer.data;
+      const certs = res.data;
+      return certs?.[0] ?? null;
     } catch (error) {
-      throw new InternalServerErrorException('Erreur de connexion au serveur',);
+      console.warn(`Cert not found for paymentId: ${formationId}`);
     }
   }
 
+  async getCustomerCertDetails(customerId: string) {
+    const cus = await this.fsCustomer.getCustById(customerId);
 
-  async getCertificatByFormationId(formationId: string) {
-    const headers = {
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-      },
-    };
+    const customer = cus[0];
+    if (!customer) {
+      throw new NotFoundException("Customer not found");
+    }
 
-    // 1) Fetch ALL certificates once
-    const res = await this.httpService.axiosRef.get(
-      `${this.url}/cert/get`,
-      headers
+    const paymentsRes = await this.httpService.axiosRef.get(
+      `${this.url}/payment/getByAttributes?customerId=${customerId}`,
+      this.headers
+    );
+    const payments = await this.fsPayment.getPaymentsByCustomer(customerId);
+
+    const paymentIds = payments.map(p => p._id);
+
+    if (paymentIds.length === 0) {
+      return [];
+    }
+
+    const certs = await Promise.all(
+      paymentIds.map(pid => this.getCertById(pid))
     );
 
-    const certificats = res.data.Cert;
-    if (!Array.isArray(certificats)) return [];
+    const filteredCerts = certs.filter(c => c);
 
-    // 2) Filter by formationId (FAST)
-    return certificats.filter(c => c.formationId === formationId);
+
+    if (filteredCerts.length === 0) {
+      return [];
+    }
+
+    const results: any[] = [];
+
+    for (const cert of filteredCerts) {
+      const payment = payments.find(p => p._id == cert.formationId);
+
+      const session = await this.fsFormation.getSession(payment.targetId)
+
+      results.push({
+        cert,
+        payment,
+        session
+      });
+    }
+
+    return {
+      ...customer,
+      results: results
+    };
   }
-
 
 }
