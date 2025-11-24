@@ -1,6 +1,6 @@
 import { Controller, Post, Query, Body } from '@nestjs/common';
 import { AuthService } from '@/modules/auth/auth.service';
-import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
+import { CreateAuthPhoneDto, LogOutDto, RefreshTokenDto, VerifingCodeDto } from '@/modules/auth/dto/create-auth.dto';
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Types } from 'mongoose';
@@ -11,21 +11,20 @@ export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   @Post('get-code')
-  loginClient(@Query('phoneNumber') phoneAuth: CreateAuthPhoneDto) {
-    return this.authService.lookByPhone(phoneAuth);
+  loginClient(@Body() phoneNumber: CreateAuthPhoneDto) {
+    return this.authService.lookByPhone(phoneNumber);
   }
 
   @Post('verify-code')
   verifyCode(
-    @Query('phoneNumber') phoneAuth: CreateAuthPhoneDto,
-    @Query('code') code: string,
+    @Body() dto: VerifingCodeDto,
   ) {
-    return this.authService.verifyOtp(phoneAuth, code);
+    return this.authService.verifyOtp(dto);
   }
 
   @Post('resend-code')
-  resendCode(@Query('phoneNumber') phoneAuth: CreateAuthPhoneDto) {
-    return this.authService.resendCode(phoneAuth);
+  resendCode(@Body() phoneNumber: CreateAuthPhoneDto) {
+    return this.authService.resendCode(phoneNumber);
   }
 
   @Post('login')
@@ -34,12 +33,12 @@ export class AuthController {
   }
 
   @Post('new-token')
-  async refresh(@Query('refreshToken') refreshToken: string) {
+  async refresh(@Body() refreshToken: RefreshTokenDto) {
     return this.authService.refreshAccessToken(refreshToken);
   }
 
   @Post('logout')
-  async deconnexion(@Query('id') id: Types.ObjectId) {
+  async deconnexion(@Body() id: LogOutDto) {
     return this.authService.logout(id);
   }
 }

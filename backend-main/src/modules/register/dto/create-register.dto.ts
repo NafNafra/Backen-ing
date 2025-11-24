@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Length, IsNumberString, IsDate, IsBoolean, IsEnum } from 'class-validator';
 import { Types } from 'mongoose';
 
-export class CreateUserDto {
+export class CreateRegisterDto {
 
   @ApiProperty({
     description: "First name",

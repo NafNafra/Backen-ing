@@ -21,7 +21,7 @@ import { UsersService } from '@/modules/user/user.service';
 import { SmsService } from '@/commons/providers/sms/sms.service';
 import { payload } from '@/commons/types/auth';
 import { AuthResponse } from '@/modules/auth/dto/response.dto';
-import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
+import { CreateAuthPhoneDto, LogOutDto, RefreshTokenDto, VerifingCodeDto, VerifyCodeDto } from '@/modules/auth/dto/create-auth.dto';
 import { UserResponseDto } from '@/modules/user/dto/response-user.dto';
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
 
@@ -36,33 +36,36 @@ export class AuthService {
   ) { }
 
   // Look for user by phone number and send OTP
-  async lookByPhone(phoneAuth: CreateAuthPhoneDto) {
-    const savedUsers = await this.usersService.findAndSyncExternalUsers(phoneAuth);
+  async lookByPhone(phoneNumber: CreateAuthPhoneDto) {
+    console.log(phoneNumber)
+    const savedUsers = await this.usersService.findAndSyncExternalUsers(phoneNumber);
+    console.log(savedUsers)
 
     const OtpCode = generateOtpCode();
     const OtpExpiresAt = setOtpExpiryTime();
+    console.log(OtpCode, OtpExpiresAt)
 
     for (const user of savedUsers) {
       await this.usersService.updateOtp(user.idUser, OtpCode, OtpExpiresAt);
     }
     await this.smsService.sendSms(
-      phoneAuth.toString(),
+      phoneNumber.phoneNumber,
       `Votre code de vérification est: ${OtpCode}`,
     );
 
     return {
-      message: `Le code de vérification a été envoyé au numéro: ${phoneAuth}. Le code ${OtpCode} expirera dans 10 minutes.`,
+      message: `Le code de vérification a été envoyé au numéro: ${phoneNumber.phoneNumber}. Le code ${OtpCode} expirera dans 10 minutes.`,
     };
   }
 
   // Verify OTP code
   async verifyOtp(
-    phoneAuth: CreateAuthPhoneDto,
-    code: string,
+    dto: VerifingCodeDto,
   ): Promise<AuthResponse> {
-    const users = await this.usersService.findByPhone(phoneAuth);
+    const { phoneNumber, code } = dto;
+    const users = await this.usersService.findByPhone(phoneNumber);
     if (!users || users.length === 0) {
-      throw new NotFoundException(`User with phone ${phoneAuth} not found`);
+      throw new NotFoundException(`User with phone ${phoneNumber} not found`);
     }
     console.log(users);
     const validOtpUser = users.find(
@@ -97,10 +100,10 @@ export class AuthService {
   }
 
   // Reenvoyer le code
-  async resendCode(phoneAuth: CreateAuthPhoneDto) {
-    const users = await this.usersService.findByPhone(phoneAuth);
+  async resendCode(phoneNumber: CreateAuthPhoneDto) {
+    const users = await this.usersService.findByPhone(phoneNumber.phoneNumber);
     if (!users || users.length === 0) {
-      throw new NotFoundException(`User with phone ${phoneAuth} not found`);
+      throw new NotFoundException(`User with phone ${phoneNumber.phoneNumber} not found`);
     }
 
     for (const user of users) {
@@ -117,12 +120,12 @@ export class AuthService {
     }
 
     await this.smsService.sendSms(
-      phoneAuth.toString(),
+      phoneNumber.toString(),
       `Votre code de vérification est: ${OtpCode}`,
     );
 
     return {
-      message: `Le code de vérification a été envoyé au numéro: ${phoneAuth}. Le code ${OtpCode} expirera dans 10 minutes.`,
+      message: `Le code de vérification a été envoyé au numéro: ${phoneNumber.phoneNumber}. Le code ${OtpCode} expirera dans 10 minutes.`,
     };
 
   }
@@ -183,8 +186,8 @@ export class AuthService {
   }
 
 
-  async logout(userId: Types.ObjectId): Promise<void> {
-    await this.usersService.update(userId, { refreshToken: null, activated: false });
+  async logout(userId: LogOutDto): Promise<void> {
+    await this.usersService.update(userId.id, { refreshToken: null, activated: false });
   }
 
   async generateTokens(
@@ -211,9 +214,9 @@ export class AuthService {
   }
 
   async refreshAccessToken(
-    refreshToken: string,
+    refreshToken: RefreshTokenDto,
   ): Promise<{ access_token: string }> {
-    const payload = this.jwtService.verify(refreshToken, {
+    const payload = this.jwtService.verify(refreshToken.refreshToken, {
       secret: this.configsService.get('jwt.refresh.secret'),
     });
 
@@ -222,7 +225,7 @@ export class AuthService {
     if (!user || !user.refreshToken)
       throw new UnauthorizedException('Invalid refresh token ko');
 
-    const isTokenValid = await bcrypt.compare(refreshToken, user.refreshToken);
+    const isTokenValid = await bcrypt.compare(refreshToken.refreshToken, user.refreshToken);
     if (!isTokenValid) throw new UnauthorizedException('Invalid refresh token');
 
     const newAccessToken = await this.jwtService.signAsync(

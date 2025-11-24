@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-register.dto';
+import { CreateRegisterDto } from './dto/create-register.dto';
 import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.service';
 import { Types } from 'mongoose';
 
@@ -7,7 +7,7 @@ import { Types } from 'mongoose';
 export class RegisterService {
   constructor(private readonly fsUser: FsCustomerService) { }
 
-  create(createRegisterDto: CreateUserDto) {
+  create(createRegisterDto: CreateRegisterDto) {
     const _id = new Types.ObjectId().toString();
 
     const payload = {

@@ -110,10 +110,10 @@ export class UsersService {
     return deleted;
   }
 
-  async findAndSyncExternalUsers(phoneAuth: CreateAuthPhoneDto): Promise<UserResponseDto[]> {
-    const externalUsers = await this.fsCustomer.getCustsByPhone(phoneAuth);
+  async findAndSyncExternalUsers(phoneNumber: CreateAuthPhoneDto): Promise<UserResponseDto[]> {
+    const externalUsers = await this.fsCustomer.getCustsByPhone(phoneNumber);
     if (!externalUsers || externalUsers.length === 0) {
-      throw new BadRequestException(`Aucun étudiant trouvé avec le numéro ${phoneAuth}`);
+      throw new BadRequestException(`Aucun étudiant trouvé avec le numéro ${phoneNumber}`);
     }
 
     const savedUsers: UserResponseDto[] = [];
@@ -129,7 +129,6 @@ export class UsersService {
 
       let localUser = await this.userModel.findOne({ idUser: ext._id });
 
-      console.log('localUser : ', localUser)
       if (!localUser) {
         localUser = new this.userModel(payload);
         await localUser.save();
