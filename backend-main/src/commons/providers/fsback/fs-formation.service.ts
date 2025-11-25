@@ -71,13 +71,13 @@ export class FsFormationService {
 
   async getAllSessions() {
     const formationRes = await this.httpService.axiosRef.get(
-      `${this.url}/formation/get`,
+      `${this.url}/formation/getByAttributes?id=1`,
       this.headers
     )
-    return await Promise.all(
-      formationRes.data.Formation.map(async (fs) => {
-        const programs = await this.getProgramByFid(fs.id)
 
+    return await Promise.all(
+      formationRes.data.map(async (fs) => {
+        const programs = await this.getProgramByFid(fs._id)
         return {
           ...fs,
           programs: programs ?? []

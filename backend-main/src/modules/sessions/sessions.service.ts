@@ -2,13 +2,14 @@
 import { Injectable } from '@nestjs/common';
 import { Sessions } from '@/modules/sessions/entities/session.entity';
 import { FsFormationService } from '@/commons/providers/fsback/fs-formation.service';
+import { SessionResponseDto } from './dto/response-session.dto';
 @Injectable()
 export class SessionsService {
   constructor(
     private readonly fsFormation: FsFormationService,
   ) { }
 
-  async findAll(): Promise<Sessions[]> {
+  async findAll() : Promise<SessionResponseDto[]> {
     return await this.fsFormation.getAllSessions();
   }
 

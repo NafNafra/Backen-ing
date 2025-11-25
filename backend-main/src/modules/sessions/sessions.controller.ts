@@ -8,9 +8,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { SessionsService } from '@/modules/sessions/sessions.service';
-import { CreateSessionsDto } from '@/modules/sessions/dto/create-session.dto';
-import { UpdateSessionsDto } from '@/modules/sessions/dto/update-session.dto';
 import { ApiOkResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
+import { SessionResponseDto } from './dto/response-session.dto';
 
 @ApiTags('sessions')
 @Controller('sessions')
@@ -19,9 +18,13 @@ export class SessionsController {
 
   @Get()
   @ApiOperation({ summary: 'Get all sessions' })
-  @ApiOkResponse({ description: 'Sessions found successfully' })
-  findAll() {
-    return this.sessionsService.findAll();
+  @ApiOkResponse({
+    description: 'Sessions found successfully',
+    type: [SessionResponseDto]
+  })
+  async findAll() : Promise<SessionResponseDto[]> {
+    const data = await this.sessionsService.findAll();
+    return data.map(item => new SessionResponseDto(item))
   }
 
   // @Get(':id')

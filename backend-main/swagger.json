@@ -391,7 +391,17 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Sessions found successfully"
+            "description": "Sessions found successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SessionResponseDto"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Get all sessions",
@@ -739,6 +749,107 @@
           "createdAt",
           "updatedAt",
           "inactive"
+        ]
+      },
+      "ProgramResponseDto": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "2"
+          },
+          "date": {
+            "type": "string",
+            "example": "2020-08-31T00:00:00.000Z"
+          },
+          "detail": {
+            "type": "object",
+            "example": null
+          },
+          "price": {
+            "type": "number",
+            "example": 30000
+          },
+          "certprice": {
+            "type": "number",
+            "example": 5000
+          },
+          "place": {
+            "type": "string",
+            "example": "0"
+          },
+          "inactive": {
+            "type": "boolean",
+            "example": false
+          },
+          "formationId": {
+            "type": "string",
+            "example": "2"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-09-02T06:03:01.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2022-08-01T10:44:13.000Z"
+          }
+        },
+        "required": [
+          "_id",
+          "date",
+          "detail",
+          "price",
+          "certprice",
+          "place",
+          "inactive",
+          "formationId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SessionResponseDto": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "2"
+          },
+          "name": {
+            "type": "string",
+            "example": "Leadership"
+          },
+          "fullname": {
+            "type": "string",
+            "example": "Leadership"
+          },
+          "inactive": {
+            "type": "boolean",
+            "example": false
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2020-09-02T06:02:28.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2022-07-23T08:07:12.000Z"
+          },
+          "programs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProgramResponseDto"
+            }
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "fullname",
+          "inactive",
+          "createdAt",
+          "updatedAt",
+          "programs"
         ]
       }
     }
