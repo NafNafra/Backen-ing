@@ -4,6 +4,7 @@ import { CreateAuthPhoneDto, LogOutDto, RefreshTokenDto, VerifingCodeDto } from 
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiBadRequestResponse } from '@nestjs/swagger';
 import { Types } from 'mongoose';
+import { MessageResponseDto } from './dto/response.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -12,9 +13,14 @@ export class AuthController {
 
   @Post('get-code')
   @ApiOperation({ summary: 'Request OTP code for login' })
-  @ApiOkResponse({ description: 'OTP sent successfully' })
+  @ApiOkResponse({
+    description: 'OTP sent successfully',
+    type: MessageResponseDto
+  })
   @ApiBadRequestResponse({ description: 'Invalid phone number' })
-  loginClient(@Body() phoneNumber: CreateAuthPhoneDto) {
+  async loginClient(
+    @Body() phoneNumber: CreateAuthPhoneDto
+  ): Promise<MessageResponseDto> {
     return this.authService.lookByPhone(phoneNumber);
   }
 

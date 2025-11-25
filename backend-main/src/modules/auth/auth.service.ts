@@ -20,7 +20,7 @@ import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.servic
 import { UsersService } from '@/modules/user/user.service';
 import { SmsService } from '@/commons/providers/sms/sms.service';
 import { payload } from '@/commons/types/auth';
-import { AuthResponse } from '@/modules/auth/dto/response.dto';
+import { AuthResponse, MessageResponseDto } from '@/modules/auth/dto/response.dto';
 import { CreateAuthPhoneDto, LogOutDto, RefreshTokenDto, VerifingCodeDto, VerifyCodeDto } from '@/modules/auth/dto/create-auth.dto';
 import { UserResponseDto } from '@/modules/user/dto/response-user.dto';
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
@@ -36,14 +36,11 @@ export class AuthService {
   ) { }
 
   // Look for user by phone number and send OTP
-  async lookByPhone(phoneNumber: CreateAuthPhoneDto) {
-    // console.log("lookByPhone ", phoneNumber)
+  async lookByPhone(phoneNumber: CreateAuthPhoneDto): Promise<MessageResponseDto> {
     const savedUsers = await this.usersService.findAndSyncExternalUsers(phoneNumber);
-    // console.log(savedUsers)
 
     const OtpCode = generateOtpCode();
     const OtpExpiresAt = setOtpExpiryTime();
-    // console.log(OtpCode, OtpExpiresAt)
 
     for (const user of savedUsers) {
       await this.usersService.updateOtp(user.idUser, OtpCode, OtpExpiresAt);
@@ -53,9 +50,9 @@ export class AuthService {
       `Votre code de vérification est: ${OtpCode}`,
     );
 
-    return {
-      message: `Le code de vérification a été envoyé au numéro: ${phoneNumber.phoneNumber}. Le code ${OtpCode} expirera dans 10 minutes.`,
-    };
+    return new MessageResponseDto(
+      `Le code de vérification a été envoyé au numéro: ${phoneNumber.phoneNumber}. Le code ${OtpCode} expirera dans 10 minutes.`,
+    );
   }
 
   // Verify OTP code

@@ -17,7 +17,14 @@
         },
         "responses": {
           "200": {
-            "description": "OTP sent successfully"
+            "description": "OTP sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponseDto"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid phone number"
@@ -532,6 +539,18 @@
         },
         "required": [
           "phoneNumber"
+        ]
+      },
+      "MessageResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Le code a été envoyé au numéro 034732..."
+          }
+        },
+        "required": [
+          "message"
         ]
       },
       "VerifingCodeDto": {
