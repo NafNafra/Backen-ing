@@ -6,16 +6,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { FsbackModule } from '@/commons/providers/fsback/fsback.module';
 import { FsCertService } from '@/commons/providers/fsback/fs-cert.service';
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: Certificat.name, schema: CertificatSchema },
-    ]),
-    FsbackModule
-  ],
+  imports: [FsbackModule],
   controllers: [CertificatsController],
-  providers: [
-    CertificatsService,
-  ],
+  providers: [CertificatsService,],
   exports: [CertificatsService],
 })
-export class CertificatsModule {}
+export class CertificatsModule { }

@@ -9,14 +9,8 @@ import { FsCertService } from '@/commons/providers/fsback/fs-cert.service';
 @Injectable()
 export class FormationService {
   constructor(
-    @InjectModel(Formation.name) private formationModel: Model<FormationDocument>,
     private readonly fsFormation: FsCertService,
   ) { }
-
-  async create(createFormationDto: CreateFormationDto): Promise<Formation> {
-    const formation = new this.formationModel(createFormationDto);
-    return formation.save();
-  }
 
   // Formation with their programm
   async findById(customerId: string): Promise<Formation[]> {
@@ -30,28 +24,6 @@ export class FormationService {
   //   return new FormationResponseDto(formation);
   // }
 
-  async update(
-    id: string,
-    updateFormationDto: UpdateFormationDto,
-  ): Promise<Formation> {
-    const updatedFormation = await this.formationModel
-      .findByIdAndUpdate(
-        id,
-        updateFormationDto,
-        { new: true, runValidators: true },
-      )
-      .exec();
-    if (!updatedFormation) {
-      throw new NotFoundException(`Formation avec id="${id}" non trouvé`);
-    }
-    return updatedFormation;
-  }
-
-  remove(id: string): void {
-    const formationToDelete = this.formationModel.findByIdAndDelete(id).exec();
-    if (!formationToDelete)
-      throw new NotFoundException(`Formation avec id=${id} non trouvé`);
-  }
 
   // async findOneWithSessions(id: string) {
   //   const formationSession = this.formationModel

@@ -13,7 +13,7 @@ interface Formation {
 export class FsFormationService {
   private url: string | undefined;
   private token: string | undefined;
-  private headers
+  private headers: object;
   constructor(
     private readonly httpService: HttpService,
     private readonly configsService: ConfigsService,

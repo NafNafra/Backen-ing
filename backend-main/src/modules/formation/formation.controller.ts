@@ -31,19 +31,6 @@ export class FormationController {
   //   return this.formationService.findById(id);
   // }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateFormationDto: UpdateFormationDto,
-  ) {
-    return this.formationService.update(id, updateFormationDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string): void {
-    return this.formationService.remove(id);
-  }
-
   // @Get('oneSession')
   // async findOneWithSessions(@Param('id') id: string) {
   //   return this.formationService.findOneWithSessions(id);

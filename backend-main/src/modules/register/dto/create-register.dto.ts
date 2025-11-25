@@ -28,7 +28,7 @@ export class CreateRegisterDto {
     example: "M",
     required: false
   })
-  @IsEnum(UserSex, { message: 'sex must be M or F' })
+  @IsEnum(['F', 'M'], { message: 'sex must be M or F' })
   sex: UserSex;
 
 

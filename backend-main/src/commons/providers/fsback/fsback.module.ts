@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
-import { ConfigsModule } from 'src/configs';
+import { ConfigsModule } from '@/configs';
 import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.service';
 import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 import { FsFormationService } from '@/commons/providers/fsback/fs-formation.service';

@@ -1,13 +1,13 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { ConfigsService } from 'src/configs';
+import { ConfigsService } from '@/configs';
 import { BadRequestException } from '@nestjs/common';
 import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 @Injectable()
 export class FsCustomerService {
   private url: string | undefined;
   private token: string | undefined;
-  private headers
+  private headers: object;
   constructor(
     private readonly httpService: HttpService,
     private readonly configsService: ConfigsService,

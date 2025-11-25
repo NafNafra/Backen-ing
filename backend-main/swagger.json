@@ -4,17 +4,16 @@
     "/auth/get-code": {
       "post": {
         "operationId": "AuthController_loginClient",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAuthPhoneDto"
-              }
+        "parameters": [
+          {
+            "name": "phoneNumber",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/CreateAuthPhoneDto"
             }
           }
-        },
+        ],
         "responses": {
           "201": {
             "description": ""
@@ -28,17 +27,24 @@
     "/auth/verify-code": {
       "post": {
         "operationId": "AuthController_verifyCode",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VerifingCodeDto"
-              }
+        "parameters": [
+          {
+            "name": "phoneNumber",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/CreateAuthPhoneDto"
+            }
+          },
+          {
+            "name": "code",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
-        },
+        ],
         "responses": {
           "201": {
             "description": ""
@@ -52,17 +58,16 @@
     "/auth/resend-code": {
       "post": {
         "operationId": "AuthController_resendCode",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAuthPhoneDto"
-              }
+        "parameters": [
+          {
+            "name": "phoneNumber",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/CreateAuthPhoneDto"
             }
           }
-        },
+        ],
         "responses": {
           "201": {
             "description": ""
@@ -76,17 +81,24 @@
     "/auth/login": {
       "post": {
         "operationId": "AuthController_loginChosenUser",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginChosenUserDto"
-              }
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ObjectId"
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/CreateAuthPhoneDto"
             }
           }
-        },
+        ],
         "responses": {
           "201": {
             "description": ""
@@ -100,17 +112,16 @@
     "/auth/new-token": {
       "post": {
         "operationId": "AuthController_refresh",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RefreshTokenDto"
-              }
+        "parameters": [
+          {
+            "name": "refreshToken",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
-        },
+        ],
         "responses": {
           "201": {
             "description": ""
@@ -124,17 +135,16 @@
     "/auth/logout": {
       "post": {
         "operationId": "AuthController_deconnexion",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LogOutDto"
-              }
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
-        },
+        ],
         "responses": {
           "201": {
             "description": ""
@@ -292,54 +302,9 @@
         ]
       }
     },
-    "/formation": {
-      "get": {
-        "operationId": "FormationController_findAll",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Formation"
-        ]
-      }
-    },
     "/formation/{id}": {
-      "patch": {
-        "operationId": "FormationController_update",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateFormationDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Formation"
-        ]
-      },
-      "delete": {
-        "operationId": "FormationController_remove",
+      "get": {
+        "operationId": "FormationController_findById",
         "parameters": [
           {
             "name": "id",
@@ -508,28 +473,6 @@
       }
     },
     "/certificats": {
-      "post": {
-        "operationId": "CertificatsController_create",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateCertificatDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Certificats"
-        ]
-      },
       "get": {
         "operationId": "CertificatsController_findAll",
         "parameters": [],
@@ -546,58 +489,6 @@
     "/certificats/{id}": {
       "get": {
         "operationId": "CertificatsController_findOne",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Certificats"
-        ]
-      },
-      "patch": {
-        "operationId": "CertificatsController_update",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateCertificatDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Certificats"
-        ]
-      },
-      "delete": {
-        "operationId": "CertificatsController_remove",
         "parameters": [
           {
             "name": "id",
@@ -645,87 +536,16 @@
         "properties": {
           "phoneNumber": {
             "type": "string",
-            "example": "0347327950"
+            "example": "+261349482910"
           }
         },
         "required": [
           "phoneNumber"
         ]
       },
-      "VerifingCodeDto": {
-        "type": "object",
-        "properties": {
-          "phoneNumber": {
-            "type": "string",
-            "example": "0347327950"
-          },
-          "code": {
-            "type": "string",
-            "example": "1234"
-          }
-        },
-        "required": [
-          "phoneNumber",
-          "code"
-        ]
-      },
       "ObjectId": {
         "type": "object",
         "properties": {}
-      },
-      "LoginChosenUserDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "example": "69130451810c61130917a1c6",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectId"
-              }
-            ]
-          },
-          "phone": {
-            "type": "string",
-            "example": "0347327950"
-          },
-          "activated": {
-            "type": "boolean",
-            "example": true
-          }
-        },
-        "required": [
-          "id",
-          "phone",
-          "activated"
-        ]
-      },
-      "RefreshTokenDto": {
-        "type": "object",
-        "properties": {
-          "refreshToken": {
-            "type": "string",
-            "example": "0bnm-347cvbn-327vbhnj-9bn50"
-          }
-        },
-        "required": [
-          "refreshToken"
-        ]
-      },
-      "LogOutDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "example": "0bnm-347cvbn-327vbhnj-9bn50",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectId"
-              }
-            ]
-          }
-        },
-        "required": [
-          "id"
-        ]
       },
       "CreateUserDto": {
         "type": "object",
@@ -839,33 +659,6 @@
           "inactive"
         ]
       },
-      "UpdateFormationDto": {
-        "type": "object",
-        "properties": {
-          "titre": {
-            "type": "string",
-            "example": "Formation Word"
-          },
-          "description": {
-            "type": "string",
-            "example": "Description"
-          },
-          "resume": {
-            "type": "string",
-            "example": "Resume"
-          },
-          "duree": {
-            "type": "string",
-            "example": "2 semaines"
-          }
-        },
-        "required": [
-          "titre",
-          "description",
-          "resume",
-          "duree"
-        ]
-      },
       "CreateSessionsDto": {
         "type": "object",
         "properties": {
@@ -939,50 +732,6 @@
           "nom",
           "numero",
           "message"
-        ]
-      },
-      "CreateCertificatDto": {
-        "type": "object",
-        "properties": {
-          "idStudent": {
-            "type": "string",
-            "example": "fdiygoudgouhbdjv73ey2873yg"
-          },
-          "linkImage": {
-            "type": "string",
-            "example": "http://localhost:5000"
-          },
-          "isPublik": {
-            "type": "boolean",
-            "example": false
-          }
-        },
-        "required": [
-          "idStudent",
-          "linkImage",
-          "isPublik"
-        ]
-      },
-      "UpdateCertificatDto": {
-        "type": "object",
-        "properties": {
-          "idStudent": {
-            "type": "string",
-            "example": "fdiygoudgouhbdjv73ey2873yg"
-          },
-          "linkImage": {
-            "type": "string",
-            "example": "http://localhost:5000"
-          },
-          "isPublik": {
-            "type": "boolean",
-            "example": false
-          }
-        },
-        "required": [
-          "idStudent",
-          "linkImage",
-          "isPublik"
         ]
       }
     }
