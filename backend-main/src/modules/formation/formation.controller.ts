@@ -22,7 +22,7 @@ export class FormationController {
   // }
 
   @Get(':id')
-  findById(@Param('id') id: string) {
+  findById(@Param('id') id: string) { //2263
     return this.formationService.findById(id);
   }
 
