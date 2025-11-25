@@ -55,7 +55,9 @@ export class AuthController {
   @ApiOperation({ summary: 'Login with chosen user' })
   @ApiOkResponse({ description: 'Login successful' })
   @ApiBadRequestResponse({ description: 'Invalid credentials' })
-  async loginChosenUser(@Body() student: LoginChosenUserDto) {
+  async loginChosenUser(
+    @Body() student: LoginChosenUserDto
+  ): Promise<VerifyCodeResponseDto> {
     return await this.authService.loginChosenUser(student)
   }
 

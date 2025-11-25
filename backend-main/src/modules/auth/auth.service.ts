@@ -125,14 +125,14 @@ export class AuthService {
   }
 
   // Se connecter a un utilisateur
-  async loginChosenUser(student: LoginChosenUserDto) {
-    const users = await this.usersService.findByPhone(student.phone); //
+  async loginChosenUser(student: LoginChosenUserDto): Promise<VerifyCodeResponseDto> {
+    const users = await this.usersService.findByPhone(student.phone);
     if (!users) {
       throw new NotFoundException(`User with phone ${student.phone} not found`);
     }
     const validOtpUser = users.find(
       (u) => {
-        if (u._id && student.id && u._id.toString() === student.id.toString()) {
+        if (u._id && student._id && u._id.toString() === student._id) {
           return u
         }
         else {
@@ -152,19 +152,18 @@ export class AuthService {
       activated: validOtpUser.activated,
     };
 
-    // console.log(payload);
-
     const token = await this.generateTokens(payload);
     await this.storeRefreshToken(validOtpUser._id, token.refresh_token);
 
     return {
+      message: 'Connexion réussie',
       user: [{
-        id: validOtpUser._id,
+        _id: validOtpUser._id.toString(),
         name: validOtpUser.name,
         phoneNumber: validOtpUser.phoneNumber,
+        compteFb: validOtpUser.compteFb,
         activated: validOtpUser.activated
       }],
-      message: 'Connexion réussie',
       statusCode: HttpStatus.OK,
       accessToken: token.access_token,
       refreshToken: token.refresh_token,

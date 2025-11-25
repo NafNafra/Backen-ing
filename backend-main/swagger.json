@@ -650,20 +650,12 @@
           "refreshToken"
         ]
       },
-      "ObjectId": {
-        "type": "object",
-        "properties": {}
-      },
       "LoginChosenUserDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "example": "69130451810c61130917a1c6",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectId"
-              }
-            ]
+          "_id": {
+            "type": "string",
+            "example": "69130451810c61130917a1c6"
           },
           "phone": {
             "type": "string",
@@ -675,7 +667,7 @@
           }
         },
         "required": [
-          "id",
+          "_id",
           "phone",
           "activated"
         ]
@@ -691,6 +683,10 @@
         "required": [
           "refreshToken"
         ]
+      },
+      "ObjectId": {
+        "type": "object",
+        "properties": {}
       },
       "LogOutDto": {
         "type": "object",
