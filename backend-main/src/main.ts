@@ -14,19 +14,37 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Client API')
-    .setDescription('CRUD API for Clients')
+    .setDescription('CRUD API for Clients - Backend service for managing client authentication, users, registrations, formations, sessions, and certificates')
     .setVersion('1.0')
-    .addBearerAuth()
-    .addServer('/api')  
+    .setContact('API Support', '', 'support@example.com')
+    .setLicense('MIT', 'https://opensource.org/licenses/MIT')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth', // This name here is important for matching up with @ApiBearerAuth() in your controllers
+    )
+    .addServer('/api', 'API Base Path')
+    .addServer('http://localhost:3000/api', 'Local Development')
+    .addTag('auth', 'Authentication endpoints for phone-based login')
+    .addTag('users', 'User management endpoints')
+    .addTag('register', 'User registration endpoints')
+    .addTag('Formation', 'Formation/Training management')
+    .addTag('Sessions', 'Session management')
+    .addTag('Certificats', 'Certificate management')
     .build();
 
   const documentFactory = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/swagger', app, documentFactory);
 
-  if (process.env.NODE_ENV !== 'production') {
-    writeFileSync('./swagger.json', JSON.stringify(documentFactory, null, 2));
-    console.log('✔ Swagger JSON generated at ./swagger.json');
-  }
+  // Always generate swagger.json for API generation tools
+  writeFileSync('./swagger.json', JSON.stringify(documentFactory, null, 2));
+  console.log('✔ Swagger JSON generated at ./swagger.json');
 
   app.setGlobalPrefix('api');
 

@@ -1,38 +1,31 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
   Param,
-  Delete,
+  NotFoundException
 } from '@nestjs/common';
 import { FormationService } from '@/modules/formation/formation.service';
-import { CreateFormationDto } from '@/modules/formation/dto/create-formation.dto';
-import { UpdateFormationDto } from '@/modules/formation/dto/update-formation.dto';
-import { Formation } from '@/modules/formation/entities/formation.entity';
+import { ApiTags, ApiOperation, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger';
+import { FormationResponseDto } from './dto/response-formation.dto';
 
+@ApiTags('Formation')
 @Controller('formation')
 export class FormationController {
   constructor(private readonly formationService: FormationService) { }
 
-  // @Post()
-  // create(@Body() createFormationDto: CreateFormationDto) {
-  //   return this.formationService.create(createFormationDto);
-  // }
-
   @Get(':id')
-  findById(@Param('id') id: string) {
-    return this.formationService.findById(id);
+  @ApiOperation({ summary: 'Get formation by ID' })
+  @ApiOkResponse({
+    description: 'Formation found',
+    type: FormationResponseDto
+  })
+  @ApiNotFoundResponse({ description: 'Formation not found' })
+  async findById(@Param('id') id: string): Promise<FormationResponseDto> {
+    const data = await this.formationService.findById(id);
+    if (!data) {
+      throw new NotFoundException('Formation not found');
+    }
+    return new FormationResponseDto(data)
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.formationService.findById(id);
-  // }
-
-  // @Get('oneSession')
-  // async findOneWithSessions(@Param('id') id: string) {
-  //   return this.formationService.findOneWithSessions(id);
-  // }
 }

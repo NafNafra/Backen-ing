@@ -1,20 +1,25 @@
-import { Formation } from '@/modules/formation/entities/formation.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class FormationResponseDto {
-  constructor(formation: Formation) {
-    // this.id = formation.id;
-    this.titre = formation.titre;
-    this.description = formation.description;
-    this.resume = formation.resume;
-    this.duree = formation.duree;
+  @ApiProperty({ example: '65d0a4bfb663b65ff8d81144' })
+  _id: string;
+
+  @ApiProperty({ example: 'Web Fullstack' })
+  name: string;
+
+  @ApiProperty({ example: 'Learn modern fullstack development' })
+  fullname: string;
+
+  @ApiProperty({ example: '2025-06-01T00:00:00.000Z' })
+  createdAt: string;
+
+  @ApiProperty({ example: '2025-06-01T00:00:00.000Z' })
+  updatedAt: string;
+
+  @ApiProperty({ example: false })
+  inactive: boolean;
+
+  constructor(partial: Partial<FormationResponseDto>) {
+    Object.assign(this, partial);
   }
-  id?: string;
-
-  titre?: string;
-
-  description?: string;
-
-  resume?: string;
-
-  duree?: string;
 }

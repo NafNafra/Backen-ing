@@ -16,10 +16,14 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "OTP sent successfully"
+          },
+          "400": {
+            "description": "Invalid phone number"
           }
         },
+        "summary": "Request OTP code for login",
         "tags": [
           "auth"
         ]
@@ -40,10 +44,14 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Code verified successfully"
+          },
+          "400": {
+            "description": "Invalid code"
           }
         },
+        "summary": "Verify OTP code",
         "tags": [
           "auth"
         ]
@@ -64,10 +72,14 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Code resent successfully"
+          },
+          "400": {
+            "description": "Invalid phone number"
           }
         },
+        "summary": "Resend OTP code",
         "tags": [
           "auth"
         ]
@@ -88,10 +100,14 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Login successful"
+          },
+          "400": {
+            "description": "Invalid credentials"
           }
         },
+        "summary": "Login with chosen user",
         "tags": [
           "auth"
         ]
@@ -112,10 +128,14 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Token refreshed successfully"
+          },
+          "400": {
+            "description": "Invalid refresh token"
           }
         },
+        "summary": "Refresh access token",
         "tags": [
           "auth"
         ]
@@ -136,10 +156,14 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Logged out successfully"
+          },
+          "400": {
+            "description": "Invalid request"
           }
         },
+        "summary": "Logout user",
         "tags": [
           "auth"
         ]
@@ -161,9 +185,13 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Payload invalid"
           }
         },
+        "summary": "Create a new user",
         "tags": [
           "users"
         ]
@@ -173,9 +201,10 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Users found successfully"
           }
         },
+        "summary": "Get all users",
         "tags": [
           "users"
         ]
@@ -184,12 +213,26 @@
     "/users/phone": {
       "get": {
         "operationId": "UsersController_findByPhone",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "phoneNumber",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "example": "0347327950",
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Users found successfully"
+          },
+          "400": {
+            "description": "Payload invalid"
           }
         },
+        "summary": "Find user by phone number",
         "tags": [
           "users"
         ]
@@ -201,7 +244,10 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "User found successfully"
+          },
+          "404": {
+            "description": "User not found"
           }
         },
         "security": [
@@ -209,6 +255,7 @@
             "bearer": []
           }
         ],
+        "summary": "Get current user profile",
         "tags": [
           "users"
         ]
@@ -239,9 +286,13 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "User updated successfully"
+          },
+          "404": {
+            "description": "User not found"
           }
         },
+        "summary": "Update user by ID",
         "tags": [
           "users"
         ]
@@ -260,9 +311,13 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "User deleted successfully"
+          },
+          "404": {
+            "description": "User not found"
           }
         },
+        "summary": "Delete user by ID",
         "tags": [
           "users"
         ]
@@ -284,9 +339,13 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Registration created successfully"
+          },
+          "400": {
+            "description": "Invalid data"
           }
         },
+        "summary": "Create a new registration",
         "tags": [
           "register"
         ]
@@ -307,9 +366,20 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Formation found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FormationResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Formation not found"
           }
         },
+        "summary": "Get formation by ID",
         "tags": [
           "Formation"
         ]
@@ -321,11 +391,12 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Sessions found successfully"
           }
         },
+        "summary": "Get all sessions",
         "tags": [
-          "Sessions"
+          "sessions"
         ]
       }
     },
@@ -335,11 +406,12 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Certificates retrieved successfully"
           }
         },
+        "summary": "Get all certificates",
         "tags": [
-          "Certificats"
+          "certificats"
         ]
       }
     },
@@ -358,33 +430,78 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Certificate found"
+          },
+          "404": {
+            "description": "Certificate not found"
           }
         },
+        "summary": "Get certificate by ID",
         "tags": [
-          "Certificats"
+          "certificats"
         ]
       }
     }
   },
   "info": {
     "title": "Client API",
-    "description": "CRUD API for Clients",
+    "description": "CRUD API for Clients - Backend service for managing client authentication, users, registrations, formations, sessions, and certificates",
     "version": "1.0",
-    "contact": {}
+    "contact": {
+      "name": "API Support",
+      "url": "",
+      "email": "support@example.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
   },
-  "tags": [],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authentication endpoints for phone-based login"
+    },
+    {
+      "name": "users",
+      "description": "User management endpoints"
+    },
+    {
+      "name": "register",
+      "description": "User registration endpoints"
+    },
+    {
+      "name": "Formation",
+      "description": "Formation/Training management"
+    },
+    {
+      "name": "Sessions",
+      "description": "Session management"
+    },
+    {
+      "name": "Certificats",
+      "description": "Certificate management"
+    }
+  ],
   "servers": [
     {
-      "url": "/api"
+      "url": "/api",
+      "description": "API Base Path"
+    },
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local Development"
     }
   ],
   "components": {
     "securitySchemes": {
-      "bearer": {
+      "JWT-auth": {
         "scheme": "bearer",
         "bearerFormat": "JWT",
-        "type": "http"
+        "type": "http",
+        "name": "JWT",
+        "description": "Enter JWT token",
+        "in": "header"
       }
     },
     "schemas": {
@@ -584,6 +701,43 @@
           "phone",
           "birthdate",
           "birthplace",
+          "inactive"
+        ]
+      },
+      "FormationResponseDto": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "65d0a4bfb663b65ff8d81144"
+          },
+          "name": {
+            "type": "string",
+            "example": "Web Fullstack"
+          },
+          "fullname": {
+            "type": "string",
+            "example": "Learn modern fullstack development"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2025-06-01T00:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2025-06-01T00:00:00.000Z"
+          },
+          "inactive": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "fullname",
+          "createdAt",
+          "updatedAt",
           "inactive"
         ]
       }

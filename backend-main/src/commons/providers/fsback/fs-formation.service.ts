@@ -61,12 +61,10 @@ export class FsFormationService {
         `${this.url}/formation/getByAttributes?_id=${id}`,
         this.headers
       )
-
-
       if (formation.data.length > 1 || formation.data.length == 0) throw new BadRequestException('Erreur dans la base de donnees')
       return formation.data[0];
     } catch (error) {
-      throw new InternalServerErrorException('Erreur de connexion au serveur',);
+      throw new InternalServerErrorException('Cette formation n\'existe pas',);
     }
   }
 
