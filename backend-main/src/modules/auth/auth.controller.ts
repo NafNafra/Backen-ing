@@ -65,7 +65,9 @@ export class AuthController {
   @ApiOperation({ summary: 'Refresh access token' })
   @ApiOkResponse({ description: 'Token refreshed successfully' })
   @ApiBadRequestResponse({ description: 'Invalid refresh token' })
-  async refresh(@Body() refreshToken: RefreshTokenDto) {
+  async refresh(
+    @Body() refreshToken: RefreshTokenDto
+  ): Promise<{ access_token: string }> {
     return this.authService.refreshAccessToken(refreshToken);
   }
 
@@ -73,7 +75,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Logout user' })
   @ApiOkResponse({ description: 'Logged out successfully' })
   @ApiBadRequestResponse({ description: 'Invalid request' })
-  async deconnexion(@Body() id: LogOutDto) {
+  async deconnexion(@Body() id: LogOutDto): Promise<MessageResponseDto> {
     return this.authService.logout(id);
   }
 }

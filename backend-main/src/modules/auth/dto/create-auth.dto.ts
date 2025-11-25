@@ -49,7 +49,7 @@ export class LogOutDto {
   })
   @IsString()
   @IsNotEmpty({ message: 'Le token ne doit pas être vide.' })
-  id: Types.ObjectId
+  _id: string;
 }
 
 

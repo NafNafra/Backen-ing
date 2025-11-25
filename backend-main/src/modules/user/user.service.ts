@@ -56,22 +56,6 @@ export class UsersService {
     }));
   }
 
-  async findById(_id: Types.ObjectId) {
-    const user = await this.userModel.findOne({ _id: _id }).exec();
-    if (!user)
-      throw new NotFoundException("L'utilisateur spécifié est introuvable");
-
-    const inFs = await this.fsCustomer.getCustById(user.idUser);
-    if (!inFs || inFs.length > 1)
-      throw new NotFoundException("L'utilisateur spécifié est introuvable");
-
-    const cleanUserData = {
-      ...inFs[0],
-      name: inFs[0].firstname + " " + inFs[0].lastname,
-      refreshToken: user.refreshToken
-    }
-    return cleanUserData;
-  }
 
   async findByUserId(_id: Types.ObjectId) {
     const userLocal = await this.findById(_id);
@@ -167,6 +151,23 @@ export class UsersService {
       { idUser: idUser },
       { _OtpCode: code, _OtpExpiresAt: expiresAt },
     );
+  }
+
+  async findById(_id: Types.ObjectId) {
+    const user = await this.userModel.findOne({ _id: _id }).exec();
+    if (!user)
+      throw new NotFoundException("L'utilisateur spécifié est introuvable");
+
+    const inFs = await this.fsCustomer.getCustById(user.idUser);
+    if (!inFs || inFs.length > 1)
+      throw new NotFoundException("L'utilisateur spécifié est introuvable");
+
+    const cleanUserData = {
+      ...inFs[0],
+      name: inFs[0].firstname + " " + inFs[0].lastname,
+      refreshToken: user.refreshToken
+    }
+    return cleanUserData;
   }
 
 }

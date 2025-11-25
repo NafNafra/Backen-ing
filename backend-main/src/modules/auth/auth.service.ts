@@ -170,8 +170,13 @@ export class AuthService {
   }
 
 
-  async logout(userId: LogOutDto): Promise<void> {
-    await this.usersService.update(userId.id, { refreshToken: null, activated: false });
+  async logout(dto: LogOutDto): Promise<MessageResponseDto> {
+    await this.usersService.update(
+      new Types.ObjectId(dto._id),
+      { refreshToken: null, activated: false } as any
+    );
+
+    return new MessageResponseDto('Déconnexion réussie')
   }
 
   async generateTokens(

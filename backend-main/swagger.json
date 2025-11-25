@@ -694,24 +694,16 @@
           "refreshToken"
         ]
       },
-      "ObjectId": {
-        "type": "object",
-        "properties": {}
-      },
       "LogOutDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "example": "0bnm-347cvbn-327vbhnj-9bn50",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectId"
-              }
-            ]
+          "_id": {
+            "type": "string",
+            "example": "0bnm-347cvbn-327vbhnj-9bn50"
           }
         },
         "required": [
-          "id"
+          "_id"
         ]
       },
       "CreateUserDto": {
@@ -799,6 +791,10 @@
           "reactivationDate",
           "refreshToken"
         ]
+      },
+      "ObjectId": {
+        "type": "object",
+        "properties": {}
       },
       "UpdateUserDto": {
         "type": "object",
