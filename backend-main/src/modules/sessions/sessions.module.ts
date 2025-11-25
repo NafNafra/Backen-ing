@@ -1,16 +1,14 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { SessionsService } from '@/modules/sessions/sessions.service';
 import { SessionsController } from '@/modules/sessions/sessions.controller';
-import { Sessions, SessionsSchema } from '@/modules/sessions/entities/session.entity';
+import { FsbackModule } from '@/commons/providers/fsback/fsback.module';
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: Sessions.name, schema: SessionsSchema },
-    ]),
+
+    FsbackModule,
   ],
   controllers: [SessionsController],
-  providers: [SessionsService],
+  providers: [SessionsService,],
   exports: [SessionsService],
 })
-export class SessionsModule {}
+export class SessionsModule { }

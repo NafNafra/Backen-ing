@@ -13,30 +13,16 @@ import { UpdateSessionsDto } from '@/modules/sessions/dto/update-session.dto';
 
 @Controller('sessions')
 export class SessionsController {
-  constructor(private readonly sessionsService: SessionsService) {}
-
-  @Post()
-  create(@Body() createSessionDto: CreateSessionsDto) {
-    return this.sessionsService.create(createSessionDto);
-  }
+  constructor(private readonly sessionsService: SessionsService) { }
 
   @Get()
   findAll() {
     return this.sessionsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.sessionsService.findById(id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.sessionsService.findById(id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSessionDto: UpdateSessionsDto) {
-    return this.sessionsService.update(id, updateSessionDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string): void {
-    return this.sessionsService.remove(id);
-  }
 }

@@ -22,9 +22,8 @@ export class CertificatsService {
     return this.fsCert.getCertificat();
   }
 
-  async findById(id: string) { // : Promise<CertificatResponseDto[]> {
-    id = "6fe73b9c-ea74-4c9e-8884-847cd4d48fdc";
-    const customerPay = await this.fsPayment.getPayementByAttribute(id);
-    return customerPay;
+  async findById(customerId: string) {
+    const formationProgramm = await this.fsCert.getCustomerCertDetails(customerId);
+    return formationProgramm;
   }
 }

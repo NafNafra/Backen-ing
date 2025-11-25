@@ -18,18 +18,3 @@ export class FormationResponseDto {
 
   duree?: string;
 }
-
-// export class UpdateClientResponseDto {
-//   constructor(
-//     data: ClientResponseDto,
-//     message: string,
-//     statusCode: number
-//   ) {
-//     this.data = data;
-//     this.message = message;
-//     this.statusCode = statusCode;
-//   }
-//   data: ClientResponseDto;
-//   message: string;
-//   statusCode: number;
-// }

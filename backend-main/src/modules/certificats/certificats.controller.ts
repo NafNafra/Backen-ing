@@ -13,7 +13,7 @@ import { UpdateCertificatDto } from '@/modules/certificats/dto/update-certificat
 
 @Controller('certificats')
 export class CertificatsController {
-  constructor(private readonly certificatsService: CertificatsService) {}
+  constructor(private readonly certificatsService: CertificatsService) { }
 
 
   @Get()
@@ -25,6 +25,5 @@ export class CertificatsController {
   findOne(@Param('id') id: string) {
     return this.certificatsService.findById(id);
   }
-
 
 }
