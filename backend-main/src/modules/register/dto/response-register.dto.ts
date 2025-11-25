@@ -1,32 +1,25 @@
 import { UserSex } from '@/commons/types/auth';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, Length, IsNumberString, IsDate, IsBoolean, IsEnum, IsDateString } from 'class-validator';
-import { Types } from 'mongoose';
+import { IsNotEmpty, IsString, Length, IsBoolean, IsEnum } from 'class-validator';
 
-export class CreateRegisterDto {
+export class ResponseRegisterDto {
+  @ApiProperty({ example: "2" })
+  _id: string;
 
-  @ApiProperty({ example: "Alice" })
-  @IsString()
-  @IsNotEmpty()
+  @ApiProperty({ example: "Alice", })
   firstname: string;
 
   @ApiProperty({ example: "Doe", })
-  @IsString()
   lastname: string;
 
   @ApiProperty({ example: "M", enum: ['M', 'F'] })
-  @IsEnum(['F', 'M'])
   sex: UserSex;
 
 
   @ApiProperty({ example: "+261341234567", })
-  @IsString()
-  @Length(10, 13)
-  @IsNotEmpty()
   phone: string;
 
   @ApiProperty({ example: "Fianarantsoa", })
-  @IsString()
   adress: string;
 
   @ApiProperty({ example: "jr@rj.j", })
@@ -34,19 +27,20 @@ export class CreateRegisterDto {
   email: string;
 
   @ApiProperty({ example: "1997-06-12T21:00:00.000+00:00", })
-  @IsDateString()
   birthdate: string;
 
-  @ApiProperty({ example: "Antananarivo", })
-  @IsString()
+  @ApiProperty({
+    example: "Antananarivo",
+  })
   birthplace: string;
 
-
   @ApiProperty({ example: "https://facebook.com/jennie.kim", })
-  @IsString()
   compteFb: string;
 
   @ApiProperty({ example: "false", })
-  @IsBoolean()
   inactive: boolean;
+
+  constructor(partial: Partial<ResponseRegisterDto>) {
+    Object.assign(this, partial)
+  }
 }

@@ -25,7 +25,7 @@
         },
         "summary": "Request OTP code for login",
         "tags": [
-          "auth"
+          "Auth"
         ]
       }
     },
@@ -53,7 +53,7 @@
         },
         "summary": "Verify OTP code",
         "tags": [
-          "auth"
+          "Auth"
         ]
       }
     },
@@ -81,7 +81,7 @@
         },
         "summary": "Resend OTP code",
         "tags": [
-          "auth"
+          "Auth"
         ]
       }
     },
@@ -109,7 +109,7 @@
         },
         "summary": "Login with chosen user",
         "tags": [
-          "auth"
+          "Auth"
         ]
       }
     },
@@ -137,7 +137,7 @@
         },
         "summary": "Refresh access token",
         "tags": [
-          "auth"
+          "Auth"
         ]
       }
     },
@@ -165,7 +165,7 @@
         },
         "summary": "Logout user",
         "tags": [
-          "auth"
+          "Auth"
         ]
       }
     },
@@ -193,7 +193,7 @@
         },
         "summary": "Create a new user",
         "tags": [
-          "users"
+          "Users"
         ]
       },
       "get": {
@@ -206,7 +206,7 @@
         },
         "summary": "Get all users",
         "tags": [
-          "users"
+          "Users"
         ]
       }
     },
@@ -234,7 +234,7 @@
         },
         "summary": "Find user by phone number",
         "tags": [
-          "users"
+          "Users"
         ]
       }
     },
@@ -257,7 +257,7 @@
         ],
         "summary": "Get current user profile",
         "tags": [
-          "users"
+          "Users"
         ]
       }
     },
@@ -294,7 +294,7 @@
         },
         "summary": "Update user by ID",
         "tags": [
-          "users"
+          "Users"
         ]
       },
       "delete": {
@@ -319,7 +319,7 @@
         },
         "summary": "Delete user by ID",
         "tags": [
-          "users"
+          "Users"
         ]
       }
     },
@@ -339,7 +339,14 @@
         },
         "responses": {
           "201": {
-            "description": "Registration created successfully"
+            "description": "Registration created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseRegisterDto"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid data"
@@ -347,7 +354,7 @@
         },
         "summary": "Create a new registration",
         "tags": [
-          "register"
+          "Register"
         ]
       }
     },
@@ -406,7 +413,7 @@
         },
         "summary": "Get all sessions",
         "tags": [
-          "sessions"
+          "Sessions"
         ]
       }
     },
@@ -421,7 +428,7 @@
         },
         "summary": "Get all certificates",
         "tags": [
-          "certificats"
+          "Certificats"
         ]
       }
     },
@@ -448,7 +455,7 @@
         },
         "summary": "Get certificate by ID",
         "tags": [
-          "certificats"
+          "Certificats"
         ]
       }
     }
@@ -469,15 +476,15 @@
   },
   "tags": [
     {
-      "name": "auth",
+      "name": "Auth",
       "description": "Authentication endpoints for phone-based login"
     },
     {
-      "name": "users",
+      "name": "Users",
       "description": "User management endpoints"
     },
     {
-      "name": "register",
+      "name": "Register",
       "description": "User registration endpoints"
     },
     {
@@ -627,7 +634,8 @@
           }
         },
         "required": [
-          "idUser"
+          "idUser",
+          "name"
         ]
       },
       "UpdateUserDto": {
@@ -656,61 +664,125 @@
         "properties": {
           "firstname": {
             "type": "string",
-            "description": "First name",
             "example": "Alice"
           },
           "lastname": {
             "type": "string",
-            "description": "Last name",
             "example": "Doe"
           },
           "sex": {
             "type": "string",
-            "description": "Genre l'utilisateur",
-            "example": "M"
+            "example": "M",
+            "enum": [
+              "M",
+              "F"
+            ]
           },
           "phone": {
             "type": "string",
-            "description": "Numéro de téléphone de l'utilisateur",
             "example": "+261341234567"
           },
           "adress": {
             "type": "string",
-            "description": "Adresse de l'utilisateur",
             "example": "Fianarantsoa"
           },
           "email": {
             "type": "string",
-            "description": "Email de l'utilisateur",
             "example": "jr@rj.j"
           },
           "birthdate": {
-            "format": "date-time",
             "type": "string",
-            "description": "Date d'anniversaire de l'utilisateur",
             "example": "1997-06-12T21:00:00.000+00:00"
           },
           "birthplace": {
             "type": "string",
-            "description": "Lieu de naissance de l'utilisateur",
             "example": "Antananarivo"
           },
           "compteFb": {
             "type": "string",
-            "description": "Compte Facebook de l'utilisateur",
             "example": "https://facebook.com/jennie.kim"
           },
           "inactive": {
             "type": "boolean",
-            "description": "Compte actif",
             "example": "false"
           }
         },
         "required": [
           "firstname",
+          "lastname",
+          "sex",
           "phone",
+          "adress",
+          "email",
           "birthdate",
           "birthplace",
+          "compteFb",
+          "inactive"
+        ]
+      },
+      "ResponseRegisterDto": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "2"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Alice"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "sex": {
+            "type": "string",
+            "example": "M",
+            "enum": [
+              "M",
+              "F"
+            ]
+          },
+          "phone": {
+            "type": "string",
+            "example": "+261341234567"
+          },
+          "adress": {
+            "type": "string",
+            "example": "Fianarantsoa"
+          },
+          "email": {
+            "type": "string",
+            "example": "jr@rj.j"
+          },
+          "birthdate": {
+            "type": "string",
+            "example": "1997-06-12T21:00:00.000+00:00"
+          },
+          "birthplace": {
+            "type": "string",
+            "example": "Antananarivo"
+          },
+          "compteFb": {
+            "type": "string",
+            "example": "https://facebook.com/jennie.kim"
+          },
+          "inactive": {
+            "type": "boolean",
+            "example": "false"
+          }
+        },
+        "required": [
+          "_id",
+          "firstname",
+          "lastname",
+          "sex",
+          "phone",
+          "adress",
+          "email",
+          "birthdate",
+          "birthplace",
+          "compteFb",
           "inactive"
         ]
       },

@@ -12,7 +12,7 @@ import { CreateCertificatDto } from '@/modules/certificats/dto/create-certificat
 import { UpdateCertificatDto } from '@/modules/certificats/dto/update-certificat.dto';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiNotFoundResponse, ApiBadRequestResponse, ApiCreatedResponse } from '@nestjs/swagger';
 
-@ApiTags('certificats')
+@ApiTags('Certificats')
 @Controller('certificats')
 export class CertificatsController {
   constructor(private readonly certificatsService: CertificatsService) { }

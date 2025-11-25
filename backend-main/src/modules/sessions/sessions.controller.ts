@@ -11,7 +11,7 @@ import { SessionsService } from '@/modules/sessions/sessions.service';
 import { ApiOkResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { SessionResponseDto } from './dto/response-session.dto';
 
-@ApiTags('sessions')
+@ApiTags('Sessions')
 @Controller('sessions')
 export class SessionsController {
   constructor(private readonly sessionsService: SessionsService) { }

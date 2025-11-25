@@ -5,7 +5,7 @@ import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiBadRequestResponse } from '@nestjs/swagger';
 import { Types } from 'mongoose';
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
