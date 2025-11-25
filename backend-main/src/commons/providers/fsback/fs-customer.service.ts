@@ -36,13 +36,13 @@ export class FsCustomerService {
   }
 
   async getCustById(idUser: string) {
-    console.log(idUser)
+    // console.log(idUser)
     try {
       const customer = await this.httpService.axiosRef.get(
         `${this.url}/customer/getByAttributes?_id=${idUser}`,
         this.headers
       )
-      console.log(customer.data);
+      // console.log(customer.data);
 
       if (customer.data.length > 1) throw new BadRequestException('Erreur dans la base de donnees')
       return customer.data;
@@ -53,7 +53,6 @@ export class FsCustomerService {
 
   async getCustsByPhone(phoneNumber: CreateAuthPhoneDto) {
     try {
-    console.log("Phone number.number:", phoneNumber.phoneNumber)
 
       const customers = await this.httpService.axiosRef.get(
         `${this.url}/customer/getByAttributes?phone=${phoneNumber.phoneNumber}`,

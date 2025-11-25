@@ -64,7 +64,7 @@ export class UsersService {
     if (!updatedUser) {
       throw new NotFoundException("L'utilisateur à mettre à jour est introuvable.");
     }
-    console.log("Updated user with ID:", updatedUser);
+    // console.log("Updated user with ID:", updatedUser);
 
     return new UpdateUserResponseDto(
       new UserResponseDto(updatedUser),

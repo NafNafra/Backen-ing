@@ -65,7 +65,6 @@ export class UsersService {
 
   async findByPhone(phoneNumber: CreateAuthPhoneDto | string) {
     try {
-      console.log(phoneNumber);
       const users = await this.userModel.find({ phoneNumber: phoneNumber });
       if (users === null || users.length === 0) throw new BadRequestException('Aucun etudiant avec ce numero')
       return users;
@@ -110,8 +109,7 @@ export class UsersService {
     return deleted;
   }
 
-  async findAndSyncExternalUsers(phoneNumber: CreateAuthPhoneDto): Promise<UserResponseDto[]> {  
-    console.log("findAndSyncExternalUsers ",phoneNumber)
+  async findAndSyncExternalUsers(phoneNumber: CreateAuthPhoneDto): Promise<UserResponseDto[]> {
 
     const externalUsers = await this.fsCustomer.getCustsByPhone(phoneNumber);
     if (!externalUsers || externalUsers.length === 0) {

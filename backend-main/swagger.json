@@ -4,16 +4,17 @@
     "/auth/get-code": {
       "post": {
         "operationId": "AuthController_loginClient",
-        "parameters": [
-          {
-            "name": "phoneNumber",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/CreateAuthPhoneDto"
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAuthPhoneDto"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": ""
@@ -27,24 +28,17 @@
     "/auth/verify-code": {
       "post": {
         "operationId": "AuthController_verifyCode",
-        "parameters": [
-          {
-            "name": "phoneNumber",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/CreateAuthPhoneDto"
-            }
-          },
-          {
-            "name": "code",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifingCodeDto"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": ""
@@ -58,16 +52,17 @@
     "/auth/resend-code": {
       "post": {
         "operationId": "AuthController_resendCode",
-        "parameters": [
-          {
-            "name": "phoneNumber",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/CreateAuthPhoneDto"
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAuthPhoneDto"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": ""
@@ -81,24 +76,17 @@
     "/auth/login": {
       "post": {
         "operationId": "AuthController_loginChosenUser",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/ObjectId"
-            }
-          },
-          {
-            "name": "phoneNumber",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/CreateAuthPhoneDto"
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginChosenUserDto"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": ""
@@ -112,16 +100,17 @@
     "/auth/new-token": {
       "post": {
         "operationId": "AuthController_refresh",
-        "parameters": [
-          {
-            "name": "refreshToken",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDto"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": ""
@@ -135,16 +124,17 @@
     "/auth/logout": {
       "post": {
         "operationId": "AuthController_deconnexion",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogOutDto"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": ""
@@ -403,16 +393,87 @@
         "properties": {
           "phoneNumber": {
             "type": "string",
-            "example": "+261349482910"
+            "example": "0347327950"
           }
         },
         "required": [
           "phoneNumber"
         ]
       },
+      "VerifingCodeDto": {
+        "type": "object",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "example": "0347327950"
+          },
+          "code": {
+            "type": "string",
+            "example": "1234"
+          }
+        },
+        "required": [
+          "phoneNumber",
+          "code"
+        ]
+      },
       "ObjectId": {
         "type": "object",
         "properties": {}
+      },
+      "LoginChosenUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "example": "69130451810c61130917a1c6",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
+          },
+          "phone": {
+            "type": "string",
+            "example": "0347327950"
+          },
+          "activated": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "id",
+          "phone",
+          "activated"
+        ]
+      },
+      "RefreshTokenDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "example": "0bnm-347cvbn-327vbhnj-9bn50"
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "LogOutDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "example": "0bnm-347cvbn-327vbhnj-9bn50",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ]
       },
       "CreateUserDto": {
         "type": "object",

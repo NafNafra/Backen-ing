@@ -37,13 +37,13 @@ export class AuthService {
 
   // Look for user by phone number and send OTP
   async lookByPhone(phoneNumber: CreateAuthPhoneDto) {
-    console.log("lookByPhone ", phoneNumber)
+    // console.log("lookByPhone ", phoneNumber)
     const savedUsers = await this.usersService.findAndSyncExternalUsers(phoneNumber);
-    console.log(savedUsers)
+    // console.log(savedUsers)
 
     const OtpCode = generateOtpCode();
     const OtpExpiresAt = setOtpExpiryTime();
-    console.log(OtpCode, OtpExpiresAt)
+    // console.log(OtpCode, OtpExpiresAt)
 
     for (const user of savedUsers) {
       await this.usersService.updateOtp(user.idUser, OtpCode, OtpExpiresAt);
@@ -67,7 +67,7 @@ export class AuthService {
     if (!users || users.length === 0) {
       throw new NotFoundException(`User with phone ${phoneNumber} not found`);
     }
-    console.log(users);
+    // console.log(users);
     const validOtpUser = users.find(
       (u) => u._OtpCode === code && u._OtpExpiresAt !== undefined &&
         new Date(u._OtpExpiresAt).getTime() > Date.now()
@@ -132,21 +132,19 @@ export class AuthService {
 
   // Se connecter a un utilisateur
   async loginChosenUser(student: LoginChosenUserDto) {
-    console.log(student)
-    console.log(student.phone)
     const users = await this.usersService.findByPhone(student.phone); //
     if (!users) {
       throw new NotFoundException(`User with phone ${student.phone} not found`);
     }
     const validOtpUser = users.find(
       (u) => {
-        console.log("Gahem : ", u._id.toString(), student.id.toString(), student.phone, u.phoneNumber);
+        // console.log("Gahem : ", u._id.toString(), student.id.toString(), student.phone, u.phoneNumber);
         if (u._id && student.id && u._id.toString() === student.id.toString()) {
-          console.log(`Equals  // \n ${u}`)
+          // console.log(`Equals  // \n ${u}`)
           return u
         }
         else {
-          console.log("Nope  //")
+          console.log("Identification invalid ")
         }
       });
 
@@ -155,7 +153,7 @@ export class AuthService {
     }
     validOtpUser.activated = true;
     await validOtpUser.save()
-    console.log('validOtpUser : ', validOtpUser);
+    // console.log('validOtpUser : ', validOtpUser);
 
     // const user = await this.usersService.findById(validOtpUser._id);
     // console.log(`User by id \n ${user}`)
@@ -166,7 +164,7 @@ export class AuthService {
       activated: validOtpUser.activated,
     };
 
-    console.log(payload);
+    // console.log(payload);
 
     const token = await this.generateTokens(payload);
     await this.storeRefreshToken(validOtpUser._id, token.refresh_token);

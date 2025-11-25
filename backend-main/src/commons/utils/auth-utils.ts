@@ -19,7 +19,7 @@ export async function generateTokens(
     secret: configsService.get('jwt.refresh.secret'),
     expiresIn: configsService.get('jwt.refresh.expiresIn'),
   });
-  console.log(refresh_token);
+  // console.log(refresh_token);
   return { access_token, refresh_token };
 }
 
@@ -29,7 +29,7 @@ export async function storeRefreshToken(
   refreshToken: string,
 ): Promise<void> {
   const hashedToken = await bcrypt.hash(refreshToken, 10);
-  console.log(hashedToken);
+  // console.log(hashedToken);
   await usersService.update(userId, {
     refreshToken: hashedToken,
     activated: true,
