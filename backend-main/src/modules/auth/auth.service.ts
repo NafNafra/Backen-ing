@@ -37,7 +37,7 @@ export class AuthService {
 
   // Look for user by phone number and send OTP
   async lookByPhone(phoneNumber: CreateAuthPhoneDto) {
-    console.log(phoneNumber)
+    console.log("lookByPhone ", phoneNumber)
     const savedUsers = await this.usersService.findAndSyncExternalUsers(phoneNumber);
     console.log(savedUsers)
 

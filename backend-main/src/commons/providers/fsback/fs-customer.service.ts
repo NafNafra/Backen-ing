@@ -53,7 +53,12 @@ export class FsCustomerService {
 
   async getCustsByPhone(phoneNumber: CreateAuthPhoneDto) {
     try {
-      const customers = await this.httpService.axiosRef.get(`${this.url}/customer/getByAttributes?phone=${phoneNumber.phoneNumber}`, this.headers)
+    console.log("Phone number.number:", phoneNumber.phoneNumber)
+
+      const customers = await this.httpService.axiosRef.get(
+        `${this.url}/customer/getByAttributes?phone=${phoneNumber.phoneNumber}`,
+        this.headers
+      )
       return customers.data;
     } catch (error) {
       throw new InternalServerErrorException('Erreur de connexion au serveur',);

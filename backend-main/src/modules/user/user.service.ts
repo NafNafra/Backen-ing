@@ -110,7 +110,9 @@ export class UsersService {
     return deleted;
   }
 
-  async findAndSyncExternalUsers(phoneNumber: CreateAuthPhoneDto): Promise<UserResponseDto[]> {
+  async findAndSyncExternalUsers(phoneNumber: CreateAuthPhoneDto): Promise<UserResponseDto[]> {  
+    console.log("findAndSyncExternalUsers ",phoneNumber)
+
     const externalUsers = await this.fsCustomer.getCustsByPhone(phoneNumber);
     if (!externalUsers || externalUsers.length === 0) {
       throw new BadRequestException(`Aucun étudiant trouvé avec le numéro ${phoneNumber}`);
