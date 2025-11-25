@@ -48,7 +48,6 @@ export class FsPayementService {
     const state = `customerId=${customerId}`
     try {
       const customer = await this.getPayementByAttribute(`&${state}`)
-      // console.log(customer.data);
 
       return customer.data;
     } catch (error) {

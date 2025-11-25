@@ -295,6 +295,7 @@
     "/formation/{id}": {
       "get": {
         "operationId": "FormationController_findById",
+<<<<<<< HEAD
         "parameters": [
           {
             "name": "id",
@@ -347,6 +348,8 @@
       },
       "delete": {
         "operationId": "FormationController_remove",
+=======
+>>>>>>> 88ed926a1b2ddb261f365c5ea7d6c998f50c7556
         "parameters": [
           {
             "name": "id",
@@ -368,28 +371,6 @@
       }
     },
     "/sessions": {
-      "post": {
-        "operationId": "SessionsController_create",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateSessionsDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Sessions"
-        ]
-      },
       "get": {
         "operationId": "SessionsController_findAll",
         "parameters": [],
@@ -403,140 +384,7 @@
         ]
       }
     },
-    "/sessions/{id}": {
-      "get": {
-        "operationId": "SessionsController_findOne",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Sessions"
-        ]
-      },
-      "patch": {
-        "operationId": "SessionsController_update",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateSessionsDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Sessions"
-        ]
-      },
-      "delete": {
-        "operationId": "SessionsController_remove",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Sessions"
-        ]
-      }
-    },
-    "/contact": {
-      "get": {
-        "operationId": "ContactController_greet",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Contact"
-        ]
-      },
-      "post": {
-        "operationId": "ContactController_messagingFs",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContactToFs"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Contact"
-        ]
-      }
-    },
     "/certificats": {
-      "post": {
-        "operationId": "CertificatsController_create",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateCertificatDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Certificats"
-        ]
-      },
       "get": {
         "operationId": "CertificatsController_findAll",
         "parameters": [],
@@ -553,58 +401,6 @@
     "/certificats/{id}": {
       "get": {
         "operationId": "CertificatsController_findOne",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Certificats"
-        ]
-      },
-      "patch": {
-        "operationId": "CertificatsController_update",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateCertificatDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Certificats"
-        ]
-      },
-      "delete": {
-        "operationId": "CertificatsController_remove",
         "parameters": [
           {
             "name": "id",
@@ -844,152 +640,6 @@
           "birthdate",
           "birthplace",
           "inactive"
-        ]
-      },
-      "UpdateFormationDto": {
-        "type": "object",
-        "properties": {
-          "titre": {
-            "type": "string",
-            "example": "Formation Word"
-          },
-          "description": {
-            "type": "string",
-            "example": "Description"
-          },
-          "resume": {
-            "type": "string",
-            "example": "Resume"
-          },
-          "duree": {
-            "type": "string",
-            "example": "2 semaines"
-          }
-        },
-        "required": [
-          "titre",
-          "description",
-          "resume",
-          "duree"
-        ]
-      },
-      "CreateSessionsDto": {
-        "type": "object",
-        "properties": {
-          "formationId": {
-            "type": "string",
-            "example": "qwer4567tyu7890uio123"
-          },
-          "dateDebut": {
-            "format": "date-time",
-            "type": "string",
-            "example": "2025-10-10T08:00:00.000Z"
-          },
-          "dateFin": {
-            "format": "date-time",
-            "type": "string",
-            "example": "2025-10-20T17:00:00.000Z"
-          },
-          "nombrePlace": {
-            "type": "number",
-            "example": 30
-          }
-        },
-        "required": [
-          "formationId",
-          "dateDebut",
-          "dateFin",
-          "nombrePlace"
-        ]
-      },
-      "UpdateSessionsDto": {
-        "type": "object",
-        "properties": {
-          "dateDebut": {
-            "format": "date-time",
-            "type": "string",
-            "example": "2025-10-10T08:00:00.000Z"
-          },
-          "dateFin": {
-            "format": "date-time",
-            "type": "string",
-            "example": "2025-10-20T17:00:00.000Z"
-          },
-          "nombrePlace": {
-            "type": "number",
-            "example": 30
-          }
-        },
-        "required": [
-          "dateDebut",
-          "dateFin",
-          "nombrePlace"
-        ]
-      },
-      "ContactToFs": {
-        "type": "object",
-        "properties": {
-          "nom": {
-            "type": "string",
-            "example": "Alice"
-          },
-          "numero": {
-            "type": "string",
-            "example": 12369
-          },
-          "message": {
-            "type": "string",
-            "example": "Message"
-          }
-        },
-        "required": [
-          "nom",
-          "numero",
-          "message"
-        ]
-      },
-      "CreateCertificatDto": {
-        "type": "object",
-        "properties": {
-          "idStudent": {
-            "type": "string",
-            "example": "fdiygoudgouhbdjv73ey2873yg"
-          },
-          "linkImage": {
-            "type": "string",
-            "example": "http://localhost:5000"
-          },
-          "isPublik": {
-            "type": "boolean",
-            "example": false
-          }
-        },
-        "required": [
-          "idStudent",
-          "linkImage",
-          "isPublik"
-        ]
-      },
-      "UpdateCertificatDto": {
-        "type": "object",
-        "properties": {
-          "idStudent": {
-            "type": "string",
-            "example": "fdiygoudgouhbdjv73ey2873yg"
-          },
-          "linkImage": {
-            "type": "string",
-            "example": "http://localhost:5000"
-          },
-          "isPublik": {
-            "type": "boolean",
-            "example": false
-          }
-        },
-        "required": [
-          "idStudent",
-          "linkImage",
-          "isPublik"
         ]
       }
     }

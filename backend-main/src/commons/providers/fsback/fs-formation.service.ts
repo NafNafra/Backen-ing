@@ -42,6 +42,19 @@ export class FsFormationService {
     }
   }
 
+  async getProgramByFid(formationId: string) {
+    try {
+      const program = await this.httpService.axiosRef.get(
+        `${this.url}/program/getByAttributes?formationId=${formationId}`,
+        this.headers
+      )
+      if (program.data.length == 0) throw new BadRequestException('Erreur dans la base de donnees')
+      return program.data;
+    } catch (error) {
+      console.warn(`Program not found for formationId: ${formationId}`);
+    }
+  }
+
   async getFormationById(id: string) {
     try {
       const formation = await this.httpService.axiosRef.get(
@@ -57,21 +70,36 @@ export class FsFormationService {
     }
   }
 
+
+  async getAllSessions() {
+    const formationRes = await this.httpService.axiosRef.get(
+      `${this.url}/formation/get`,
+      this.headers
+    )
+    return await Promise.all(
+      formationRes.data.Formation.map(async (fs) => {
+        const programs = await this.getProgramByFid(fs.id)
+
+        return {
+          ...fs,
+          programs: programs ?? []
+        }
+      }
+      ))
+  }
+
   async getSession(programId: string) {
     const programs = await this.getProgramById(programId);
     if (!programs) {
       throw new Error(`Program with _id ${programId} not found`);
     }
     const formationRes = await this.getFormationById(programs.formationId);
-    // console.log({
-    //   ...programs,
-    //   name: formationRes.name,
-    //   fullname: formationRes.fullname
-    // })
+
     return {
       ...programs,
       name: formationRes.name,
       fullname: formationRes.fullname
     };
   }
+
 }

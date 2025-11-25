@@ -13,12 +13,8 @@ import { UpdateCertificatDto } from '@/modules/certificats/dto/update-certificat
 
 @Controller('certificats')
 export class CertificatsController {
-  constructor(private readonly certificatsService: CertificatsService) {}
+  constructor(private readonly certificatsService: CertificatsService) { }
 
-  @Post()
-  create(@Body() createCertificatDto: CreateCertificatDto) {
-    return this.certificatsService.create(createCertificatDto);
-  }
 
   @Get()
   findAll() {
@@ -30,16 +26,4 @@ export class CertificatsController {
     return this.certificatsService.findById(id);
   }
 
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateCertificatDto: UpdateCertificatDto,
-  ) {
-    return this.certificatsService.update(id, updateCertificatDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string): void {
-    return this.certificatsService.remove(id);
-  }
 }

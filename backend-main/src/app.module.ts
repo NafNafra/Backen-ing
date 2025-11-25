@@ -6,7 +6,6 @@ import { UsersModule } from '@/modules/user/user.module';
 import { AuthModule } from '@/modules/auth/auth.module';
 import { SmsModule } from '@/commons/providers/sms/sms.module';
 import { ConfigsModule } from '@/configs/configs.module';
-import { ContactModule } from '@/modules/contact/contact.module';
 import { FormationModule } from '@/modules/formation/formation.module';
 import { SessionsModule } from '@/modules/sessions/sessions.module';
 import { CertificatsModule } from '@/modules/certificats/certificats.module';
@@ -26,7 +25,6 @@ import { ProgramModule } from './program/program.module';
     SessionsModule,
     SmsModule,
     ConfigsModule,
-    ContactModule,
     CertificatsModule,
     HttpModule,
     ProgramModule,
