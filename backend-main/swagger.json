@@ -292,10 +292,19 @@
         ]
       }
     },
-    "/formation": {
+    "/formation/{id}": {
       "get": {
-        "operationId": "FormationController_findAll",
-        "parameters": [],
+        "operationId": "FormationController_findById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": ""
@@ -304,9 +313,7 @@
         "tags": [
           "Formation"
         ]
-      }
-    },
-    "/formation/{id}": {
+      },
       "patch": {
         "operationId": "FormationController_update",
         "parameters": [

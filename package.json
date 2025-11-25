@@ -1,6 +1,9 @@
 {
   "dependencies": {
     "@nestjs/mapped-types": "*",
-    "concurrently": "^9.2.1"
+    "@nestjs/platform-socket.io": "^11.1.9",
+    "@nestjs/websockets": "^11.1.9",
+    "concurrently": "^9.2.1",
+    "websockets": "^0.2.0"
   }
 }
