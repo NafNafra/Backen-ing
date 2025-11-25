@@ -18,11 +18,6 @@ export class CertificatsService {
     private readonly fsPayment: FsPayementService,
   ) { }
 
-  async create(createCertificatDto: CreateCertificatDto): Promise<Certificat> {
-    const certificat = new this.certificatModel(createCertificatDto);
-    return certificat.save();
-  }
-
   async findAll(): Promise<CertificatResponseDto[]> {
     const customerId = '12'
     const test = await this.fsPayment.getPaymentCustomer(customerId)
@@ -35,28 +30,4 @@ export class CertificatsService {
     return formationProgramm;
   }
 
-  async update(
-    id: string,
-    updateCertificatDto: UpdateCertificatDto,
-  ): Promise<Certificat> {
-    const updatedCertificat = await this.certificatModel
-      .findByIdAndUpdate(
-        id,
-        updateCertificatDto,
-        { new: true, runValidators: true },
-      )
-      .exec();
-    if (!updatedCertificat) {
-      throw new NotFoundException(`Certificat avec id='${id}' non trouvé`);
-    }
-    return updatedCertificat;
-  }
-
-  remove(id: string): void {
-    const certificatToDelete = this.certificatModel
-      .findByIdAndDelete(id)
-      .exec();
-    if (!certificatToDelete)
-      throw new NotFoundException(`Certificat avec id=${id} non trouvé`);
-  }
 }

@@ -330,28 +330,6 @@
       }
     },
     "/certificats": {
-      "post": {
-        "operationId": "CertificatsController_create",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateCertificatDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Certificats"
-        ]
-      },
       "get": {
         "operationId": "CertificatsController_findAll",
         "parameters": [],
@@ -368,58 +346,6 @@
     "/certificats/{id}": {
       "get": {
         "operationId": "CertificatsController_findOne",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Certificats"
-        ]
-      },
-      "patch": {
-        "operationId": "CertificatsController_update",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateCertificatDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Certificats"
-        ]
-      },
-      "delete": {
-        "operationId": "CertificatsController_remove",
         "parameters": [
           {
             "name": "id",
@@ -659,50 +585,6 @@
           "birthdate",
           "birthplace",
           "inactive"
-        ]
-      },
-      "CreateCertificatDto": {
-        "type": "object",
-        "properties": {
-          "idStudent": {
-            "type": "string",
-            "example": "fdiygoudgouhbdjv73ey2873yg"
-          },
-          "linkImage": {
-            "type": "string",
-            "example": "http://localhost:5000"
-          },
-          "isPublik": {
-            "type": "boolean",
-            "example": false
-          }
-        },
-        "required": [
-          "idStudent",
-          "linkImage",
-          "isPublik"
-        ]
-      },
-      "UpdateCertificatDto": {
-        "type": "object",
-        "properties": {
-          "idStudent": {
-            "type": "string",
-            "example": "fdiygoudgouhbdjv73ey2873yg"
-          },
-          "linkImage": {
-            "type": "string",
-            "example": "http://localhost:5000"
-          },
-          "isPublik": {
-            "type": "boolean",
-            "example": false
-          }
-        },
-        "required": [
-          "idStudent",
-          "linkImage",
-          "isPublik"
         ]
       }
     }
