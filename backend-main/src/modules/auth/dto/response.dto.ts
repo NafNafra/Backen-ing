@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { HttpStatus } from '@nestjs/common';
 import { Types } from 'mongoose';
+import { VerifyUserDto } from '@/modules/user/dto/verify-user.dto';
 
 export type AuthResponse = {
-  user: { id: Types.ObjectId; name: string; phoneNumber: string; activated: boolean }[];
+  user: { _id: Types.ObjectId; name: string; phoneNumber: string; activated: boolean }[];
   message: string;
   statusCode: HttpStatus;
   accessToken?: string;
@@ -17,5 +18,28 @@ export class MessageResponseDto {
 
   constructor(message: string) {
     this.message = message;
+  }
+}
+
+export class VerifyCodeResponseDto {
+  @ApiProperty({
+    example: "Code vérifié. Sélectionnez l'utilisateur à connecter."
+  })
+  message: string;
+
+  @ApiProperty({ type: [VerifyUserDto] })
+  user: VerifyUserDto[];
+
+  @ApiProperty({ example: 200 })
+  statusCode: HttpStatus;
+
+  @ApiProperty({ example: 'xdfcgvhbjnmkl987654e' })
+  accessToken: string;
+
+  @ApiProperty({ example: 'xdfcgvhbjnmkl987654e.wjhgfdsas45.6543wqdas2' })
+  refreshToken: string;
+
+  constructor(partial: Partial<VerifyCodeResponseDto>) {
+    Object.assign(this, partial);
   }
 }

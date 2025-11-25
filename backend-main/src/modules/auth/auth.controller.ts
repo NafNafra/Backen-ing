@@ -4,7 +4,7 @@ import { CreateAuthPhoneDto, LogOutDto, RefreshTokenDto, VerifingCodeDto } from 
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiBadRequestResponse } from '@nestjs/swagger';
 import { Types } from 'mongoose';
-import { MessageResponseDto } from './dto/response.dto';
+import { MessageResponseDto, VerifyCodeResponseDto } from './dto/response.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -21,33 +21,42 @@ export class AuthController {
   async loginClient(
     @Body() phoneNumber: CreateAuthPhoneDto
   ): Promise<MessageResponseDto> {
-    return this.authService.lookByPhone(phoneNumber);
-  }
-
-  @Post('verify-code')
-  @ApiOperation({ summary: 'Verify OTP code' })
-  @ApiOkResponse({ description: 'Code verified successfully' })
-  @ApiBadRequestResponse({ description: 'Invalid code' })
-  verifyCode(
-    @Body() dto: VerifingCodeDto,
-  ) {
-    return this.authService.verifyOtp(dto);
+    return await this.authService.lookByPhone(phoneNumber);
   }
 
   @Post('resend-code')
   @ApiOperation({ summary: 'Resend OTP code' })
-  @ApiOkResponse({ description: 'Code resent successfully' })
-  @ApiBadRequestResponse({ description: 'Invalid phone number' })
-  resendCode(@Body() phoneNumber: CreateAuthPhoneDto) {
-    return this.authService.resendCode(phoneNumber);
+  @ApiOkResponse({
+    description: 'Code resent successfully',
+    type: MessageResponseDto
+  })
+  @ApiBadRequestResponse({ description: 'Invalid phone number', })
+  async resendCode(
+    @Body() phoneNumber: CreateAuthPhoneDto
+  ): Promise<MessageResponseDto> {
+    return await this.authService.resendCode(phoneNumber);
   }
+
+  @Post('verify-code')
+  @ApiOperation({ summary: 'Verify OTP code' })
+  @ApiOkResponse({
+    description: 'Code verified successfully',
+    type: VerifyCodeResponseDto
+  })
+  @ApiBadRequestResponse({ description: 'Invalid code' })
+  async verifyCode(
+    @Body() dto: VerifingCodeDto,
+  ): Promise<VerifyCodeResponseDto> {
+    return await this.authService.verifyOtp(dto);
+  }
+
 
   @Post('login')
   @ApiOperation({ summary: 'Login with chosen user' })
   @ApiOkResponse({ description: 'Login successful' })
   @ApiBadRequestResponse({ description: 'Invalid credentials' })
-  loginChosenUser(@Body() student: LoginChosenUserDto) {
-    return this.authService.loginChosenUser(student)
+  async loginChosenUser(@Body() student: LoginChosenUserDto) {
+    return await this.authService.loginChosenUser(student)
   }
 
   @Post('new-token')

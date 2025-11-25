@@ -20,7 +20,7 @@ import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.servic
 import { UsersService } from '@/modules/user/user.service';
 import { SmsService } from '@/commons/providers/sms/sms.service';
 import { payload } from '@/commons/types/auth';
-import { AuthResponse, MessageResponseDto } from '@/modules/auth/dto/response.dto';
+import { AuthResponse, MessageResponseDto, VerifyCodeResponseDto } from '@/modules/auth/dto/response.dto';
 import { CreateAuthPhoneDto, LogOutDto, RefreshTokenDto, VerifingCodeDto, VerifyCodeDto } from '@/modules/auth/dto/create-auth.dto';
 import { UserResponseDto } from '@/modules/user/dto/response-user.dto';
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
@@ -58,15 +58,16 @@ export class AuthService {
   // Verify OTP code
   async verifyOtp(
     dto: VerifingCodeDto,
-  ): Promise<AuthResponse> {
+  ): Promise<VerifyCodeResponseDto> {
     const { phoneNumber, code } = dto;
     const users = await this.usersService.findByPhone(phoneNumber);
     if (!users || users.length === 0) {
       throw new NotFoundException(`User with phone ${phoneNumber} not found`);
     }
-    // console.log(users);
     const validOtpUser = users.find(
-      (u) => u._OtpCode === code && u._OtpExpiresAt !== undefined &&
+      (u) =>
+        u._OtpCode === code &&
+        u._OtpExpiresAt !== undefined &&
         new Date(u._OtpExpiresAt).getTime() > Date.now()
     );
 
@@ -75,29 +76,26 @@ export class AuthService {
     }
 
     for (const u of users) {
-      // console.log(u._id, u)
       u._OtpCode = '';
       u._OtpExpiresAt = undefined;
       await u.save();
     }
 
-
-
-    return {
+    return new VerifyCodeResponseDto({
       message: `Code vérifié. Sélectionnez l'utilisateur à connecter. `,
       user: users.map((u) => ({
-        id: u._id,
+        _id: u._id.toString(),
         name: u.name,
         compteFb: u.compteFb,
         phoneNumber: u.phoneNumber,
         activated: u.activated,
       })),
       statusCode: HttpStatus.OK
-    }
+    })
   }
 
   // Reenvoyer le code
-  async resendCode(phoneNumber: CreateAuthPhoneDto) {
+  async resendCode(phoneNumber: CreateAuthPhoneDto): Promise<MessageResponseDto> {
     const users = await this.usersService.findByPhone(phoneNumber.phoneNumber);
     if (!users || users.length === 0) {
       throw new NotFoundException(`User with phone ${phoneNumber.phoneNumber} not found`);
@@ -117,14 +115,13 @@ export class AuthService {
     }
 
     await this.smsService.sendSms(
-      phoneNumber.toString(),
+      phoneNumber.phoneNumber,
       `Votre code de vérification est: ${OtpCode}`,
     );
 
-    return {
-      message: `Le code de vérification a été envoyé au numéro: ${phoneNumber.phoneNumber}. Le code ${OtpCode} expirera dans 10 minutes.`,
-    };
-
+    return new MessageResponseDto(
+      `Le code de vérification a été envoyé au numéro: ${phoneNumber.phoneNumber}. Le code ${OtpCode} expirera dans 10 minutes.`,
+    );
   }
 
   // Se connecter a un utilisateur
@@ -135,9 +132,7 @@ export class AuthService {
     }
     const validOtpUser = users.find(
       (u) => {
-        // console.log("Gahem : ", u._id.toString(), student.id.toString(), student.phone, u.phoneNumber);
         if (u._id && student.id && u._id.toString() === student.id.toString()) {
-          // console.log(`Equals  // \n ${u}`)
           return u
         }
         else {
@@ -150,10 +145,6 @@ export class AuthService {
     }
     validOtpUser.activated = true;
     await validOtpUser.save()
-    // console.log('validOtpUser : ', validOtpUser);
-
-    // const user = await this.usersService.findById(validOtpUser._id);
-    // console.log(`User by id \n ${user}`)
 
     const payload: payload = {
       id: validOtpUser._id,

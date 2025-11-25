@@ -36,34 +36,6 @@
         ]
       }
     },
-    "/auth/verify-code": {
-      "post": {
-        "operationId": "AuthController_verifyCode",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VerifingCodeDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Code verified successfully"
-          },
-          "400": {
-            "description": "Invalid code"
-          }
-        },
-        "summary": "Verify OTP code",
-        "tags": [
-          "Auth"
-        ]
-      }
-    },
     "/auth/resend-code": {
       "post": {
         "operationId": "AuthController_resendCode",
@@ -80,13 +52,55 @@
         },
         "responses": {
           "200": {
-            "description": "Code resent successfully"
+            "description": "Code resent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponseDto"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid phone number"
           }
         },
         "summary": "Resend OTP code",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/verify-code": {
+      "post": {
+        "operationId": "AuthController_verifyCode",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifingCodeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Code verified successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyCodeResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid code"
+          }
+        },
+        "summary": "Verify OTP code",
         "tags": [
           "Auth"
         ]
@@ -568,6 +582,72 @@
         "required": [
           "phoneNumber",
           "code"
+        ]
+      },
+      "VerifyUserDto": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "65f123abc9d99e12aabb0001"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "compteFb": {
+            "type": "string",
+            "example": "john.doe"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "+261341234567"
+          },
+          "activated": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "compteFb",
+          "phoneNumber",
+          "activated"
+        ]
+      },
+      "VerifyCodeResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Code vérifié. Sélectionnez l'utilisateur à connecter."
+          },
+          "user": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VerifyUserDto"
+            }
+          },
+          "statusCode": {
+            "type": "number",
+            "example": 200
+          },
+          "accessToken": {
+            "type": "string",
+            "example": "xdfcgvhbjnmkl987654e"
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "xdfcgvhbjnmkl987654e.wjhgfdsas45.6543wqdas2"
+          }
+        },
+        "required": [
+          "message",
+          "user",
+          "statusCode",
+          "accessToken",
+          "refreshToken"
         ]
       },
       "ObjectId": {
