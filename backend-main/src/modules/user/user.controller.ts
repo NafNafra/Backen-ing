@@ -24,6 +24,7 @@ import { UsersService } from '@/modules/user/user.service';
 import { CreateUserDto } from '@/modules/user/dto/create-user.dto';
 import { UpdateUserDto } from '@/modules/user/dto/update-user.dto';
 import { Types } from 'mongoose';
+import { CreateUserResponseDto } from './dto/response-user.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -34,14 +35,17 @@ export class UsersController {
   @ApiOperation({ summary: 'Create a new user' })
   @ApiCreatedResponse({ description: 'User created successfully' })
   @ApiBadRequestResponse({ description: 'Payload invalid' })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.createUser(createUserDto);
+  async create(@Body() dto: CreateUserDto): Promise<CreateUserResponseDto> {
+    return await this.usersService.createUser(dto);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all users' })
-  @ApiOkResponse({ description: 'Users found successfully' })
-  findAll() {
+  @ApiOkResponse({
+    description: 'Users found successfully',
+    type: [CreateUserResponseDto]
+  })
+  async findAll(): Promise<CreateUserResponseDto[]> {
     return this.usersService.findAll();
   }
 

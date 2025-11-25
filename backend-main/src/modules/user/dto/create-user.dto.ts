@@ -26,7 +26,7 @@ export class CreateUserDto {
     required: false
   })
   @IsString()
-  @Length(10, 13, { message: 'Doit etre 10-12 chiffre' })
+  @Length(10, 15, { message: 'Doit etre 10-12 chiffre' })
   @IsNotEmpty({ message: 'Ne doit pas etre vide' })
   phoneNumber: string;
 

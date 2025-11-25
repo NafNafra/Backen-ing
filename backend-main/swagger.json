@@ -222,7 +222,17 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Users found successfully"
+            "description": "Users found successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CreateUserResponseDto"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Get all users",
@@ -731,6 +741,63 @@
         "required": [
           "idUser",
           "name"
+        ]
+      },
+      "CreateUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "42"
+          },
+          "idUser": {
+            "type": "string",
+            "example": "42"
+          },
+          "name": {
+            "type": "string",
+            "example": "Alice Doe"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "+261341234567"
+          },
+          "compteFb": {
+            "type": "string",
+            "example": "Miracle Quin"
+          },
+          "_OtpCode": {
+            "type": "string",
+            "example": "1234"
+          },
+          "_OtpExpiresAt": {
+            "type": "string",
+            "example": "wsdfgthy.p875tef.r534t6yghb"
+          },
+          "activated": {
+            "type": "boolean",
+            "example": false
+          },
+          "reactivationDate": {
+            "type": "string",
+            "example": "534657ytuhgbvg"
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "sedr5657ytuhgnb gt756yuijymn nbv"
+          }
+        },
+        "required": [
+          "_id",
+          "idUser",
+          "name",
+          "phoneNumber",
+          "compteFb",
+          "_OtpCode",
+          "_OtpExpiresAt",
+          "activated",
+          "reactivationDate",
+          "refreshToken"
         ]
       },
       "UpdateUserDto": {

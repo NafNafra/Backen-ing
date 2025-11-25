@@ -23,7 +23,7 @@ export class FormationController {
   async findById(@Param('id') id: string): Promise<FormationResponseDto> {
     const data = await this.formationService.findById(id);
     if (!data) {
-      throw new NotFoundException('Formation not found');
+      throw new NotFoundException('FormatioRn not found');
     }
     return new FormationResponseDto(data)
   }

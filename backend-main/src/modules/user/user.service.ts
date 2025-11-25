@@ -12,6 +12,7 @@ import { UpdateUserDto } from '@/modules/user/dto/update-user.dto';
 import {
   UserResponseDto,
   UpdateUserResponseDto,
+  CreateUserResponseDto,
 } from '@/modules/user/dto/response-user.dto';
 import { User, UserDocument } from '@/modules/user/entities/user.entity';
 import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
@@ -27,14 +28,32 @@ export class UsersService {
     private readonly fsCustomer: FsCustomerService,
   ) { }
 
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const user = new this.userModel(createUserDto);
-    return user.save();
+  async createUser(createUserDto: CreateUserDto): Promise<CreateUserResponseDto> {
+    const user = await new this.userModel(createUserDto).save();
+    return new CreateUserResponseDto({
+      _id: user._id.toString(),
+      idUser: user.idUser,
+      name: user.name,
+      phoneNumber: user.phoneNumber,
+      compteFb: user.compteFb,
+    });
   }
 
 
-  async findAll(): Promise<User[]> {
-    return this.userModel.find().exec();
+  async findAll(): Promise<CreateUserResponseDto[]> {
+    const users = await this.userModel.find().exec();
+    return users.map(user => new CreateUserResponseDto({
+      _id: user._id.toString(),
+      idUser: user.idUser,
+      name: user.name,
+      phoneNumber: user.phoneNumber,
+      compteFb: user.compteFb,
+      _OtpCode: user._OtpCode,
+      _OtpExpiresAt: user._OtpExpiresAt,
+      activated: user.activated,
+      reactivationDate: user.reactivationDate,
+      refreshToken: user.refreshToken,
+    }));
   }
 
   async findById(_id: Types.ObjectId) {

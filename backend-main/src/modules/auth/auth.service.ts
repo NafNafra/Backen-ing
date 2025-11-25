@@ -20,9 +20,8 @@ import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.servic
 import { UsersService } from '@/modules/user/user.service';
 import { SmsService } from '@/commons/providers/sms/sms.service';
 import { payload } from '@/commons/types/auth';
-import { AuthResponse, MessageResponseDto, VerifyCodeResponseDto } from '@/modules/auth/dto/response.dto';
+import { MessageResponseDto, VerifyCodeResponseDto } from '@/modules/auth/dto/response.dto';
 import { CreateAuthPhoneDto, LogOutDto, RefreshTokenDto, VerifingCodeDto, VerifyCodeDto } from '@/modules/auth/dto/create-auth.dto';
-import { UserResponseDto } from '@/modules/user/dto/response-user.dto';
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
 
 @Injectable()
