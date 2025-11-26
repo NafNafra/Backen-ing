@@ -147,7 +147,11 @@ export class AuthService {
     validOtpUser.activated = true;
     await validOtpUser.save()
 
-    const payload: payload = validOtpUser;
+    const payload: payload = {
+      _id: validOtpUser._id,
+      phoneNumber: validOtpUser.phoneNumber,
+      activated: validOtpUser.activated
+    };
 
     const token = await this.generateTokens(payload);
     await this.storeRefreshToken(validOtpUser._id, token.refresh_token);
@@ -170,7 +174,7 @@ export class AuthService {
 
   async logout(dto: LogOutDto): Promise<MessageResponseDto> {
     await this.usersService.update(
-      new Types.ObjectId(dto._id),
+      (dto._id),
       { refreshToken: null, activated: false } as any
     );
 
@@ -197,7 +201,7 @@ export class AuthService {
     refreshToken: string,
   ): Promise<void> {
     const hashedToken = await bcrypt.hash(refreshToken, 10);
-    await this.usersService.update(userId, { refreshToken: hashedToken, activated: true });
+    await this.usersService.update(userId.toString(), { refreshToken: hashedToken, activated: true });
   }
 
   async refreshAccessToken(
@@ -207,7 +211,7 @@ export class AuthService {
       secret: this.configsService.get('jwt.refresh.secret'),
     });
 
-    const user = await this.usersService.findById(payload.id);
+    const user = await this.usersService.findById(payload._id);
 
     if (!user || !user.refreshToken)
       throw new UnauthorizedException('Invalid refresh token ko');
@@ -216,7 +220,11 @@ export class AuthService {
     if (!isTokenValid) throw new UnauthorizedException('Invalid refresh token');
 
     const newAccessToken = await this.jwtService.signAsync(
-      { id: user._id, phoneNumber: user.phoneNumber, activated: user.activated },
+      {
+        id: user._id,
+        phoneNumber: user.phoneNumber,
+        activated: user.activated
+      },
       {
         secret: this.configsService.get('jwt.secret'),
         expiresIn: this.configsService.get('jwt.expiresIn'),

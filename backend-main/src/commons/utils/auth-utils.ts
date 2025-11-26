@@ -30,7 +30,7 @@ export async function storeRefreshToken(
 ): Promise<void> {
   const hashedToken = await bcrypt.hash(refreshToken, 10);
   // console.log(hashedToken);
-  await usersService.update(userId, {
+  await usersService.update(userId.toString(), {
     refreshToken: hashedToken,
     activated: true,
   });

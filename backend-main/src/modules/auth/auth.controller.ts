@@ -1,9 +1,10 @@
-import { Controller, Post, Query, Body } from '@nestjs/common';
+import { Controller, Post, Query, Body, UseGuards } from '@nestjs/common';
 import { AuthService } from '@/modules/auth/auth.service';
 import { CreateAuthPhoneDto, LogOutDto, TokenDto, VerifingCodeDto } from '@/modules/auth/dto/create-auth.dto';
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
-import { ApiTags, ApiOperation, ApiOkResponse, ApiBadRequestResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiOkResponse, ApiBadRequestResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginResponseDto, MessageResponseDto, VerifyCodeResponseDto } from './dto/response.dto';
+import { JwtAuthGuard } from '@/commons/guards/jwt-auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -83,6 +84,8 @@ export class AuthController {
     type: MessageResponseDto
   })
   @ApiBadRequestResponse({ description: 'Invalid request' })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async deconnexion(
     @Body() id: LogOutDto
   ): Promise<MessageResponseDto> {
