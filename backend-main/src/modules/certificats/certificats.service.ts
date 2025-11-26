@@ -7,6 +7,7 @@ import { Model, Types } from 'mongoose';
 import { NotFoundException } from '@nestjs/common';
 import { FsCertService } from '@/commons/providers/fsback/fs-cert.service';
 import { FsPayementService } from '@/commons/providers/fsback/fs-payement.service';
+import { CertDto } from '@/commons/providers/fsback/dto/cert.dto';
 
 @Injectable()
 export class CertificatsService {
@@ -15,10 +16,8 @@ export class CertificatsService {
     private readonly fsPayment: FsPayementService,
   ) { }
 
-  async findAll(): Promise<CertificatResponseDto[]> {
-    const customerId = '12'
-    const test = await this.fsPayment.getPaymentCustomer(customerId)
-    console.log(test)
+  async findAll(): Promise<CertDto[]> {
+
     return this.fsCert.getCertificat();
   }
 

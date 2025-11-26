@@ -538,7 +538,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/CertificatResponseDto"
+                    "$ref": "#/components/schemas/CertDto"
                   }
                 }
               }
@@ -1272,7 +1272,7 @@
             "type": "string"
           },
           "mention": {
-            "type": "number"
+            "type": "object"
           },
           "inactive": {
             "type": "boolean"

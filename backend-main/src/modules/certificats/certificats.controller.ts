@@ -6,6 +6,7 @@ import {
 import { CertificatsService } from '@/modules/certificats/certificats.service';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger';
 import { CertificatResponseDto } from './dto/response-certificat.dto';
+import { CertDto } from '@/commons/providers/fsback/dto/cert.dto';
 @ApiTags('Certificats')
 @Controller('certificats')
 export class CertificatsController {
@@ -16,9 +17,9 @@ export class CertificatsController {
   @ApiOperation({ summary: 'Get all certificates' })
   @ApiOkResponse({
     description: 'Certificates retrieved successfully',
-    type: [CertificatResponseDto]
+    type: [CertDto]
   })
-  findAll(): Promise<CertificatResponseDto[]> {
+  findAll(): Promise<CertDto[]> {
     return this.certificatsService.findAll();
   }
 

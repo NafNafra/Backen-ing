@@ -7,7 +7,7 @@ export class CertDto {
   _id: string;
 
   @ApiProperty()
-  mention: number;
+  mention: string | number;
 
   @ApiProperty()
   inactive: boolean;
@@ -20,6 +20,10 @@ export class CertDto {
 
   @ApiProperty()
   updatedAt: Date;
+
+  constructor(partial: Partial<CertDto>) {
+    Object.assign(this, partial);
+  }
 }
 
 export class CertificateResultDto {
