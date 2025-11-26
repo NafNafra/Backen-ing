@@ -1,12 +1,11 @@
 import { Controller, Post, Query, Body } from '@nestjs/common';
 import { AuthService } from '@/modules/auth/auth.service';
-import { CreateAuthPhoneDto, LogOutDto, RefreshTokenDto, VerifingCodeDto } from '@/modules/auth/dto/create-auth.dto';
+import { CreateAuthPhoneDto, LogOutDto, TokenDto, VerifingCodeDto } from '@/modules/auth/dto/create-auth.dto';
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiBadRequestResponse } from '@nestjs/swagger';
-import { Types } from 'mongoose';
-import { MessageResponseDto, VerifyCodeResponseDto } from './dto/response.dto';
+import { LoginResponseDto, MessageResponseDto, VerifyCodeResponseDto } from './dto/response.dto';
 
-@ApiTags('Auth')
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
@@ -53,29 +52,40 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Login with chosen user' })
-  @ApiOkResponse({ description: 'Login successful' })
+  @ApiOkResponse({
+    description: 'Login successful',
+    type: LoginResponseDto
+  })
   @ApiBadRequestResponse({ description: 'Invalid credentials' })
   async loginChosenUser(
     @Body() student: LoginChosenUserDto
-  ): Promise<VerifyCodeResponseDto> {
+  ): Promise<LoginResponseDto> {
     return await this.authService.loginChosenUser(student)
   }
 
   @Post('new-token')
   @ApiOperation({ summary: 'Refresh access token' })
-  @ApiOkResponse({ description: 'Token refreshed successfully' })
+  @ApiOkResponse({
+    description: 'Token refreshed successfully',
+    type: TokenDto
+  })
   @ApiBadRequestResponse({ description: 'Invalid refresh token' })
   async refresh(
-    @Body() refreshToken: RefreshTokenDto
-  ): Promise<{ access_token: string }> {
-    return this.authService.refreshAccessToken(refreshToken);
+    @Body() token: TokenDto
+  ): Promise<TokenDto> {
+    return await this.authService.refreshAccessToken(token);
   }
 
   @Post('logout')
   @ApiOperation({ summary: 'Logout user' })
-  @ApiOkResponse({ description: 'Logged out successfully' })
+  @ApiOkResponse({
+    description: 'Logged out successfully',
+    type: MessageResponseDto
+  })
   @ApiBadRequestResponse({ description: 'Invalid request' })
-  async deconnexion(@Body() id: LogOutDto): Promise<MessageResponseDto> {
+  async deconnexion(
+    @Body() id: LogOutDto
+  ): Promise<MessageResponseDto> {
     return this.authService.logout(id);
   }
 }

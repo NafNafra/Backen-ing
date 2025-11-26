@@ -34,13 +34,17 @@ export class VerifyCodeDto extends CreateAuthPhoneDto {
   code: string;
 }
 
-export class RefreshTokenDto {
+export class TokenDto {
   @ApiProperty({
-    example: '0bnm-347cvbn-327vbhnj-9bn50'
+    example: '0bnm-347cvbn-327vbhnj-9bn50',
   })
   @IsString()
   @IsNotEmpty({ message: 'Le token ne doit pas être vide.' })
-  refreshToken: string;
+  token: string;
+
+  constructor(partial: Partial<TokenDto>) {
+    Object.assign(this, partial);
+  }
 }
 
 export class LogOutDto {

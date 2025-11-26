@@ -20,8 +20,8 @@ import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.servic
 import { UsersService } from '@/modules/user/user.service';
 import { SmsService } from '@/commons/providers/sms/sms.service';
 import { payload } from '@/commons/types/auth';
-import { MessageResponseDto, VerifyCodeResponseDto } from '@/modules/auth/dto/response.dto';
-import { CreateAuthPhoneDto, LogOutDto, RefreshTokenDto, VerifingCodeDto, VerifyCodeDto } from '@/modules/auth/dto/create-auth.dto';
+import { LoginResponseDto, MessageResponseDto, VerifyCodeResponseDto } from '@/modules/auth/dto/response.dto';
+import { CreateAuthPhoneDto, LogOutDto, TokenDto, VerifingCodeDto, VerifyCodeDto } from '@/modules/auth/dto/create-auth.dto';
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
 
 @Injectable()
@@ -124,7 +124,9 @@ export class AuthService {
   }
 
   // Se connecter a un utilisateur
-  async loginChosenUser(student: LoginChosenUserDto): Promise<VerifyCodeResponseDto> {
+  async loginChosenUser(
+    student: LoginChosenUserDto
+  ): Promise<LoginResponseDto> {
     const users = await this.usersService.findByPhone(student.phone);
     if (!users) {
       throw new NotFoundException(`User with phone ${student.phone} not found`);
@@ -145,28 +147,24 @@ export class AuthService {
     validOtpUser.activated = true;
     await validOtpUser.save()
 
-    const payload: payload = {
-      id: validOtpUser._id,
-      phone: validOtpUser.phoneNumber,
-      activated: validOtpUser.activated,
-    };
+    const payload: payload = validOtpUser;
 
     const token = await this.generateTokens(payload);
     await this.storeRefreshToken(validOtpUser._id, token.refresh_token);
 
-    return {
+    return new LoginResponseDto({
       message: 'Connexion réussie',
-      user: [{
+      user: {
         _id: validOtpUser._id.toString(),
         name: validOtpUser.name,
         phoneNumber: validOtpUser.phoneNumber,
         compteFb: validOtpUser.compteFb,
         activated: validOtpUser.activated
-      }],
+      },
       statusCode: HttpStatus.OK,
       accessToken: token.access_token,
       refreshToken: token.refresh_token,
-    };
+    });
   }
 
 
@@ -203,9 +201,9 @@ export class AuthService {
   }
 
   async refreshAccessToken(
-    refreshToken: RefreshTokenDto,
-  ): Promise<{ access_token: string }> {
-    const payload = this.jwtService.verify(refreshToken.refreshToken, {
+    refreshToken: TokenDto,
+  ): Promise<TokenDto> {
+    const payload = this.jwtService.verify(refreshToken.token, {
       secret: this.configsService.get('jwt.refresh.secret'),
     });
 
@@ -214,7 +212,7 @@ export class AuthService {
     if (!user || !user.refreshToken)
       throw new UnauthorizedException('Invalid refresh token ko');
 
-    const isTokenValid = await bcrypt.compare(refreshToken.refreshToken, user.refreshToken);
+    const isTokenValid = await bcrypt.compare(refreshToken.token, user.refreshToken);
     if (!isTokenValid) throw new UnauthorizedException('Invalid refresh token');
 
     const newAccessToken = await this.jwtService.signAsync(
@@ -224,6 +222,6 @@ export class AuthService {
         expiresIn: this.configsService.get('jwt.expiresIn'),
       },
     );
-    return { access_token: newAccessToken };
+    return new TokenDto({ token: newAccessToken });
   }
 }

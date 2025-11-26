@@ -33,13 +33,28 @@ export class VerifyCodeResponseDto {
   @ApiProperty({ example: 200 })
   statusCode: HttpStatus;
 
-  @ApiProperty({ example: 'xdfcgvhbjnmkl987654e' })
+  constructor(partial: Partial<VerifyCodeResponseDto>) {
+    Object.assign(this, partial);
+  }
+}
+
+export class LoginResponseDto {
+  @ApiProperty({ type: VerifyUserDto })
+  user: VerifyUserDto;
+
+  @ApiProperty({ example: 'Connexion réussie' })
+  message: string;
+
+  @ApiProperty({ example: 200 })
+  statusCode: number;
+
+  @ApiProperty({ example: 'abcd.efgh.ijkl' })
   accessToken: string;
 
-  @ApiProperty({ example: 'xdfcgvhbjnmkl987654e.wjhgfdsas45.6543wqdas2' })
+  @ApiProperty({ example: 'mnop.qrst.uvwx' })
   refreshToken: string;
-
-  constructor(partial: Partial<VerifyCodeResponseDto>) {
+  
+  constructor(partial: Partial<LoginResponseDto>) {
     Object.assign(this, partial);
   }
 }

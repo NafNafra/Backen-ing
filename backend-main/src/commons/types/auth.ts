@@ -1,8 +1,8 @@
 import { Types } from 'mongoose';
 
 export type payload = {
-  id: Types.ObjectId;
-  phone: string;
+  _id: Types.ObjectId;
+  phoneNumber: string;
   activated: boolean;
 };
 
