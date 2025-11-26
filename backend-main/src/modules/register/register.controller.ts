@@ -11,7 +11,10 @@ export class RegisterController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new registration' })
-  @ApiCreatedResponse({ description: 'Registration created successfully', type: ResponseRegisterDto })
+  @ApiCreatedResponse({
+    description: 'Registration created successfully',
+    type: ResponseRegisterDto
+  })
   @ApiBadRequestResponse({ description: 'Invalid data' })
   async create(
     @Body() dto: CreateRegisterDto

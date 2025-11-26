@@ -18,20 +18,10 @@ async function bootstrap() {
     .setVersion('1.0')
     .setContact('API Support', '', 'support@example.com')
     .setLicense('MIT', 'https://opensource.org/licenses/MIT')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        name: 'JWT',
-        description: 'Enter JWT token',
-        in: 'header',
-      },
-      'JWT-auth', // This name here is important for matching up with @ApiBearerAuth() in your controllers
-    )
+    .addBearerAuth()
     .addServer('/api', 'API Base Path')
     .addServer('http://localhost:3000/api', 'Local Development')
-    .addTag('Auth', 'Authentication endpoints for phone-based login')
+    .addTag('auth', 'Authentication endpoints for phone-based login')
     .addTag('Users', 'User management endpoints')
     .addTag('Register', 'User registration endpoints')
     .addTag('Formation', 'Formation/Training management')
