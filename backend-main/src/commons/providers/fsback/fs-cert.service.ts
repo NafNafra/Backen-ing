@@ -44,8 +44,9 @@ export class FsCertService {
         `${this.url}/cert/getByAttributes?formationId=${formationId}`,
         this.headers
       )
-
       const certs = res.data;
+
+      certs[0].mention = mentionNote(certs[0].mention)
       return certs?.[0] ?? null;
     } catch (error) {
       console.warn(`Cert not found for paymentId: ${formationId}`);
