@@ -32,9 +32,12 @@ async function bootstrap() {
   const documentFactory = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/swagger', app, documentFactory);
 
-  // Always generate swagger.json for API generation tools
-  writeFileSync('./swagger.json', JSON.stringify(documentFactory, null, 2));
-  console.log('✔ Swagger JSON generated at ./swagger.json');
+  app.use('/api-json', (req, res) => {          // 📌 Raw JSON endpoint
+    res.json(documentFactory);
+  });
+
+  // writeFileSync('./swagger.json', JSON.stringify(documentFactory, null, 2));
+  // console.log('✔ Swagger JSON generated at ./swagger.json');
 
   app.setGlobalPrefix('api');
 
