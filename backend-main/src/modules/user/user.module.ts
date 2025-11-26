@@ -7,7 +7,7 @@ import { UsersController } from '@/modules/user/user.controller';
 import { User, UserSchema } from '@/modules/user/entities/user.entity';
 import { FsbackModule } from '@/commons/providers/fsback/fsback.module';
 import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.service';
-import { RegisterModule } from '../register/register.module';
+import { RegisterModule } from '@/modules/register/register.module';
 
 @Module({
   imports: [
@@ -15,6 +15,7 @@ import { RegisterModule } from '../register/register.module';
     HttpModule,
     ConfigsModule,
     FsbackModule,
+    RegisterModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, FsCustomerService],

@@ -18,6 +18,7 @@ import { User, UserDocument } from '@/modules/user/entities/user.entity';
 import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.service';
 import { externPayload } from '@/commons/types/auth';
+import { ResponseRegisterDto } from '../register/dto/response-register.dto';
 
 @Injectable()
 export class UsersService {
@@ -57,18 +58,22 @@ export class UsersService {
   }
 
 
-  async findByUserId(_id: Types.ObjectId) {
+  async findByUserId(_id: string): Promise<ResponseRegisterDto> {
+    _id = "6926d69b8c48facfc78cc0fc";
     const userLocal = await this.findById(_id);
 
-    if (userLocal.length > 1 || !userLocal)
+    if (!userLocal)
       throw new NotFoundException("L'utilisateur spécifié est introuvable");
 
-    return userLocal;
+    return new ResponseRegisterDto(userLocal);
   }
 
   async findByPhone(phoneNumber: CreateAuthPhoneDto | string) {
     try {
-      const users = await this.userModel.find({ phoneNumber: phoneNumber });
+      const phone =
+        typeof phoneNumber === 'string' ? phoneNumber : phoneNumber.phoneNumber;
+
+      const users = await this.userModel.find({ phoneNumber: phone });
       if (users === null || users.length === 0) throw new BadRequestException('Aucun etudiant avec ce numero')
       return users;
     } catch (error) {
@@ -80,13 +85,11 @@ export class UsersService {
   }
 
   async update(
-    userId: Types.ObjectId,
+    userId: string,
     userDto: UpdateUserDto,
   ): Promise<UpdateUserResponseDto> {
     if (userDto === null || userId === null)
-      throw new BadRequestException(
-        'Veuillez spécifier les informations à mettre à jour',
-      );
+      throw new BadRequestException('Veuillez spécifier les informations à mettre à jour',);
 
     const updatedUser = await this.userModel
       .findByIdAndUpdate(userId, userDto, { new: true })
@@ -94,22 +97,23 @@ export class UsersService {
 
     const userk = await this.userModel.findOne({ _id: userId }).exec();
     if (!updatedUser) {
-      throw new NotFoundException(
-        "L'utilisateur à mettre à jour est introuvable.",
-      );
+      throw new NotFoundException("L'utilisateur à mettre à jour est introuvable.",);
     }
 
-    return new UpdateUserResponseDto(
-      new UserResponseDto(updatedUser),
-      'Informations mises à jour avec succès',
-      200,
-    );
+    return new UpdateUserResponseDto({
+      data: new UserResponseDto(updatedUser),
+      message: 'Informations mises à jour avec succès',
+      statusCode: 200,
+    });
   }
 
-  async remove(id: number): Promise<User> {
+  async remove(id: string): Promise<CreateUserResponseDto> {
     const deleted = await this.userModel.findByIdAndDelete(id).exec();
-    if (!deleted) throw new NotFoundException('User not found');
-    return deleted;
+    if (!deleted) throw new NotFoundException('User not found'); ``
+    return new CreateUserResponseDto({
+      ...deleted.toObject(),
+      _id: deleted._id.toString()
+    });
   }
 
   async findAndSyncExternalUsers(phoneNumber: CreateAuthPhoneDto): Promise<UserResponseDto[]> {
@@ -153,21 +157,26 @@ export class UsersService {
     );
   }
 
-  async findById(_id: Types.ObjectId) {
+  async findById(_id: string) {
     const user = await this.userModel.findOne({ _id: _id }).exec();
+    console.log(user)
     if (!user)
       throw new NotFoundException("L'utilisateur spécifié est introuvable");
 
     const inFs = await this.fsCustomer.getCustById(user.idUser);
     if (!inFs || inFs.length > 1)
       throw new NotFoundException("L'utilisateur spécifié est introuvable");
+    console.log(inFs[0])
 
-    const cleanUserData = {
+    return {
       ...inFs[0],
-      name: inFs[0].firstname + " " + inFs[0].lastname,
-      refreshToken: user.refreshToken
-    }
-    return cleanUserData;
+      _id: user._id.toString(),
+      name: user.name,
+      phoneNumber: user.phoneNumber,
+      activated: user.activated,
+      refreshToken: user.refreshToken,
+      reactivationDate: user.reactivationDate,
+    };
   }
 
 }
