@@ -37,7 +37,7 @@ export class ResponseRegisterDto {
   @ApiProperty({ example: "https://facebook.com/jennie.kim", })
   compteFb: string;
 
-  @ApiProperty({ example: "false", })
+  @ApiProperty({ example: false, })
   inactive: boolean;
 
   constructor(partial: Partial<ResponseRegisterDto>) {

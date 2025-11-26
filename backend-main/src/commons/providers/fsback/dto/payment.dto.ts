@@ -29,5 +29,5 @@ export class PaymentDto {
   createdAt: String;
 
   @ApiProperty()
-  upstringdAt: String;
+  updatedAt: String;
 }

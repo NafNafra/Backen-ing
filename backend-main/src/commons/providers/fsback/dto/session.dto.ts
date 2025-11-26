@@ -16,7 +16,7 @@ export class SessionDto {
   certprice: number;
 
   @ApiProperty()
-  place: number;
+  place: string;
 
   @ApiProperty()
   inactive: boolean;

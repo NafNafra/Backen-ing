@@ -6,7 +6,13 @@ export class CertDto {
   @ApiProperty()
   _id: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Score or mention label',
+    oneOf: [
+      { type: 'number', example: 15 },
+      { type: 'string', example: 'Bien' }
+    ]
+  })
   mention: string | number;
 
   @ApiProperty()

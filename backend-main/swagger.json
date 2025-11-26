@@ -954,7 +954,7 @@
           },
           "inactive": {
             "type": "boolean",
-            "example": "false"
+            "example": false
           }
         },
         "required": [
@@ -1272,7 +1272,17 @@
             "type": "string"
           },
           "mention": {
-            "type": "object"
+            "description": "Score or mention label",
+            "oneOf": [
+              {
+                "type": "number",
+                "example": 15
+              },
+              {
+                "type": "string",
+                "example": "Bien"
+              }
+            ]
           },
           "inactive": {
             "type": "boolean"
@@ -1328,7 +1338,7 @@
           "createdAt": {
             "type": "string"
           },
-          "upstringdAt": {
+          "updatedAt": {
             "type": "string"
           }
         },
@@ -1342,7 +1352,7 @@
           "customerId",
           "userId",
           "createdAt",
-          "upstringdAt"
+          "updatedAt"
         ]
       },
       "SessionDto": {
@@ -1364,7 +1374,7 @@
             "type": "number"
           },
           "place": {
-            "type": "number"
+            "type": "string"
           },
           "inactive": {
             "type": "boolean"
@@ -1468,7 +1478,7 @@
           },
           "inactive": {
             "type": "boolean",
-            "example": "false"
+            "example": false
           },
           "results": {
             "type": "array",
