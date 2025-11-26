@@ -1,11 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
 } from '@nestjs/common';
 import { SessionsService } from '@/modules/sessions/sessions.service';
 import { ApiOkResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
@@ -20,7 +15,8 @@ export class SessionsController {
   @ApiOperation({ summary: 'Get all sessions' })
   @ApiOkResponse({
     description: 'Sessions found successfully',
-    type: [SessionResponseDto]
+    type: SessionResponseDto,
+    isArray: true
   })
   async findAll() : Promise<SessionResponseDto[]> {
     const data = await this.sessionsService.findAll();
