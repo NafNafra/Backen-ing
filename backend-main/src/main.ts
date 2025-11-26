@@ -16,7 +16,7 @@ async function bootstrap() {
     .setTitle('Client API')
     .setDescription('CRUD API for Clients - Backend service for managing client authentication, users, registrations, formations, sessions, and certificates')
     .setVersion('1.0')
-    .setContact('API Support', '', 'support@example.com')
+    .setContact('API Support', 'http://localhost:3000', 'nafafy@gmail.com')
     .setLicense('MIT', 'https://opensource.org/licenses/MIT')
     .addBearerAuth()
     .addServer('/api', 'API Base Path')
