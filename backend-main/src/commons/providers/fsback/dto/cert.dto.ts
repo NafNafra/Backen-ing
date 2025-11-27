@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { PaymentDto } from "./payment.dto";
-import { SessionDto } from "./session.dto";
+import { PaymentDto } from "@/commons/providers/fsback/dto/payment.dto";
+import { SessionDto } from "@/commons/providers/fsback/dto/session.dto";
 
 export class CertDto {
   @ApiProperty()

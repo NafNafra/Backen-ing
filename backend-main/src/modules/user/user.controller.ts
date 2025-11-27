@@ -9,6 +9,7 @@ import {
   Query,
   Patch,
 } from '@nestjs/common';
+import { Req } from '@nestjs/common';
 import {
   ApiOkResponse,
   ApiCreatedResponse,
@@ -23,10 +24,11 @@ import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 import { UsersService } from '@/modules/user/user.service';
 import { CreateUserDto } from '@/modules/user/dto/create-user.dto';
 import { UpdateUserDto } from '@/modules/user/dto/update-user.dto';
+import { CreateUserResponseDto } from './dto/response-user.dto';
+import { UpdateUserResponseDto } from '@/modules/user/dto/response-user.dto';
+import { ResponseRegisterDto } from '@/modules/register/dto/response-register.dto';
 import { Types } from 'mongoose';
-import { CreateUserResponseDto, UserResponseDto } from './dto/response-user.dto';
-import { UpdateUserResponseDto } from './dto/response-user.dto';
-import { ResponseRegisterDto } from '../register/dto/response-register.dto';
+
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
@@ -78,8 +80,12 @@ export class UsersController {
     type: ResponseRegisterDto
   })
   @ApiNotFoundResponse({ description: 'User not found' })
-  findOne(@Request() req): Promise<ResponseRegisterDto> {
-    return this.usersService.findByUserId(req.user._id);
+  findOne(
+    @Req() req: Request & { user: { id: string } }
+  ): Promise<ResponseRegisterDto> {
+    const userId = req.user.id; // 👈 correct field name
+    console.log(userId, req.user)
+    return this.usersService.findByUserId(userId);
   }
 
   @Patch(':id')

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { CertificatsService } from '@/modules/certificats/certificats.service';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger';
-import { CertificatResponseDto } from './dto/response-certificat.dto';
+import { CertificatResponseDto } from '@/modules/certificats/dto/response-certificat.dto';
 import { CertDto } from '@/commons/providers/fsback/dto/cert.dto';
 @ApiTags('Certificats')
 @Controller('certificats')

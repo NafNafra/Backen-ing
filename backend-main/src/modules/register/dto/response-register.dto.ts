@@ -1,6 +1,6 @@
 import { UserSex } from '@/commons/types/auth';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, Length, IsBoolean, IsEnum } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class ResponseRegisterDto {
   @ApiProperty({ example: "2" })

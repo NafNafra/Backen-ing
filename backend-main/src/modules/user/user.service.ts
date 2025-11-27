@@ -18,7 +18,7 @@ import { User, UserDocument } from '@/modules/user/entities/user.entity';
 import { CreateAuthPhoneDto } from '@/modules/auth/dto/create-auth.dto';
 import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.service';
 import { externPayload } from '@/commons/types/auth';
-import { ResponseRegisterDto } from '../register/dto/response-register.dto';
+import { ResponseRegisterDto } from '@/modules/register/dto/response-register.dto';
 
 @Injectable()
 export class UsersService {

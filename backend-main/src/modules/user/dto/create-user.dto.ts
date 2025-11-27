@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Length, IsNumberString } from 'class-validator';
-import { Types } from 'mongoose';
 
 export class CreateUserDto {
 

@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigsService } from '@/configs';
 import { mentionNote } from '@/commons/utils';
-import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { FsFormationService } from '@/commons/providers/fsback/fs-formation.service';
 import { FsCustomerService } from '@/commons/providers/fsback/fs-customer.service';
 import { FsPayementService } from '@/commons/providers/fsback/fs-payement.service';

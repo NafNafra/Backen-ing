@@ -21,7 +21,7 @@ import { UsersService } from '@/modules/user/user.service';
 import { SmsService } from '@/commons/providers/sms/sms.service';
 import { payload } from '@/commons/types/auth';
 import { LoginResponseDto, MessageResponseDto, VerifyCodeResponseDto } from '@/modules/auth/dto/response.dto';
-import { CreateAuthPhoneDto, LogOutDto, TokenDto, VerifingCodeDto, VerifyCodeDto } from '@/modules/auth/dto/create-auth.dto';
+import { CreateAuthPhoneDto, TokenDto, VerifingCodeDto } from '@/modules/auth/dto/create-auth.dto';
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
 
 @Injectable()

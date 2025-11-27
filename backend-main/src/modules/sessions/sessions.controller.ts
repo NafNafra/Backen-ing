@@ -4,7 +4,7 @@ import {
 } from '@nestjs/common';
 import { SessionsService } from '@/modules/sessions/sessions.service';
 import { ApiOkResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
-import { SessionResponseDto } from './dto/response-session.dto';
+import { SessionResponseDto } from '@/modules/sessions/dto/response-session.dto';
 
 @ApiTags('Sessions')
 @Controller('sessions')

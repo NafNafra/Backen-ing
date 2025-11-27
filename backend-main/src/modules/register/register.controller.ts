@@ -1,8 +1,8 @@
 import { ApiTags, ApiOperation, ApiCreatedResponse, ApiBadRequestResponse } from '@nestjs/swagger';
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { RegisterService } from './register.service';
-import { CreateRegisterDto } from './dto/create-register.dto';
-import { ResponseRegisterDto } from './dto/response-register.dto';
+import { Controller, Post, Body } from '@nestjs/common';
+import { RegisterService } from '@/modules/register/register.service';
+import { CreateRegisterDto } from '@/modules/register/dto/create-register.dto';
+import { ResponseRegisterDto } from '@/modules/register/dto/response-register.dto';
 
 @ApiTags('Register')
 @Controller('register')
