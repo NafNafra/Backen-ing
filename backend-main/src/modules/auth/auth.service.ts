@@ -172,10 +172,10 @@ export class AuthService {
   }
 
 
-  async logout(dto: LogOutDto): Promise<MessageResponseDto> {
+  async logout(dto: string): Promise<MessageResponseDto> {
     await this.usersService.update(
-      (dto._id),
-      { refreshToken: null, activated: false } as any
+      dto,
+      { refreshToken: null, activated: false }
     );
 
     return new MessageResponseDto('Déconnexion réussie')
@@ -207,6 +207,7 @@ export class AuthService {
   async refreshAccessToken(
     refreshToken: TokenDto,
   ): Promise<TokenDto> {
+    console.log(refreshToken)
     const payload = this.jwtService.verify(refreshToken.token, {
       secret: this.configsService.get('jwt.refresh.secret'),
     });

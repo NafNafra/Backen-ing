@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { writeFileSync } from 'fs';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -35,7 +36,7 @@ async function bootstrap() {
   app.use('/api-json', (req, res) => {          // 📌 Raw JSON endpoint
     res.json(documentFactory);
   });
-
+  app.use(cookieParser()); // <-- Missing step
   // writeFileSync('./swagger.json', JSON.stringify(documentFactory, null, 2));
   // console.log('✔ Swagger JSON generated at ./swagger.json');
 

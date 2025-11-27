@@ -1,10 +1,12 @@
-import { Controller, Post, Query, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Res, Body, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from '@/modules/auth/auth.service';
 import { CreateAuthPhoneDto, LogOutDto, TokenDto, VerifingCodeDto } from '@/modules/auth/dto/create-auth.dto';
 import { LoginChosenUserDto } from '@/modules/auth/dto/login-chosen-user.dto';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiBadRequestResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginResponseDto, MessageResponseDto, VerifyCodeResponseDto } from './dto/response.dto';
 import { JwtAuthGuard } from '@/commons/guards/jwt-auth.guard';
+import type { Response } from 'express';
+import type { Request } from 'express';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -59,9 +61,19 @@ export class AuthController {
   })
   @ApiBadRequestResponse({ description: 'Invalid credentials' })
   async loginChosenUser(
-    @Body() student: LoginChosenUserDto
+    @Body() student: LoginChosenUserDto,
+    @Res({ passthrough: true }) res: Response
   ): Promise<LoginResponseDto> {
-    return await this.authService.loginChosenUser(student)
+    const data = await this.authService.loginChosenUser(student)
+    res.cookie('refresh_token', data.refreshToken, {
+      httpOnly: true,
+      secure: true, // only over HTTPS in production
+      sameSite: 'strict',
+      path: '/auth/new-token',
+    });
+    delete data.refreshToken
+
+    return data
   }
 
   @Post('new-token')
@@ -72,9 +84,23 @@ export class AuthController {
   })
   @ApiBadRequestResponse({ description: 'Invalid refresh token' })
   async refresh(
-    @Body() token: TokenDto
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response
   ): Promise<TokenDto> {
-    return await this.authService.refreshAccessToken(token);
+    const refreshToken = req.cookies['refresh_token'];
+    const tokenDto: TokenDto = {
+      token: req.cookies['refresh_token'],
+    };
+    const access_token = await this.authService.refreshAccessToken(tokenDto);
+
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      path: '/auth/new-token',
+    });
+
+    return access_token;
   }
 
   @Post('logout')
@@ -87,8 +113,17 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async deconnexion(
-    @Body() id: LogOutDto
+    @Req() req: Request & {user: any},
+    // @Body() id: LogOutDto,
+    @Res({ passthrough: true }) res: Response
   ): Promise<MessageResponseDto> {
+    const id = req.user.id;
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      path: '/auth/new-token',
+    });
     return this.authService.logout(id);
   }
 }

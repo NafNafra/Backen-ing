@@ -52,7 +52,7 @@ export class LoginResponseDto {
   accessToken: string;
 
   @ApiProperty({ example: 'mnop.qrst.uvwx' })
-  refreshToken: string;
+  refreshToken?: string;
   
   constructor(partial: Partial<LoginResponseDto>) {
     Object.assign(this, partial);
