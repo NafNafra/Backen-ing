@@ -650,7 +650,7 @@
         "properties": {
           "phoneNumber": {
             "type": "string",
-            "example": "0347327950"
+            "example": "0340408388"
           }
         },
         "required": [
@@ -674,7 +674,7 @@
         "properties": {
           "phoneNumber": {
             "type": "string",
-            "example": "0347327950"
+            "example": "0340408388"
           },
           "code": {
             "type": "string",
@@ -751,7 +751,7 @@
           },
           "phone": {
             "type": "string",
-            "example": "0347327950"
+            "example": "0340408388"
           },
           "activated": {
             "type": "boolean",

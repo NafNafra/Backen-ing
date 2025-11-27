@@ -167,13 +167,13 @@ export class UsersService {
     console.log(inFs[0])
 
     return {
-      ...inFs[0],
       _id: user._id.toString(),
       name: user.name,
       phoneNumber: user.phoneNumber,
       activated: user.activated,
       refreshToken: user.refreshToken,
       reactivationDate: user.reactivationDate,
+      ...inFs[0],
     };
   }
 

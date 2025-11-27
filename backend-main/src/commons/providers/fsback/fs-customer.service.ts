@@ -36,7 +36,6 @@ export class FsCustomerService {
   }
 
   async getCustById(idUser: string) {
-    // console.log(idUser)
     try {
       const customer = await this.httpService.axiosRef.get(
         `${this.url}/customer/getByAttributes?_id=${idUser}`,

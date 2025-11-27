@@ -5,8 +5,11 @@ import { Certificat, CertificatSchema } from '@/modules/certificats/entities/cer
 import { MongooseModule } from '@nestjs/mongoose';
 import { FsbackModule } from '@/commons/providers/fsback/fsback.module';
 import { FsCertService } from '@/commons/providers/fsback/fs-cert.service';
+import { UsersModule } from '../user/user.module';
 @Module({
-  imports: [FsbackModule],
+  imports: [FsbackModule,
+    UsersModule
+  ],
   controllers: [CertificatsController],
   providers: [CertificatsService,],
   exports: [CertificatsService],

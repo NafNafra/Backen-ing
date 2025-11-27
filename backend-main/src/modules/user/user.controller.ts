@@ -83,7 +83,7 @@ export class UsersController {
   findOne(
     @Req() req: Request & { user: { _id: string } }
   ): Promise<ResponseRegisterDto> {
-    const userId = req.user._id; // 👈 correct field name
+    const userId = req.user._id; 
     console.log(userId, req.user)
     return this.usersService.findByUserId(userId);
   }

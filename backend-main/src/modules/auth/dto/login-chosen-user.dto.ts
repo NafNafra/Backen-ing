@@ -7,7 +7,7 @@ export class LoginChosenUserDto {
   @IsNotEmpty()
   _id: string;
 
-  @ApiProperty({ example: '0347327950' })
+  @ApiProperty({ example: '0340408388' })
   @IsString()
   @IsNotEmpty()
   phone: string;

@@ -3,14 +3,14 @@ import { IsNotEmpty, IsString, Length, Matches } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CreateAuthPhoneDto {
-  @ApiProperty({ example: '0347327950' })
+  @ApiProperty({ example: '0340408388' })
   @Length(10, 12, { message: 'Doit etre 10 chiffre' })
   @IsNotEmpty({ message: 'Ne doit pas etre vide' })
   phoneNumber: string;
 }
 
 export class VerifingCodeDto {
-  @ApiProperty({ example: '0347327950' })
+  @ApiProperty({ example: '0340408388' })
   @Length(10, 12, { message: 'Doit etre 10 chiffre' })
   @IsNotEmpty({ message: 'Ne doit pas etre vide' })
   phoneNumber: string;
@@ -23,7 +23,7 @@ export class VerifingCodeDto {
 
 export class VerifyCodeDto extends CreateAuthPhoneDto {
   @ApiProperty({
-    example: '0347327950',
+    example: '0340408388',
     description: 'Code OTP envoyé par SMS.',
   })
   @IsString()

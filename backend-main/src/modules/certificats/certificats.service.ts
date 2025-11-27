@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { FsCertService } from '@/commons/providers/fsback/fs-cert.service';
 import { FsPayementService } from '@/commons/providers/fsback/fs-payement.service';
 import { CertDto } from '@/commons/providers/fsback/dto/cert.dto';
+import { UsersService } from '../user/user.service';
 
 @Injectable()
 export class CertificatsService {
   constructor(
     private readonly fsCert: FsCertService,
-    private readonly fsPayment: FsPayementService,
+    private readonly userService: UsersService
   ) { }
 
   async findAll(): Promise<CertDto[]> {
@@ -16,7 +17,9 @@ export class CertificatsService {
   }
 
   async findById(customerId: string) {
-    const formationProgramm = await this.fsCert.getCustomerCertDetails(customerId);
+    const userId = await this.userService.findById(customerId);
+    console.log("Here ", userId, userId._id);
+    const formationProgramm = await this.fsCert.getCustomerCertDetails(userId._id);
     return formationProgramm;
   }
 }
