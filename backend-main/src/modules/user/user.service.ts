@@ -59,7 +59,6 @@ export class UsersService {
 
 
   async findByUserId(_id: string): Promise<ResponseRegisterDto> {
-    _id = "6926d69b8c48facfc78cc0fc";
     const userLocal = await this.findById(_id);
 
     if (!userLocal)
@@ -159,7 +158,6 @@ export class UsersService {
 
   async findById(_id: string) {
     const user = await this.userModel.findOne({ _id: _id }).exec();
-    console.log(user)
     if (!user)
       throw new NotFoundException("L'utilisateur spécifié est introuvable");
 

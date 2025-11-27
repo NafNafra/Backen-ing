@@ -79,7 +79,7 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found' })
   findOne(@Request() req): Promise<ResponseRegisterDto> {
-    return this.usersService.findByUserId(req.user.id);
+    return this.usersService.findByUserId(req.user._id);
   }
 
   @Patch(':id')
