@@ -114,7 +114,6 @@ export class AuthController {
   @ApiBearerAuth()
   async deconnexion(
     @Req() req: Request & {user: any},
-    // @Body() id: LogOutDto,
     @Res({ passthrough: true }) res: Response
   ): Promise<MessageResponseDto> {
     const id = req.user.id;
