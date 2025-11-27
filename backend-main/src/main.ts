@@ -19,8 +19,8 @@ async function bootstrap() {
     .setContact('API Support', 'http://localhost:3000', 'nafafy@gmail.com')
     .setLicense('MIT', 'https://opensource.org/licenses/MIT')
     .addBearerAuth()
-    .addServer('/api', 'API Base Path')
-    .addServer('http://localhost:3000/api', 'Local Development')
+    // .addServer('/api', 'API Base Path')
+    .addServer('http://localhost:3000', 'Local Development')
     .addTag('auth', 'Authentication endpoints for phone-based login')
     .addTag('Users', 'User management endpoints')
     .addTag('Register', 'User registration endpoints')
@@ -39,7 +39,7 @@ async function bootstrap() {
   // writeFileSync('./swagger.json', JSON.stringify(documentFactory, null, 2));
   // console.log('✔ Swagger JSON generated at ./swagger.json');
 
-  app.setGlobalPrefix('api');
+  // app.setGlobalPrefix('api');
 
   await app.listen(process.env.PORT ?? 3000);
   console.log(`This application is running on port : ${await app.getUrl()}`);

@@ -30,12 +30,12 @@ export class FsCertService {
 
   async getCertificat() {
     const certificat = await this.httpService.axiosRef.get(
-      `${this.url}/cert/get`,
+      `${this.url}/cert/getByAttributes?id=1`,
       this.headers
     );
-    const certificats = certificat.data.Cert;
+    const certificats = certificat.data;
 
-    return certificats;
+    return certificat.data;
   }
 
   async getCertById(formationId: string) {
