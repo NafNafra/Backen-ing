@@ -81,9 +81,9 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found' })
   findOne(
-    @Req() req: Request & { user: { id: string } }
+    @Req() req: Request & { user: { _id: string } }
   ): Promise<ResponseRegisterDto> {
-    const userId = req.user.id; // 👈 correct field name
+    const userId = req.user._id; // 👈 correct field name
     console.log(userId, req.user)
     return this.usersService.findByUserId(userId);
   }
