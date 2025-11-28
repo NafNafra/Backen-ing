@@ -41,9 +41,11 @@ export class CertificatsController {
   })
   @ApiNotFoundResponse({ description: 'Certificate not found' })
   findOne(
-    @Req() req: Request & { user: { _id: string } }
+    @Req() req: Request & { user: { _id: string, id: string } }
   ): Promise<CertificatResponseDto> {
-    const userId = req.user._id;
+    // const userId = req.user._id;
+    const userId = req.user._id ? (req.user._id) : (req.user.id);
+    console.log(userId)
     return this.certificatsService.findById(userId);
   }
 
@@ -55,7 +57,7 @@ export class CertificatsController {
   })
   @ApiNotFoundResponse({ description: 'Certificate not found' })
   findPublic(
-    @Param('encodedUserId') encodedUserId: string, 
+    @Param('encodedUserId') encodedUserId: string,
     @Param('certificateId') certificateId: string
   ): Promise<CertificatResponseDto> {
     const userId = Buffer.from(encodedUserId, 'base64').toString('utf-8');

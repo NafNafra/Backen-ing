@@ -19,7 +19,7 @@ export class CertificatsService {
   async findById(customerId: string) {
     const userId = await this.userService.findById(customerId);
     console.log("Here ", userId, userId._id);
-    const formationProgramm = await this.fsCert.getCustomerCertDetails(userId._id);
+    const formationProgramm = await this.fsCert.getCustomerCertDetails(userId.userId);
     return formationProgramm;
   }
 

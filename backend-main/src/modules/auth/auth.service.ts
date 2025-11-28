@@ -222,7 +222,7 @@ export class AuthService {
 
     const newAccessToken = await this.jwtService.signAsync(
       {
-        id: user._id,
+        _id: user._id,
         phoneNumber: user.phoneNumber,
         activated: user.activated
       },
