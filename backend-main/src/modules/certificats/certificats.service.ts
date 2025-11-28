@@ -22,4 +22,17 @@ export class CertificatsService {
     const formationProgramm = await this.fsCert.getCustomerCertDetails(userId._id);
     return formationProgramm;
   }
+
+  async findSpecificCert(customerId: string, certId: string) {
+    const userId = await this.userService.findById(customerId);
+    const formationProgramm = await this.fsCert.getCustomerCertDetails(userId._id);
+    const specificResult = formationProgramm.results.find(result => result.cert._id === certId);
+    if (!specificResult) {
+      throw new Error('Certificate not found');
+    }
+    return {
+      ...formationProgramm,
+      results: [specificResult]
+    };
+  }
 }

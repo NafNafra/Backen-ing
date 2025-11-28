@@ -192,7 +192,7 @@ export class AuthService {
       secret: this.configsService.get('jwt.refresh.secret'),
       expiresIn: this.configsService.get('jwt.refresh.expiresIn'),
     });
-
+    console.log(access_token, refresh_token)
     return { access_token, refresh_token };
   }
 

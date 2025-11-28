@@ -6,9 +6,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { FsbackModule } from '@/commons/providers/fsback/fsback.module';
 import { FsCertService } from '@/commons/providers/fsback/fs-cert.service';
 import { UsersModule } from '../user/user.module';
+import { ConfigsModule } from '@/configs';
 @Module({
-  imports: [FsbackModule,
-    UsersModule
+  imports: [
+    FsbackModule,
+    UsersModule,
+    ConfigsModule
   ],
   controllers: [CertificatsController],
   providers: [CertificatsService,],
