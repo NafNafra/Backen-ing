@@ -34,14 +34,10 @@ async function bootstrap() {
   const documentFactory = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/swagger', app, documentFactory);
 
-  app.use('/api-json', (req, res) => {          // 📌 Raw JSON endpoint
+  app.use('/api-json', (req, res) => {    
     res.json(documentFactory);
   });
   app.use(cookieParser()); // <-- Missing step
-  // writeFileSync('./swagger.json', JSON.stringify(documentFactory, null, 2));
-  // console.log('✔ Swagger JSON generated at ./swagger.json');
-
-  // app.setGlobalPrefix('api');
 
   await app.listen(process.env.PORT ?? 3000);
   console.log(`This application is running on port : ${await app.getUrl()}`);
