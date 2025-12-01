@@ -10,8 +10,11 @@ export class UserResponseDto {
   @ApiProperty({ example: '42' })
   idUser: string;
 
-  @ApiProperty({ example: 'Alice Doe' })
-  name: string;
+  @ApiProperty({ example: 'Alice ' })
+  firstname: string;
+
+  @ApiProperty({ example: 'Doe' })
+  lastname: string;
 
   @ApiProperty({ example: '+261341234567' })
   phoneNumber: string;
@@ -31,7 +34,8 @@ export class UserResponseDto {
   constructor(user: User & { _id: Types.ObjectId }) {
     this._id = user._id.toString();
     this.idUser = user.idUser;
-    this.name = user.name;
+    this.firstname = user.firstname;
+    this.lastname = user.lastname;
     this.phoneNumber = user.phoneNumber;
     this.activated = user.activated;
     this.reactivationDate = user.reactivationDate;
@@ -69,8 +73,11 @@ export class CreateUserResponseDto {
   @ApiProperty({ example: "42" })
   idUser: string;
 
-  @ApiProperty({ example: "Alice Doe", })
-  name: string;
+  @ApiProperty({ example: "Alice", })
+  firstname: string;
+
+  @ApiProperty({ example: "Doe", })
+  lastname: string;
 
   @ApiProperty({ example: "+261341234567", })
   phoneNumber: string;

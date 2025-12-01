@@ -84,7 +84,9 @@ export class AuthService {
       message: `Code vérifié. Sélectionnez l'utilisateur à connecter. `,
       user: users.map((u) => ({
         _id: u._id.toString(),
-        name: u.name,
+        firstname: u.firstname,
+        lastname: u.lastname,
+        sex: u.sex,
         compteFb: u.compteFb,
         phoneNumber: u.phoneNumber,
         activated: u.activated,
@@ -160,8 +162,10 @@ export class AuthService {
       message: 'Connexion réussie',
       user: {
         _id: validOtpUser._id.toString(),
-        name: validOtpUser.name,
+        firstname: validOtpUser.firstname,
+        lastname: validOtpUser.lastname,
         phoneNumber: validOtpUser.phoneNumber,
+        sex: validOtpUser.sex,
         compteFb: validOtpUser.compteFb,
         activated: validOtpUser.activated
       },

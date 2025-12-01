@@ -34,7 +34,8 @@ export class UsersService {
     return new CreateUserResponseDto({
       _id: user._id.toString(),
       idUser: user.idUser,
-      name: user.name,
+      firstname: user.firstname,
+      lastname: user.lastname,
       phoneNumber: user.phoneNumber,
       compteFb: user.compteFb,
     });
@@ -46,7 +47,8 @@ export class UsersService {
     return users.map(user => new CreateUserResponseDto({
       _id: user._id.toString(),
       idUser: user.idUser,
-      name: user.name,
+      firstname: user.firstname,
+      lastname: user.lastname,
       phoneNumber: user.phoneNumber,
       compteFb: user.compteFb,
       _OtpCode: user._OtpCode,
@@ -127,9 +129,10 @@ export class UsersService {
     for (const ext of externalUsers) {
       const payload: externPayload = {
         idUser: ext._id,
-        name: `${ext.firstname} ${ext.lastname}`,
+        firstname: `${ext.firstname}`,
+        lastname: `${ext.lastname}`,
         phoneNumber: ext.phone,
-        compteFb: ext.facebook !== 'null' ? ext.facebook : undefined,
+        sex: ext.sex,
         activated: false,
       };
 
@@ -170,7 +173,8 @@ export class UsersService {
       ...inFs[0],
       userId: inFs[0]._id.toString(),
       _id: user._id.toString(),
-      name: user.name,
+      fistname: user.firstname,
+      lastname: user.lastname,
       phoneNumber: user.phoneNumber,
       activated: user.activated,
       refreshToken: user.refreshToken,

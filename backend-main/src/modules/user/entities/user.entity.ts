@@ -1,3 +1,4 @@
+import { UserSex } from '@/commons/types/auth';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Types } from 'mongoose';
 
@@ -9,7 +10,13 @@ export class User {
   idUser: string; // l’ID du customer venant du backend A
 
   @Prop()
-  name: string;
+  firstname: string;
+
+  @Prop()
+  lastname: string;
+
+  @Prop()
+  sex: UserSex;
 
   @Prop()
   phoneNumber: string;
