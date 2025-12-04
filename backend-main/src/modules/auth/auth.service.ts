@@ -182,7 +182,7 @@ export class AuthService {
       { refreshToken: null, activated: false }
     );
 
-    return new MessageResponseDto('Déconnexion réussie')
+    return new MessageResponseDto('Déconnexion effectuée. \n Vous serez déconnecté de tous les autres appareils')
   }
 
   async generateTokens(
@@ -218,11 +218,11 @@ export class AuthService {
 
     const user = await this.usersService.findById(payload._id);
 
-    if (!user || !user.refreshToken)
-      throw new UnauthorizedException('Invalid refresh token ko');
+    if (!user || user.refreshToken == null)
+      throw new UnauthorizedException('Authentification invalide');
 
     const isTokenValid = await bcrypt.compare(refreshToken.token, user.refreshToken);
-    if (!isTokenValid) throw new UnauthorizedException('Invalid refresh token');
+    if (!isTokenValid) throw new UnauthorizedException('Requete invalide');
 
     const newAccessToken = await this.jwtService.signAsync(
       {

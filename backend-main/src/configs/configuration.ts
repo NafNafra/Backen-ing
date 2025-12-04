@@ -1,4 +1,5 @@
 export default () => ({
+  env:process.env.NODE_ENV,
   database: {
     mongo: {
       uri: process.env.MONGO_URI,
@@ -25,4 +26,8 @@ export default () => ({
     base: process.env.BACKEND_FS_URL,
     token: process.env.JWT_TOKEN_FS
   },
+  fs_front:{
+    base:process.env.VITE_WAY,
+    cookie: process.env.COOKIE_DOMAIN
+  }
 });

@@ -35,7 +35,7 @@ export class ResponseRegisterDto {
   birthplace: string;
 
   @ApiProperty({ example: "https://facebook.com/jennie.kim", })
-  compteFb: string;
+  facebook: string;
 
   @ApiProperty({ example: false, })
   inactive: boolean;

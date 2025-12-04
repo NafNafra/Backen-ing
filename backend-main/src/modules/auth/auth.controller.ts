@@ -7,11 +7,15 @@ import { LoginResponseDto, MessageResponseDto, VerifyCodeResponseDto } from '@/m
 import { JwtAuthGuard } from '@/commons/guards/jwt-auth.guard';
 import type { Response } from 'express';
 import type { Request } from 'express';
+import { ConfigsService } from '@/configs';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configsService: ConfigsService,
+  ) { }
 
   @Post('get-code')
   @ApiOperation({ summary: 'Request OTP code for login' })
@@ -65,14 +69,6 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response
   ): Promise<LoginResponseDto> {
     const data = await this.authService.loginChosenUser(student)
-    res.cookie('refresh_token', data.refreshToken, {
-      httpOnly: true,
-      secure: true, // only over HTTPS in production
-      sameSite: 'strict',
-      path: '/auth/new-token',
-    });
-    delete data.refreshToken
-
     return data
   }
 
@@ -84,22 +80,11 @@ export class AuthController {
   })
   @ApiBadRequestResponse({ description: 'Invalid refresh token' })
   async refresh(
-    @Req() req: Request,
-    @Res({ passthrough: true }) res: Response
+    // @Req() req: Request & { user: any },
+    @Body() token: TokenDto,
   ): Promise<TokenDto> {
-    const refreshToken = req.cookies['refresh_token'];
-    const tokenDto: TokenDto = {
-      token: req.cookies['refresh_token'],
-    };
-    const access_token = await this.authService.refreshAccessToken(tokenDto);
-
-    res.cookie('refresh_token', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-      path: '/auth/new-token',
-    });
-
+    // const userId = req.user._id;
+    const access_token = await this.authService.refreshAccessToken(token);
     return access_token;
   }
 
@@ -114,17 +99,10 @@ export class AuthController {
   @ApiBearerAuth()
   async deconnexion(
     @Req() req: Request & { user: any },
-    @Res({ passthrough: true }) res: Response
   ): Promise<MessageResponseDto> {
-    const id = req.user.id;
-    res.clearCookie('refresh_token', {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-      path: '/auth/new-token',
-    });
+    const id = req.user._id;
     return this.authService.logout(id);
   }
 
-  
+
 }
