@@ -80,10 +80,8 @@ export class AuthController {
   })
   @ApiBadRequestResponse({ description: 'Invalid refresh token' })
   async refresh(
-    // @Req() req: Request & { user: any },
     @Body() token: TokenDto,
   ): Promise<TokenDto> {
-    // const userId = req.user._id;
     const access_token = await this.authService.refreshAccessToken(token);
     return access_token;
   }

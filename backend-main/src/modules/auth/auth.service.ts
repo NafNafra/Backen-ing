@@ -31,7 +31,6 @@ export class AuthService {
     private readonly smsService: SmsService,
     private readonly configsService: ConfigsService,
     private readonly jwtService: JwtService,
-    private readonly fsService: FsCustomerService,
   ) { }
 
   // Look for user by phone number and send OTP
